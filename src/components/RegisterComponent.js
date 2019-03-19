@@ -77,3 +77,35 @@ export class Register extends Component {
         </Form>
     }
 }
+
+
+export class Register2 extends Component {
+    render() {
+        return <div id="register" className="navtab-content is-active">
+            <form>
+
+                <div className="control">
+                    <label className="auth-label">Email*</label>
+                    <input type="email" className="input" placeholder=""/>
+                </div>
+
+                <div className="control">
+                    <label className="auth-label">Password*</label>
+                    <input type="password" className="input" placeholder=""/>
+                </div>
+
+                <div className="control">
+                    <label className="auth-label">Confirm Password*</label>
+                    <input type="password" className="input" placeholder=""/>
+                </div>
+
+                <div className="button-wrapper">
+                    <button type="submit"
+                            className="button feather-button is-small primary-button upper-button raised">
+                        <span>Register</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    }
+}

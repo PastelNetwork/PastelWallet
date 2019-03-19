@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import {Register} from '../components/RegisterComponent';
+import {Register, Register2} from '../components/RegisterComponent';
 
 const mapStateToProps = state => ({
 });
@@ -11,3 +11,4 @@ const mapDispatchToProps = dispatch => ({
 
 
 export const RegisterContainer = connect(mapStateToProps, mapDispatchToProps)(Register);
+export const Register2Container = connect(mapStateToProps, mapDispatchToProps)(Register2);

@@ -12,10 +12,23 @@ import * as LogoW from '../assets/images/logo-w.png'
 import * as NephosGrayscale from '../assets/images/logo/nephos-greyscale.svg';
 import {ShopWrapper} from "./ShopWrapper";
 import {LoginContainer} from "../containers/LoginContainer";
+import {Register2Container, RegisterContainer} from "../containers/RegisterContainer";
+
+const Tabs = Object.freeze({login: 0, register: 1});
 
 export class Auth extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selected_tab: Tabs.login
+        }
+    }
+    changeTab = (e) => {
+        this.setState({selected_tab: Tabs[e.target.name]});
+    };
 
     render() {
+        const selectedTab = this.state.selected_tab === Tabs.login ? <LoginContainer/> : <Register2Container/>;
         return <ShopWrapper>
             <div className="section">
                 <div className="container">
@@ -42,39 +55,16 @@ export class Auth extends Component {
 
                                             <div className="tabs is-form-tabs">
                                                 <ul>
-                                                    <li className="is-active" data-tab="login"><a>Login</a></li>
-                                                    <li data-tab="register"><a>Register</a></li>
+                                                    <li className={this.state.selected_tab === Tabs.login ? "is-active": ""}>
+                                                        <a name="login" onClick={this.changeTab}>Login</a>
+                                                    </li>
+                                                    <li className={this.state.selected_tab === Tabs.register ? "is-active": ""}>
+                                                        <a name="register" onClick={this.changeTab}>Register</a>
+                                                    </li>
                                                 </ul>
                                             </div>
+                                            {selectedTab}
 
-                                            <LoginContainer/>
-
-                                            <div id="register" className="navtab-content">
-                                                <form>
-
-                                                    <div className="control">
-                                                        <label className="auth-label">Email*</label>
-                                                        <input type="email" className="input" placeholder=""/>
-                                                    </div>
-
-                                                    <div className="control">
-                                                        <label className="auth-label">Password*</label>
-                                                        <input type="password" className="input" placeholder=""/>
-                                                    </div>
-
-                                                    <div className="control">
-                                                        <label className="auth-label">Confirm Password*</label>
-                                                        <input type="password" className="input" placeholder=""/>
-                                                    </div>
-
-                                                    <div className="button-wrapper">
-                                                        <button type="submit"
-                                                                className="button feather-button is-small primary-button upper-button raised">
-                                                            <span>Register</span>
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
                                         </div>
                                     </div>
 
