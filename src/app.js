@@ -7,10 +7,6 @@ import {Router} from 'react-router-dom';
 import reducer from './reducers';
 import * as ajaxEntities from './ajaxEntities';
 
-// import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-// import '@fortawesome/fontawesome-free/css/all.min.css';
-
 import Main from "./components/MainComponent";
 import history from './history';
 

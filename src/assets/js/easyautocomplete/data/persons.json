@@ -1,0 +1,32 @@
+[  
+   {  
+      "name":"Elie Daniels",
+      "position":"Customer",
+      "pic":"assets/images/avatars/elie.jpg",
+      "email":"eliedaniels@gmail.com"
+   },
+   {  
+      "name":"Janet Smith",
+      "position":"Staff",
+      "pic":"assets/images/avatars/janet.jpg",
+      "email":"janetsmith@helios.io"
+   },
+   {  
+      "name":"Marc Korski",
+      "position":"Staff",
+      "pic":"assets/images/avatars/marc.jpg",
+      "email":"mkorski@helios.io"
+   },
+   {  
+      "name":"Jane Mitchells",
+      "position":"Customer",
+      "pic":"assets/images/avatars/jane.jpg",
+      "email":"jane178@mail.me"
+   },
+   {  
+      "name":"John kovalsky",
+      "position":"Customer",
+      "pic":"assets/images/avatars/john.jpg",
+      "email":"jkoval@gmail.com"
+   }
+]
