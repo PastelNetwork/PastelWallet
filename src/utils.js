@@ -4,7 +4,7 @@ export const getRenderedErrors = (errors) => {
     let result = [];
     errors.forEach((errorText, index) => {
         result.push(
-            <div className="login-form-error" key={index}>
+            <div className="has-text-danger" key={index}>
                 {errorText}
             </div>
         );

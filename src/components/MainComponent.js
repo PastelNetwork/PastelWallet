@@ -8,7 +8,7 @@ import {Auth} from "./AuthComponent";
 
 const Main = () => {
     return <Switch>
-            <Route path='/' component={Auth}/>
+            <Route exact path='/' component={Auth}/>
             <Route path='/login' component={LoginContainer}/>
             <Route path='/register' component={RegisterContainer}/>
             <Route path='/logout' component={LogoutContainer}/>

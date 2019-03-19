@@ -11,6 +11,7 @@ import '../assets/css/icons.min.css'
 import * as LogoW from '../assets/images/logo-w.png'
 import * as NephosGrayscale from '../assets/images/logo/nephos-greyscale.svg';
 import {ShopWrapper} from "./ShopWrapper";
+import {LoginContainer} from "../containers/LoginContainer";
 
 export class Auth extends Component {
 
@@ -46,39 +47,7 @@ export class Auth extends Component {
                                                 </ul>
                                             </div>
 
-                                            <div id="login" className="navtab-content is-active">
-                                                <form>
-
-                                                    <div className="control">
-                                                        <label className="auth-label">Email*</label>
-                                                        <input type="email" className="input" placeholder=""/>
-                                                    </div>
-
-                                                    <div className="control">
-                                                        <label className="auth-label">Password*</label>
-                                                        <input type="password" className="input" placeholder=""/>
-                                                    </div>
-
-                                                    <div className="control">
-                                                        <label className="checkbox-wrap is-small">
-                                                            <input id="house" type="checkbox" className="d-checkbox"
-                                                                   checked/>
-                                                            <span>
-
-                                                            </span>
-                                                            <small>Remember me?</small>
-                                                        </label>
-                                                    </div>
-
-                                                    <div className="button-wrapper">
-                                                        <button type="submit"
-                                                                className="button feather-button is-small primary-button upper-button raised">
-                                                            <span>Login</span>
-                                                        </button>
-                                                        <a className="forgotten">Forgot Password ?</a>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                            <LoginContainer/>
 
                                             <div id="register" className="navtab-content">
                                                 <form>
