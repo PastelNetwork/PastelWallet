@@ -12,7 +12,7 @@ import * as LogoW from '../assets/images/logo-w.png'
 import * as NephosGrayscale from '../assets/images/logo/nephos-greyscale.svg';
 import {ShopWrapper} from "./ShopWrapper";
 import {LoginContainer} from "../containers/LoginContainer";
-import {Register2Container, RegisterContainer} from "../containers/RegisterContainer";
+import {RegisterContainer} from "../containers/RegisterContainer";
 
 const Tabs = Object.freeze({login: 0, register: 1});
 
@@ -28,7 +28,7 @@ export class Auth extends Component {
     };
 
     render() {
-        const selectedTab = this.state.selected_tab === Tabs.login ? <LoginContainer/> : <Register2Container/>;
+        const selectedTab = this.state.selected_tab === Tabs.login ? <LoginContainer/> : <RegisterContainer/>;
         return <ShopWrapper>
             <div className="section">
                 <div className="container">

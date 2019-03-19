@@ -43,6 +43,9 @@ export class Login extends Component {
             this.props.dispatch(stopAjax(ajaxEntities.LOGIN));
         });
     };
+    onForgotPasswordClick = () => {
+        alert('Forgot password. Implement');
+    };
 
     render() {
         const nonFieldErrors = getRenderedErrors(this.state.errors.non_field_errors);
@@ -81,7 +84,7 @@ export class Login extends Component {
                     disabled={this.state.submitDisabled}>
                         <span>Login</span>
                     </button>
-                    <a className="forgotten">Forgot Password ?</a>
+                    <a className="forgotten" onClick={this.onForgotPasswordClick}>Forgot Password ?</a>
                 </div>
             </form>
         </div>;

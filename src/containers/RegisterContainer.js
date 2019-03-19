@@ -11,4 +11,3 @@ const mapDispatchToProps = dispatch => ({
 
 
 export const RegisterContainer = connect(mapStateToProps, mapDispatchToProps)(Register);
-export const Register2Container = connect(mapStateToProps, mapDispatchToProps)(Register2);
