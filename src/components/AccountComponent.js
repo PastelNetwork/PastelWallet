@@ -1,8 +1,16 @@
 import React, {Component} from 'react';
 import * as NephosGrayscale from '../assets/images/logo/nephos-greyscale.svg';
+import { Settings } from 'react-feather';
+import {fetchUserProfile} from "../actions";
 
 export class Account extends Component {
     render() {
+        if (!this.props.userProfile) {
+            this.props.dispatch(fetchUserProfile());
+            return null;
+        }
+        const fullName = `${this.props.userProfile.first_name} ${this.props.userProfile.last_name}`;
+        const dateJoined = new Date(this.props.userProfile.date_joined);
         return <div className="section">
             
             <div className="container">
@@ -34,11 +42,11 @@ export class Account extends Component {
                                 <div className="flat-card profile-card is-auto">
                                     <div className="card-body">
                                         <div className="profile-image">
-                                            <img src="http://via.placeholder.com/250x250" alt=""/>
+                                            <img src={this.props.userProfile.picture} alt=""/>
                                         </div>
                                         <div className="username has-text-centered">
-                                            <span>Elie Daniels</span>
-                                            <small>Member since Sep 23 2017</small>
+                                            <span>{fullName}</span>
+                                            <small>Member since {dateJoined.toLocaleDateString()}</small>
                                         </div>
                                     </div>
                                     <div className="profile-footer has-text-centered">
@@ -60,8 +68,7 @@ export class Account extends Component {
                                         <div className="edit-account has-simple-popover popover-hidden-mobile"
                                              data-content="Edit Account" data-placement="top">
                                             <a href="pastel-account-edit.html">
-                                                <i className="feather-icons" data-feather="settings">
-                                                </i>
+                                                <Settings/>
                                             </a>
                                         </div>
                                     </div>
@@ -71,24 +78,24 @@ export class Account extends Component {
                                             <div className="column is-6">
                                                 <div className="info-block">
                                                     <span className="label-text">First Name</span>
-                                                    <span className="label-value">Elie</span>
+                                                    <span className="label-value">{this.props.userProfile.first_name}</span>
                                                 </div>
 
                                                 <div className="info-block">
                                                     <span className="label-text">Email</span>
-                                                    <span className="label-value">eliedaniels@gmail.com</span>
+                                                    <span className="label-value">{this.props.userProfile.email}</span>
                                                 </div>
                                             </div>
 
                                             <div className="column is-6">
                                                 <div className="info-block">
                                                     <span className="label-text">Last Name</span>
-                                                    <span className="label-value">Daniels</span>
+                                                    <span className="label-value">{this.props.userProfile.last_name}</span>
                                                 </div>
 
                                                 <div className="info-block">
                                                     <span className="label-text">Phone</span>
-                                                    <span className="label-value">+1 555 623 568</span>
+                                                    <span className="label-value">{this.props.userProfile.phone_number}</span>
                                                 </div>
                                             </div>
                                         </div>

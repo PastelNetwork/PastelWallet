@@ -19,8 +19,8 @@ const Main = () => {
             <Route path='/login' component={Auth}/>
             <Route path='/register' component={Auth}/>
             <Route path='/logout' component={LogoutContainer}/>
-            <Route path='/user_profile' component={AccountContainer}/>
             <Route path='/user_profile2' component={UserProfileContainer}/>
+            <Route path='/user_profile' component={AccountContainer}/>
             <Redirect to='/login'/>
         </Switch>;
 };
