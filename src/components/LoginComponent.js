@@ -3,6 +3,7 @@ import {getRenderedErrors} from "../utils";
 import * as settings from '../settings';
 import * as ajaxEntities from '../ajaxEntities';
 import axios from 'axios';
+import history from '../history';
 import {saveAPIToken, startAjax, stopAjax} from "../actions";
 
 
@@ -36,6 +37,7 @@ export class Login extends Component {
             const key = resp.data.key;
             this.props.dispatch(saveAPIToken(key));
             this.props.dispatch(stopAjax(ajaxEntities.LOGIN));
+            history.push('/user_profile');
         }).catch((err) => {
             const errors = err.response.data;
             this.setState({errors: {...this.state.errors, ...errors}});

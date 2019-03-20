@@ -14,7 +14,8 @@ export class Account extends Component {
         const fullName = `${this.props.userProfile.first_name} ${this.props.userProfile.last_name}`;
         const dateJoined = new Date(this.props.userProfile.date_joined);
         const profileImage = this.props.userProfile.picture ? this.props.userProfile.picture : Altvatar;
-        
+        const billingAddress = this.props.userProfile.billing_address || {};
+
         return <div className="section">
             
             <div className="container">
@@ -129,34 +130,34 @@ export class Account extends Component {
                                             <div className="column is-6">
                                                 <div className="info-block">
                                                     <span className="label-text">Number</span>
-                                                    <span className="label-value">23, Block C2</span>
+                                                    <span className="label-value">{billingAddress.number || ''}</span>
                                                 </div>
 
                                                 <div className="info-block">
                                                     <span className="label-text">City</span>
-                                                    <span className="label-value">Los Angeles</span>
+                                                    <span className="label-value">{billingAddress.city || ''}</span>
                                                 </div>
 
                                                 <div className="info-block">
                                                     <span className="label-text">State</span>
-                                                    <span className="label-value">CA</span>
+                                                    <span className="label-value">{billingAddress.state || ''}</span>
                                                 </div>
                                             </div>
 
                                             <div className="column is-6">
                                                 <div className="info-block">
                                                     <span className="label-text">Street</span>
-                                                    <span className="label-value">Church Street</span>
+                                                    <span className="label-value">{billingAddress.street || ''}</span>
                                                 </div>
 
                                                 <div className="info-block">
                                                     <span className="label-text">Postal Code</span>
-                                                    <span className="label-value">100065</span>
+                                                    <span className="label-value">{billingAddress.postal_code || ''}</span>
                                                 </div>
 
                                                 <div className="info-block">
                                                     <span className="label-text">Country</span>
-                                                    <span className="label-value">United States</span>
+                                                    <span className="label-value">{billingAddress.country || ''}</span>
                                                 </div>
                                             </div>
                                         </div>
