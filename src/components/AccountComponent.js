@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import * as NephosGrayscale from '../assets/images/logo/nephos-greyscale.svg';
 import { Settings } from 'react-feather';
 import {fetchUserProfile} from "../actions";
+import * as Altvatar from '../assets/images/avatars/altvatar.png';
+
 
 export class Account extends Component {
     render() {
@@ -11,6 +13,8 @@ export class Account extends Component {
         }
         const fullName = `${this.props.userProfile.first_name} ${this.props.userProfile.last_name}`;
         const dateJoined = new Date(this.props.userProfile.date_joined);
+        const profileImage = this.props.userProfile.picture ? this.props.userProfile.picture : Altvatar;
+        
         return <div className="section">
             
             <div className="container">
@@ -42,7 +46,7 @@ export class Account extends Component {
                                 <div className="flat-card profile-card is-auto">
                                     <div className="card-body">
                                         <div className="profile-image">
-                                            <img src={this.props.userProfile.picture} alt=""/>
+                                            <img src={profileImage} alt=""/>
                                         </div>
                                         <div className="username has-text-centered">
                                             <span>{fullName}</span>
