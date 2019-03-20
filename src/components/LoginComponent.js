@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Form, FormGroup, Input, Button} from 'reactstrap';
 import {getRenderedErrors} from "../utils";
 import * as settings from '../settings';
 import * as ajaxEntities from '../ajaxEntities';

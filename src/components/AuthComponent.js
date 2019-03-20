@@ -1,12 +1,4 @@
 import React, {Component} from 'react';
-import '../assets/scss/core.scss';
-import '../assets/css/bulma.css';
-import '../assets/js/webuipopover/jquery.webui-popover.css';
-import '../assets/js/izitoast/css/iziToast.min.css';
-import '../assets/js/zoom/zoom.css';
-import '../assets/js/jpcard/card.css';
-import '../assets/css/chosen/chosen.css';
-import '../assets/css/icons.min.css'
 
 import * as LogoW from '../assets/images/logo-w.png'
 import * as NephosGrayscale from '../assets/images/logo/nephos-greyscale.svg';
