@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
 import * as NephosGrayscale from '../assets/images/logo/nephos-greyscale.svg';
 import {Settings} from 'react-feather';
-import {fetchUserProfile} from "../actions";
+import {fetchUserProfile, userProfileSetEditMode, userProfileSetEditModeAll} from "../actions";
 import * as Altvatar from '../assets/images/avatars/altvatar.png';
 import {AccountDetailContainer, AccountProfileContainer, BillingAddressContainer} from "../containers/AccountContainer";
+import {
+    AccountDetailEditContainer,
+    AccountProfileEditContainer,
+    BillingAddressEditContainer
+} from "../containers/EditAccountContainer";
 
 export const AccountProfile = (props) => {
     const fullName = `${props.userProfile.first_name} ${props.userProfile.last_name}`;
@@ -11,6 +16,7 @@ export const AccountProfile = (props) => {
     const profileImage = props.userProfile.picture ? props.userProfile.picture : Altvatar;
 
     return <div className="flat-card profile-card is-auto">
+
         <div className="card-body">
             <div className="profile-image">
                 <img src={profileImage} alt=""/>
@@ -37,7 +43,9 @@ export const AccountDetail = (props) => {
 
             <div className="edit-account has-simple-popover popover-hidden-mobile"
                  data-content="Edit Account" data-placement="top">
-                <a href="pastel-account-edit.html">
+                <a onClick={(e) => {
+                    props.dispatch(userProfileSetEditModeAll(true))
+                }}>
                     <Settings/>
                 </a>
             </div>
@@ -142,6 +150,11 @@ export class Account extends Component {
         if (!this.props.userProfile) {
             return null;
         }
+        const profile = this.props.pictureEditMode ?
+            <AccountProfileEditContainer/> : <AccountProfileContainer/>;
+        const details = this.props.detailsEditMode ? <AccountDetailEditContainer/> : <AccountDetailContainer/>;
+        const address = this.props.addressEditMode ?
+            <BillingAddressEditContainer/> : <BillingAddressContainer/>;
 
         return <div className="section">
 
@@ -168,16 +181,14 @@ export class Account extends Component {
 
 
                         <div className="columns is-account-grid is-multiline">
-
                             <div className="column is-5">
-                                <AccountProfileContainer/>
+                                {profile}
                             </div>
 
-
                             <div className="column is-7">
-                                <AccountDetailContainer/>
+                                {details}
 
-                                <BillingAddressContainer/>
+                                {address}
                             </div>
                         </div>
                     </div>

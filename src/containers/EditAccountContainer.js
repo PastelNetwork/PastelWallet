@@ -1,6 +1,11 @@
 import {connect} from 'react-redux';
 import * as ajaxEntities from '../ajaxEntities';
-import {EditAccount} from '../components/EditAccountComponent';
+import {
+    AccountDetailEdit,
+    AccountProfileEdit,
+    BillingAddressEdit,
+    EditAccount
+} from '../components/EditAccountComponent';
 
 const mapStateToProps = state => ({
     token: state.token,
@@ -13,4 +18,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-export const EditAccountContainer = connect(mapStateToProps, mapDispatchToProps)(EditAccount);
+export const AccountProfileEditContainer = connect(mapStateToProps, mapDispatchToProps)(AccountProfileEdit);
+export const AccountDetailEditContainer = connect(mapStateToProps, mapDispatchToProps)(AccountDetailEdit);
+export const BillingAddressEditContainer = connect(mapStateToProps, mapDispatchToProps)(BillingAddressEdit);

@@ -16,10 +16,17 @@ let defaultAjaxInProgress = Object.getOwnPropertyNames(ajaxEntities).filter(a =>
     return acc;
 }, {});
 
+export const defaultProfileEditMode = {
+        picture: false,
+        details: false,
+        billingAddress: false
+    };
+
 export const initialState = {
     token: '',
     ajaxInProgress: defaultAjaxInProgress,
-    userProfile: null
+    userProfile: null,
+    profileEditMode: defaultProfileEditMode
 };
 const token = localStorage.getItem('token');
 const defaultStore = {...initialState, token};

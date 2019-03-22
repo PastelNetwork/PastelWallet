@@ -5,7 +5,10 @@ import {Account, AccountDetail, AccountProfile, BillingAddress} from '../compone
 const mapStateToProps = state => ({
     token: state.token,
     userProfile: state.userProfile,
-    ajaxInProgress: state.ajaxInProgress[ajaxEntities.USER_PROFILE]
+    ajaxInProgress: state.ajaxInProgress[ajaxEntities.USER_PROFILE],
+    pictureEditMode: state.profileEditMode.picture,
+    detailsEditMode: state.profileEditMode.details,
+    addressEditMode: state.profileEditMode.billingAddress
 });
 
 const mapDispatchToProps = dispatch => ({

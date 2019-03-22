@@ -1,11 +1,17 @@
 import * as actionTypes from './actionTypes';
-import {initialState} from "./app";
+import {defaultProfileEditMode, initialState} from "./app";
 
 
 const reducer  = (state = {}, action) => {
     switch (action.type) {
         case actionTypes.SAVE_API_TOKEN:
             return {...state, token: action.token};
+        case actionTypes.USER_PROFILE_SET_EDIT_MODE:
+            return {...state, profileEditMode: {...state.profileEditMode, [action.entity]: action.value}};
+        case actionTypes.USER_PROFILE_SET_EDIT_MODE_ALL:
+            let editMode = defaultProfileEditMode;
+            Object.keys(editMode).forEach(k => editMode[k] = action.value);
+            return {...state, profileEditMode: editMode};
         case actionTypes.SAVE_USER_PROFILE:
             return {...state, userProfile: action.profile};
         case actionTypes.CHANGE_USER_PROFILE:

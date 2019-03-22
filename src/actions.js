@@ -30,6 +30,17 @@ export const saveUserProfile = (profile) => ({
     profile
 });
 
+export const userProfileSetEditMode = (entity, value) => ({
+    type: actionTypes.USER_PROFILE_SET_EDIT_MODE,
+    entity,
+    value
+});
+
+export const userProfileSetEditModeAll = (value) => ({
+    type: actionTypes.USER_PROFILE_SET_EDIT_MODE_ALL,
+    value
+});
+
 export const fetchUserProfile = () => {
     return (dispatch, getState) => {
         const {token} = getState();
