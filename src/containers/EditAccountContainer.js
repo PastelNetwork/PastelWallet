@@ -17,7 +17,13 @@ const mapDispatchToProps = dispatch => ({
     dispatch
 });
 
-
 export const AccountProfileEditContainer = connect(mapStateToProps, mapDispatchToProps)(AccountProfileEdit);
-export const AccountDetailEditContainer = connect(mapStateToProps, mapDispatchToProps)(AccountDetailEdit);
+export const AccountDetailEditContainer = connect((state) => ({
+        userProfile: state.userProfile,
+        firstName: state.detailsToEdit.firstName,
+        lastName: state.detailsToEdit.lastName,
+        email: state.detailsToEdit.email,
+        phone: state.detailsToEdit.phone
+    }),
+    mapDispatchToProps)(AccountDetailEdit);
 export const BillingAddressEditContainer = connect(mapStateToProps, mapDispatchToProps)(BillingAddressEdit);

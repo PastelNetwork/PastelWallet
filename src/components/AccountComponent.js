@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
 import * as NephosGrayscale from '../assets/images/logo/nephos-greyscale.svg';
 import {Settings} from 'react-feather';
-import {fetchUserProfile, userProfileSetEditMode, userProfileSetEditModeAll} from "../actions";
+import {
+    bulkUpdateUserProfileDetailsToEdit,
+    fetchUserProfile,
+    userProfileSetEditModeAll
+} from "../actions";
 import * as Altvatar from '../assets/images/avatars/altvatar.png';
 import {AccountDetailContainer, AccountProfileContainer, BillingAddressContainer} from "../containers/AccountContainer";
 import {
@@ -35,56 +39,68 @@ export const AccountProfile = (props) => {
     </div>;
 };
 
-export const AccountDetail = (props) => {
-    return <div className="flat-card profile-info-card is-auto">
+export class AccountDetail extends Component {
+    onEditClick = () => {
+        // TODO: pass user detail data to detailsToEdit
+        // TODO: when exit edit mode - set detailsToEdit to defaults
+        this.props.dispatch(bulkUpdateUserProfileDetailsToEdit({
+            firstName: this.props.userProfile.first_name,
+            lastName: this.props.userProfile.last_name,
+            email: this.props.userProfile.email,
+            phone: this.props.userProfile.phone_number
+        }));
+        this.props.dispatch(userProfileSetEditModeAll(true));
+    };
 
-        <div className="card-title">
-            <h3>Account details</h3>
+    render() {
+        return <div className="flat-card profile-info-card is-auto">
 
-            <div className="edit-account has-simple-popover popover-hidden-mobile"
-                 data-content="Edit Account" data-placement="top">
-                <a onClick={(e) => {
-                    props.dispatch(userProfileSetEditModeAll(true))
-                }}>
-                    <Settings/>
-                </a>
-            </div>
-        </div>
+            <div className="card-title">
+                <h3>Account details</h3>
 
-        <div className="card-body">
-            <div className="columns">
-                <div className="column is-6">
-                    <div className="info-block">
-                        <span className="label-text">First Name</span>
-                        <span
-                            className="label-value">{props.userProfile.first_name}</span>
-                    </div>
-
-                    <div className="info-block">
-                        <span className="label-text">Email</span>
-                        <span className="label-value">{props.userProfile.email}</span>
-                    </div>
-                </div>
-
-                <div className="column is-6">
-                    <div className="info-block">
-                        <span className="label-text">Last Name</span>
-                        <span
-                            className="label-value">{props.userProfile.last_name}</span>
-                    </div>
-
-                    <div className="info-block">
-                        <span className="label-text">Phone</span>
-                        <span
-                            className="label-value">{props.userProfile.phone_number}</span>
-                    </div>
+                <div className="edit-account has-simple-popover popover-hidden-mobile"
+                     data-content="Edit Account" data-placement="top">
+                    <a onClick={this.onEditClick}>
+                        <Settings/>
+                    </a>
                 </div>
             </div>
-        </div>
 
-        <img className="card-bg" src={NephosGrayscale} alt=""/>
-    </div>
-};
+            <div className="card-body">
+                <div className="columns">
+                    <div className="column is-6">
+                        <div className="info-block">
+                            <span className="label-text">First Name</span>
+                            <span
+                                className="label-value">{this.props.userProfile.first_name}</span>
+                        </div>
+
+                        <div className="info-block">
+                            <span className="label-text">Email</span>
+                            <span className="label-value">{this.props.userProfile.email}</span>
+                        </div>
+                    </div>
+
+                    <div className="column is-6">
+                        <div className="info-block">
+                            <span className="label-text">Last Name</span>
+                            <span
+                                className="label-value">{this.props.userProfile.last_name}</span>
+                        </div>
+
+                        <div className="info-block">
+                            <span className="label-text">Phone</span>
+                            <span
+                                className="label-value">{this.props.userProfile.phone_number}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <img className="card-bg" src={NephosGrayscale} alt=""/>
+        </div>
+    };
+}
 
 export const BillingAddress = (props) => {
     const billingAddress = props.userProfile.billing_address || {};

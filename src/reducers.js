@@ -12,6 +12,10 @@ const reducer  = (state = {}, action) => {
             let editMode = defaultProfileEditMode;
             Object.keys(editMode).forEach(k => editMode[k] = action.value);
             return {...state, profileEditMode: editMode};
+        case actionTypes.USER_PROFILE_BULK_UPDATE_DETAILS_TO_EDIT:
+            return {...state, detailsToEdit: {...action.profileDetailsToEdit}};
+        case actionTypes.USER_PROFILE_UPDATE_DETAILS_TO_EDIT:
+            return {...state, detailsToEdit: {...state.detailsToEdit, [action.field]: action.value}};
         case actionTypes.SAVE_USER_PROFILE:
             return {...state, userProfile: action.profile};
         case actionTypes.CHANGE_USER_PROFILE:

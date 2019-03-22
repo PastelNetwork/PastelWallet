@@ -2,9 +2,17 @@ import React, {Component} from 'react';
 import * as NephosGrayscale from '../assets/images/logo/nephos-greyscale.svg';
 import {Plus, Check} from 'react-feather';
 import Select from 'react-select'
-import {fetchUserProfile, userProfileSetEditMode} from "../actions";
+import {
+    bulkUpdateUserProfileDetailsToEdit,
+    fetchUserProfile,
+    pushUserProfileDetails,
+    saveUserProfile,
+    updateUserProfileDetailsToEdit,
+    userProfileSetEditMode
+} from "../actions";
 import * as Altvatar from '../assets/images/avatars/altvatar.png';
 import {COUNTRIES} from "../countries";
+import {defaultDetailsToEdit} from "../app";
 
 export class AccountProfileEdit extends Component {
     saveClick = () => {
@@ -42,9 +50,28 @@ export class AccountProfileEdit extends Component {
 }
 
 export class AccountDetailEdit extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    isChanged = () => {
+        return this.props.userProfile.first_name !== this.props.firstName ||
+            this.props.userProfile.last_name !== this.props.lastName ||
+            this.props.userProfile.email !== this.props.email ||
+            this.props.userProfile.phone_number !== this.props.phone;
+    };
+
     saveClick = () => {
-        // TODO: check if data was changed, if yes - save to BE
+        if (this.isChanged()) {
+            this.props.dispatch(pushUserProfileDetails());
+        } else {
+            dispatch(bulkUpdateUserProfileDetailsToEdit(defaultDetailsToEdit));
+        }
+
         this.props.dispatch(userProfileSetEditMode('details', false));
+    };
+    onChange = (e) => {
+        this.props.dispatch(updateUserProfileDetailsToEdit(e.target.name, e.target.value))
     };
 
     render() {
@@ -66,14 +93,17 @@ export class AccountDetailEdit extends Component {
                         <div className="info-block">
                             <span className="label-text">First Name</span>
                             <div className="control">
-                                <input type="text" className="input is-default" value="Elie"/>
+                                <input type="text" className="input is-default" name="firstName"
+                                       value={this.props.firstName}
+                                       onChange={this.onChange}/>
                             </div>
                         </div>
 
                         <div className="info-block">
                             <span className="label-text">Email</span>
                             <div className="control">
-                                <input type="email" className="input is-default" value="eliedaniels@gmail.com"/>
+                                <input type="email" className="input is-default" value={this.props.email}
+                                       name="email" onChange={this.onChange}/>
                             </div>
                         </div>
                     </div>
@@ -82,14 +112,16 @@ export class AccountDetailEdit extends Component {
                         <div className="info-block">
                             <span className="label-text">Last Name</span>
                             <div className="control">
-                                <input type="text" className="input is-default" value="Daniels"/>
+                                <input type="text" className="input is-default" value={this.props.lastName}
+                                       name="lastName" onChange={this.onChange}/>
                             </div>
                         </div>
 
                         <div className="info-block">
                             <span className="label-text">Phone</span>
                             <div className="control">
-                                <input type="text" className="input is-default" value="+1 555 623 568"/>
+                                <input type="text" className="input is-default" value={this.props.phone}
+                                       name="phone" onChange={this.onChange}/>
                             </div>
                         </div>
                     </div>
@@ -107,6 +139,7 @@ export class BillingAddressEdit extends Component {
         // TODO: check if data was changed, if yes - save to BE
         this.props.dispatch(userProfileSetEditMode('billingAddress', false));
     };
+
     render() {
         const countyChoices = COUNTRIES.map(country => ({value: country, label: country}));
         return <div className="flat-card profile-info-card is-auto has-overflow">
