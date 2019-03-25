@@ -65,7 +65,7 @@ export class AccountDetailEdit extends Component {
         if (this.isChanged()) {
             this.props.dispatch(pushUserProfileDetails());
         } else {
-            dispatch(bulkUpdateUserProfileDetailsToEdit(defaultDetailsToEdit));
+            this.props.dispatch(bulkUpdateUserProfileDetailsToEdit(defaultDetailsToEdit));
         }
 
         this.props.dispatch(userProfileSetEditMode('details', false));
