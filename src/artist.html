@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Artist - Logged In</title>
-    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Arimo|Source+Sans+Pro" rel="stylesheet">
     <link rel="stylesheet" href="artist.css">
     <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.css">
     <style>
         /** {*/
-            /*outline: 1px solid red !important;*/
+        /*outline: 1px solid red !important;*/
         /*}*/
     </style>
 </head>
@@ -39,30 +39,61 @@
     </div>
 </header>
 
-<aside>
-    <div>Dashboard</div>
-    <div>Profile</div>
-    <div>My Art (Wallet)</div>
-    <div>Messages</div>
-    <div>Activity</div>
-    <div>Transactions</div>
-    <div>Masternode</div>
-</aside>
-<div class="main-page">
-    <section class="wellcome">
-        <div class="main-col">
-            <h5>Wellcome Adam</h5>
-            Upload and sell your artwork, access
-            your wallet and manage masternodes
-        </div>
-        <div class="main-col">
-            <div class="main-col-left"></div>
-            <div class="main-col-right"></div>
-        </div>
-    </section>
-    <section class="my-artwork"></section>
-    <section class="my-collection"></section>
-    <section class="following"></section>
+<div class="container">
+    <aside class="aside">
+        <div class="left-menu-point selected">Dashboard</div>
+        <div class="left-menu-point">Profile</div>
+        <div class="left-menu-point">My Art (Wallet)</div>
+        <div class="left-menu-point">Messages</div>
+        <div class="left-menu-point">Activity</div>
+        <div class="left-menu-point">Transactions</div>
+        <div class="left-menu-point">Masternode</div>
+    </aside>
+    <div class="main-page">
+        <section class="wellcome">
+            <div class="flex-centered">
+                <h2>Wellcome Adam</h2>
+            </div>
+            <div class="flex-centered">
+                <p class="greeting-text">
+                    Upload and sell your artwork, access
+                    your wallet and manage masternodes
+                </p>
+
+            </div>
+        </section>
+
+        <section class="flex-row-container">
+            <div class="main-col-left">
+                <div class="main-col-inner">
+                    <div class="flex-centered">
+                        <div class="has-sold">
+                            Yay! - Art 2 has now SOLD!
+                        </div>
+                    </div>
+                    <div class="profile-links">
+                        <div class="market-link">Market</div>
+                        <div class="art-wallet">Art Wallet</div>
+                    </div>
+                </div>
+            </div>
+            <div class="main-col-right">
+                Artist badge here
+            </div>
+
+        </section>
+
+
+        <section class="my-artwork">
+            Some artworks here
+        </section>
+        <section class="my-collection">
+            My collection
+        </section>
+        <section class="following">
+            Following
+        </section>
+    </div>
 </div>
 <footer>
 

@@ -1,7 +1,10 @@
 $header-bg-color: #f5f5f5;
-$source-sans-pro: 'Source Sans Pro';
+$source-sans-pro: 'Source Sans Pro', sans-serif;
 $light-blue: #41B6E6;
 $light-rose: #FC9BB3;
+$left-menu-blue: #418CCB;
+$px1-border: 1px solid black;
+$arimo: 'Arimo', sans-serif;
 
 %flex-row-container {
   display: flex;
@@ -29,6 +32,10 @@ $light-rose: #FC9BB3;
  font-size: smaller;
 };
 
+%flex-centered {
+  display: flex;
+  justify-content: center;
+};
 
 .flex-row-container {
   @extend %flex-row-container;
@@ -96,3 +103,77 @@ $light-rose: #FC9BB3;
   @extend %flat-button;
   background-color: $light-rose;
 }
+
+.container {
+  @extend %flex-row-container;
+}
+
+.aside {
+  flex-basis: 25%;
+  display: flex;
+  flex-direction: column;
+  border-right: $px1-border;
+  border-left: $px1-border;
+  border-bottom: $px1-border;
+  font-family: $source-sans-pro;
+  padding-bottom: 50px;
+}
+
+.main-page {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 75%;
+}
+
+.left-menu-point {
+  @extend %flex-centered;
+  padding-left: 30px;
+  height: 55px;
+  flex-direction: column;
+  color: $left-menu-blue;
+
+  &.selected {
+    color: white;
+    background-color: $left-menu-blue;
+  }
+}
+
+.wellcome, .my-artwork, .my-collection, .following {
+  display: flex;
+  flex-direction: column;
+  font-family: $arimo;
+}
+
+.flex-centered {
+  @extend %flex-centered;
+}
+
+.greeting-text {
+  font-size: larger;
+  flex-basis: 30%;
+  margin: 0;
+  font-weight: bolder;
+  font-family: $arimo;
+}
+
+.main-col-left, .main-col-right {
+  flex-basis: 50%;
+}
+
+.main-col-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-links {
+  display: flex;
+  flex-direction: row;
+}
+
+.has-sold {
+  border: 1px solid #C3D9CB;
+  background-color: #E1FAEA;
+  flex-basis: 80%;
+  height: 50px;
+}
+//TODO vertically align top menu using flexbox/justify-content-center

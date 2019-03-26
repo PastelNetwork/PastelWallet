@@ -1,4 +1,4 @@
-.flex-row-container, .top-menu-buttons, .page-header, .top-nav, .icons {
+.flex-row-container, .top-menu-buttons, .page-header, .top-nav, .icons, .container {
   display: flex;
   flex-direction: row; }
 
@@ -20,6 +20,10 @@
   color: white;
   font-size: smaller; }
 
+.left-menu-point, .flex-centered {
+  display: flex;
+  justify-content: center; }
+
 .page-header {
   background-color: #f5f5f5;
   justify-content: space-between; }
@@ -29,7 +33,7 @@
   cursor: pointer; }
 
 .nav-menu {
-  font-family: "Source Sans Pro"; }
+  font-family: "Source Sans Pro", sans-serif; }
 
 .logo {
   padding-bottom: 0; }
@@ -48,3 +52,56 @@
 
 .logout-btn {
   background-color: #FC9BB3; }
+
+.aside {
+  flex-basis: 25%;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  font-family: "Source Sans Pro", sans-serif;
+  padding-bottom: 50px; }
+
+.main-page {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 75%; }
+
+.left-menu-point {
+  padding-left: 30px;
+  height: 55px;
+  flex-direction: column;
+  color: #418CCB; }
+  .left-menu-point.selected {
+    color: white;
+    background-color: #418CCB; }
+
+.wellcome, .my-artwork, .my-collection, .following {
+  display: flex;
+  flex-direction: column;
+  font-family: "Arimo", sans-serif; }
+
+.greeting-text {
+  font-size: larger;
+  flex-basis: 30%;
+  margin: 0;
+  font-weight: bolder;
+  font-family: "Arimo", sans-serif; }
+
+.main-col-left, .main-col-right {
+  flex-basis: 50%; }
+
+.main-col-inner {
+  display: flex;
+  flex-direction: column; }
+
+.profile-links {
+  display: flex;
+  flex-direction: row; }
+
+.has-sold {
+  border: 1px solid #C3D9CB;
+  background-color: #E1FAEA;
+  flex-basis: 80%;
+  height: 50px; }
