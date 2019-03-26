@@ -1,0 +1,98 @@
+$header-bg-color: #f5f5f5;
+$source-sans-pro: 'Source Sans Pro';
+$light-blue: #41B6E6;
+$light-rose: #FC9BB3;
+
+%flex-row-container {
+  display: flex;
+  flex-direction: row;
+}
+
+%list-style-type-none {
+  list-style-type: none;
+}
+
+%top-menu-padding {
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+}
+
+%flat-button {
+ border: 0;
+ background: none;
+ box-shadow: none;
+ border-radius: 5px;
+ height: 40px;
+  width: 100px;
+  color: white;
+ font-size: smaller;
+};
+
+
+.flex-row-container {
+  @extend %flex-row-container;
+}
+
+.top-menu-buttons {
+  @extend %flex-row-container;
+}
+
+.page-header {
+  @extend %flex-row-container;
+  background-color: $header-bg-color;
+  justify-content: space-between;
+}
+
+.top-nav {
+  @extend %flex-row-container;
+}
+
+.top-nav-point {
+  @extend %list-style-type-none;
+}
+
+.nav-menu-point {
+  @extend %top-menu-padding;
+}
+
+.icons {
+  @extend %flex-row-container;
+  font-size: x-large;
+  cursor: pointer;
+}
+
+.icon {
+  @extend %top-menu-padding;
+}
+
+.nav-menu {
+  font-family: $source-sans-pro;
+}
+
+.logo {
+  @extend %top-menu-padding;
+  padding-bottom: 0;
+}
+
+.top-menu-btn {
+  @extend %top-menu-padding;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+
+.image-logo {
+  width: 144px;
+  height: 34px;
+}
+
+.wallet-btn {
+  @extend %flat-button;
+  background-color: $light-blue;
+}
+
+.logout-btn {
+  @extend %flat-button;
+  background-color: $light-rose;
+}

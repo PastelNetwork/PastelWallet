@@ -3,29 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Artist - Logged In</title>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="artist.css">
+    <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.css">
+    <style>
+        /** {*/
+            /*outline: 1px solid red !important;*/
+        /*}*/
+    </style>
 </head>
 <body>
-<header>
+<header class="page-header">
     <div class="logo">
-        <img src="" alt="logo">
-        Pastel
+        <img src="assets2/image/pastel_logo.png" alt="logo" class="image-logo">
     </div>
-    <nav>
-        <ul>
-            <li>Gallery</li>
-            <li>Buy PSL</li>
-            <li>Masternodes</li>
-            <li>Blog</li>
-        </ul>
+    <nav class="flex-row-container nav-menu">
+        <div class="nav-menu-point">Gallery</div>
+        <div class="nav-menu-point">Buy PSL</div>
+        <div class="nav-menu-point">Masternodes</div>
+        <div class="nav-menu-point">Blog</div>
     </nav>
-    <ul class="icons">
-        <li>Transaction Icon</li>
-        <li>Bell Icon</li>
-        <li>Person Icon</li>
-    </ul>
-    <button>Wallet</button>
-    <button>Sign Out</button>
+    <div class="icons">
+        <div class="icon"><i class="fa fa-arrows-h" aria-hidden="true"></i></div>
+        <div class="icon"><i class="fa fa-bell-o"></i></div>
+
+        <div class="icon"><i class="fa fa-user-o"></i></div>
+    </div>
+    <div class="top-menu-buttons">
+        <div class="top-menu-btn">
+            <button class="wallet-btn">Wallet</button>
+        </div>
+        <div class="top-menu-btn">
+            <button class="logout-btn">Sign Out</button>
+        </div>
+    </div>
 </header>
+
 <aside>
     <div>Dashboard</div>
     <div>Profile</div>
