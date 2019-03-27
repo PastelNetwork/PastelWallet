@@ -9,6 +9,7 @@ $px1-border: 1px solid black;
 $arimo: 'Arimo', sans-serif;
 $grey: #8A8A8A;
 $blue-bg: #1779BA;
+$footer-bg: #424242;
 
 %flex-row {
   display: flex;
@@ -233,5 +234,51 @@ html {
   margin-left: 10%;
 }
 
+.my-artwork {
+  font-family: $source-sans-pro;
+}
 
+.wrap {
+  flex-wrap: wrap;
+}
+
+.artworks {
+  flex-basis: 80%;
+}
+
+.art-item {
+  padding-left: 5%;
+  padding-bottom: 5%;
+}
+
+.user-icon {
+  color: #2196F3;
+  font-size: 8rem;
+  padding-left: 5%;
+  padding-bottom: 5%;
+}
+
+.star-icon {
+  position: absolute;
+  width: 73%;
+}
+
+footer {
+  background-color: $footer-bg;
+  width: 100%;
+  height: 300px;
+}
+
+.footer-row {
+  flex-basis: 80%;
+}
+
+.space-around {
+  justify-content: space-around;
+}
+
+.footer-tbl {
+  color: white;
+  font-family: $source-sans-pro;
+}
 //TODO vertically align top menu using flexbox/justify-content-center
