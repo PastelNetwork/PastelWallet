@@ -13,23 +13,23 @@
     </style>
 </head>
 <body>
-<header class="page-header">
+<header class="page-header flex-row space-between">
     <div class="logo">
         <img src="assets2/image/pastel_logo.png" alt="logo" class="image-logo">
     </div>
-    <nav class="flex-row-container nav-menu">
+    <nav class="flex-row nav-menu">
         <div class="nav-menu-point">Gallery</div>
         <div class="nav-menu-point">Buy PSL</div>
         <div class="nav-menu-point">Masternodes</div>
         <div class="nav-menu-point">Blog</div>
     </nav>
-    <div class="icons">
+    <div class="icons flex-row">
         <div class="icon"><i class="fa fa-arrows-h" aria-hidden="true"></i></div>
         <div class="icon"><i class="fa fa-bell-o"></i></div>
 
         <div class="icon"><i class="fa fa-user-o"></i></div>
     </div>
-    <div class="top-menu-buttons">
+    <div class="flex-row top-menu-buttons">
         <div class="top-menu-btn">
             <button class="wallet-btn">Wallet</button>
         </div>
@@ -39,8 +39,8 @@
     </div>
 </header>
 
-<div class="container">
-    <aside class="aside">
+<div class="flex-row">
+    <aside class="aside flex-col">
         <div class="left-menu-point selected">Dashboard</div>
         <div class="left-menu-point">Profile</div>
         <div class="left-menu-point">My Art (Wallet)</div>
@@ -49,7 +49,7 @@
         <div class="left-menu-point">Transactions</div>
         <div class="left-menu-point">Masternode</div>
     </aside>
-    <div class="main-page">
+    <div class="main-page flex-col">
         <section class="wellcome">
             <div class="flex-centered">
                 <h2>Wellcome Adam</h2>
@@ -63,22 +63,53 @@
             </div>
         </section>
 
-        <section class="flex-row-container">
+        <section class="flex-row">
             <div class="main-col-left">
-                <div class="main-col-inner">
+                <div class="main-col-inner flex-col space-between">
                     <div class="flex-centered">
-                        <div class="has-sold">
-                            Yay! - Art 2 has now SOLD!
+                        <div class="has-sold flex-col flex-centered">
+                            <div class="flex-row space-between">
+                                <div class="flex-row">
+                                    <div class="green">
+                                        Yay!
+                                    </div>
+                                    <div>
+                                        &nbsp;- Art 2 has now SOLD!
+                                    </div>
+                                </div>
+                                <div class="close-icon">
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="profile-links">
-                        <div class="market-link">Market</div>
-                        <div class="art-wallet">Art Wallet</div>
+                    <div class="flex-centered">
+                        <div class="flex-row profile-links">
+                            <div class="market-link flex-col space-between">
+                                <div class="flex-row pt-0_5 pl-0_5">
+                                    <i class="fa fa-paint-brush"></i>
+                                </div>
+                                <div class="flex-row flex-end pb-0_5 pr-0_5">
+                                    Market
+                                </div>
+                            </div>
+                            <div class="art-wallet  flex-col space-between">
+                                <div class="flex-row  pt-0_5 pl-0_5">
+                                    <i class="fa fa-cogs"></i>
+                                </div>
+                                <div class="flex-row flex-end  pb-0_5 pr-0_5">
+                                    Art Wallet
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="main-col-right">
-                Artist badge here
+                <div class="artist-badge">
+                    Artist
+                    Adam Grist
+                </div>
             </div>
 
         </section>

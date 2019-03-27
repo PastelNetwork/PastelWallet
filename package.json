@@ -8,7 +8,7 @@
     "build": "webpack --mode production",
     "dev-server": "webpack-dev-server --open --mode development",
     "start": "webpack-dashboard npm run dev-server",
-    "sass:watch": "node-sass -w src/artist.scss src/artist.css"
+    "sass:watch": "node-sass -w --source-map true src/artist.scss src/artist.css"
   },
   "keywords": [],
   "author": "",

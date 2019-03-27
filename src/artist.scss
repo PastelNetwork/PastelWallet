@@ -1,3 +1,5 @@
+@import 'assets2/scss/paddings';
+
 $header-bg-color: #f5f5f5;
 $source-sans-pro: 'Source Sans Pro', sans-serif;
 $light-blue: #41B6E6;
@@ -5,10 +7,17 @@ $light-rose: #FC9BB3;
 $left-menu-blue: #418CCB;
 $px1-border: 1px solid black;
 $arimo: 'Arimo', sans-serif;
+$grey: #8A8A8A;
+$blue-bg: #1779BA;
 
-%flex-row-container {
+%flex-row {
   display: flex;
   flex-direction: row;
+}
+
+%flex-col {
+  display: flex;
+  flex-direction: column;
 }
 
 %list-style-type-none {
@@ -22,41 +31,44 @@ $arimo: 'Arimo', sans-serif;
 }
 
 %flat-button {
- border: 0;
- background: none;
- box-shadow: none;
- border-radius: 5px;
- height: 40px;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 5px;
+  height: 40px;
   width: 100px;
   color: white;
- font-size: smaller;
-};
+  font-size: smaller;
+}
+
 
 %flex-centered {
   display: flex;
   justify-content: center;
-};
-
-.flex-row-container {
-  @extend %flex-row-container;
 }
 
-.top-menu-buttons {
-  @extend %flex-row-container;
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.flex-row {
+  @extend %flex-row;
+}
+
+.flex-col {
+  @extend %flex-col;
 }
 
 .page-header {
-  @extend %flex-row-container;
   background-color: $header-bg-color;
-  justify-content: space-between;
 }
 
-.top-nav {
-  @extend %flex-row-container;
-}
-
-.top-nav-point {
-  @extend %list-style-type-none;
+.flex-end {
+  justify-content: flex-end;
 }
 
 .nav-menu-point {
@@ -64,13 +76,16 @@ $arimo: 'Arimo', sans-serif;
 }
 
 .icons {
-  @extend %flex-row-container;
   font-size: x-large;
   cursor: pointer;
 }
 
 .icon {
   @extend %top-menu-padding;
+
+  &:hover {
+    color: $grey;
+  }
 }
 
 .nav-menu {
@@ -104,14 +119,8 @@ $arimo: 'Arimo', sans-serif;
   background-color: $light-rose;
 }
 
-.container {
-  @extend %flex-row-container;
-}
-
 .aside {
   flex-basis: 25%;
-  display: flex;
-  flex-direction: column;
   border-right: $px1-border;
   border-left: $px1-border;
   border-bottom: $px1-border;
@@ -120,8 +129,6 @@ $arimo: 'Arimo', sans-serif;
 }
 
 .main-page {
-  display: flex;
-  flex-direction: column;
   flex-basis: 75%;
 }
 
@@ -139,8 +146,7 @@ $arimo: 'Arimo', sans-serif;
 }
 
 .wellcome, .my-artwork, .my-collection, .following {
-  display: flex;
-  flex-direction: column;
+  @extend %flex-col;
   font-family: $arimo;
 }
 
@@ -161,19 +167,71 @@ $arimo: 'Arimo', sans-serif;
 }
 
 .main-col-inner {
-  display: flex;
-  flex-direction: column;
-}
-
-.profile-links {
-  display: flex;
-  flex-direction: row;
+  height: 250px;
 }
 
 .has-sold {
   border: 1px solid #C3D9CB;
   background-color: #E1FAEA;
-  flex-basis: 80%;
+  border-left: 10px solid #3ADB76;
   height: 50px;
+  font-family: $source-sans-pro;
+
+  .close-icon {
+    padding-right: 10px;
+    cursor: pointer;
+    color: $grey;
+
+    :hover {
+      color: black;
+    }
+  }
 }
+
+.profile-links, .has-sold {
+  flex-basis: 80%;
+}
+
+.profile-links {
+  font-size: larger;
+}
+
+.green {
+  color: #3ADB76;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.artist-badge {
+  width: 85%;
+  border: 1px solid black;
+  height: 250px;
+}
+
+.market-link, .art-wallet {
+  flex-basis: 35%;
+  height: 80px;
+  color: white;
+  font-family: $source-sans-pro;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid rgb(233, 30, 99);
+  }
+}
+
+.market-link {
+  background-color: $blue-bg;
+  border: 2px solid $blue-bg;
+}
+
+.art-wallet {
+  background-color: $light-rose;
+  border: 2px solid $light-rose;
+  margin-left: 10%;
+}
+
+
 //TODO vertically align top menu using flexbox/justify-content-center
