@@ -13,17 +13,19 @@ import {AccountContainer} from "../containers/AccountContainer";
 // import '../assets/css/chosen/chosen.css';
 // import '../assets/css/icons.min.css'
 import {Artist} from "./ArtistComponent";
+import {ArtWallet} from "./ArtWalletComponent";
 
 const Main = () => {
     return <Switch>
-            <Route exact path='/' component={Auth}/>
-            <Route path='/login' component={Auth}/>
-            <Route path='/register' component={Auth}/>
-            <Route path='/logout' component={LogoutContainer}/>
-            <Route path='/user_profile2' component={UserProfileContainer}/>
-            <Route path='/user_profile' component={AccountContainer}/>
-            <Route path='/artist' component={Artist}/>
-            <Redirect to='/login'/>
+            <Route exact path='/art_wallet' component={ArtWallet}/>
+            {/*<Route exact path='/' component={Auth}/>*/}
+            {/*<Route path='/login' component={Auth}/>*/}
+            {/*<Route path='/register' component={Auth}/>*/}
+            {/*<Route path='/logout' component={LogoutContainer}/>*/}
+            {/*<Route path='/user_profile2' component={UserProfileContainer}/>*/}
+            {/*<Route path='/user_profile' component={AccountContainer}/>*/}
+            {/*<Route path='/artist' component={Artist}/>*/}
+            <Redirect to='/art_wallet'/>
         </Switch>;
 };
 

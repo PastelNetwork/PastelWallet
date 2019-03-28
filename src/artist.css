@@ -64,6 +64,9 @@
 html {
   box-sizing: border-box; }
 
+body {
+  margin: 0; }
+
 *, *:before, *:after {
   box-sizing: inherit; }
 
@@ -239,5 +242,12 @@ footer {
   color: white;
   cursor: pointer;
   font-size: 1.5rem; }
+
+.display-none {
+  display: none; }
+
+.img-preview {
+  width: 150px;
+  height: 150px; }
 
 /*# sourceMappingURL=artist.css.map */
