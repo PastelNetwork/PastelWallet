@@ -9,6 +9,7 @@ import * as ajaxEntities from './ajaxEntities';
 
 import Main from "./components/MainComponent";
 import history from './history';
+import {ArtWallet} from "./components/ArtWalletComponent";
 
 
 let defaultAjaxInProgress = Object.getOwnPropertyNames(ajaxEntities).filter(a => a !== '__esModule').reduce((acc, curr) => {
@@ -39,10 +40,12 @@ export const initialState = {
 const token = localStorage.getItem('token');
 const defaultStore = {...initialState, token};
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer,
     defaultStore,
-    composeEnhancers(applyMiddleware(thunkMiddleware)));
+    // composeEnhancers(applyMiddleware(thunkMiddleware))
+    applyMiddleware(thunkMiddleware)
+);
 
 // const store = createStore(reducer,
 //     defaultStore,
@@ -59,5 +62,4 @@ ReactDOM.render(
             <Main/>
         </Router>
     </Provider>,
-
     document.getElementById('root'));
