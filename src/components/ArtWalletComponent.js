@@ -67,61 +67,6 @@ export class ArtWallet extends Component {
                             </div>
                         </div>
                     </section>
-
-
-                    <section className="my-artwork flex-col">
-                        <div className="flex-centered">
-                            <h4>My Art</h4>
-                        </div>
-                        <div className="flex-centered">
-                            <p>
-                                See your current artwork for sale or track where your sold items are
-                            </p>
-                        </div>
-                        <div className="flex-row wrap artworks">
-                            <div className="art-item flex-col">
-                                {/*<div class="star-icon flex-col"><i class="fa fa-star"></i></div>*/}
-                                <img src="https://via.placeholder.com/150" alt="artwork"/>
-                                <div className="flex-centered">Artwork1</div>
-                            </div>
-                            <div className="art-item flex-col">
-                                <img src="https://via.placeholder.com/150" alt="artwork"/>
-                                <div className="flex-centered">Artwork1</div>
-                            </div>
-                            <div className="art-item flex-col">
-                                <img src="https://via.placeholder.com/150" alt="artwork"/>
-                                <div className="flex-centered">Artwork1</div>
-                            </div>
-                            <div className="art-item flex-col">
-                                <img src="https://via.placeholder.com/150" alt="artwork"/>
-                                <div className="flex-centered">Artwork1</div>
-                            </div>
-                            <div className="art-item flex-col">
-                                <img src="https://via.placeholder.com/150" alt="artwork"/>
-                                <div className="flex-centered">Artwork1</div>
-                            </div>
-                            <div className="art-item flex-col">
-                                <img src="https://via.placeholder.com/150" alt="artwork"/>
-                                <div className="flex-centered">Artwork1</div>
-                            </div>
-                            <div className="art-item flex-col">
-                                <img src="https://via.placeholder.com/150" alt="artwork"/>
-                                <div className="flex-centered">Artwork1</div>
-                            </div>
-                            <div className="art-item flex-col">
-                                <img src="https://via.placeholder.com/150" alt="artwork"/>
-                                <div className="flex-centered">Artwork1</div>
-                            </div>
-                            <div className="art-item flex-col">
-                                <img src="https://via.placeholder.com/150" alt="artwork"/>
-                                <div className="flex-centered">Artwork1</div>
-                            </div>
-                            <div className="art-item flex-col">
-                                <img src="https://via.placeholder.com/150" alt="artwork"/>
-                                <div className="flex-centered">Artwork1</div>
-                            </div>
-                        </div>
-                    </section>
                 </div>
             </FlexRow>
         </React.Fragment>

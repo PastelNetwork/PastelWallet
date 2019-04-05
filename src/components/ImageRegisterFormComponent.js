@@ -10,7 +10,6 @@ import history from '../history';
 export class ImageRegisterForm extends Component {
     constructor(props) {
         super(props);
-        this.fileInputRef = React.createRef();
         this.state = {
             file: null
         }
@@ -23,6 +22,11 @@ export class ImageRegisterForm extends Component {
     onFormSubmit = () => {
         history.push('/');
     };
+    onAddFile = (e) => {
+        let file = e.target.files[0];
+        this.setState({file: URL.createObjectURL(file)});
+    };
+
     render() {
         return <React.Fragment>
             <Header/>
@@ -43,9 +47,15 @@ export class ImageRegisterForm extends Component {
 
                             </textarea>
                             <div className="image-register-input">
+                                <div className={this.state.file ? '' : 'display-none'}>
+                                    <div className="flex-row flex-centered">
+                                        <img src={this.state.file} className="img-preview pb-1" alt=""/>
+                                    </div>
+                                </div>
                                 <label htmlFor="idArtFile">Art file</label>
                                 <div>
-                                <input type="file" placeholder="Taksa" id="idArtFile"/>
+                                    <input type="file" accept="image/*" placeholder="Taksa" id="idArtFile"
+                                           onChange={this.onAddFile}/>
                                 </div>
                             </div>
                             <div className="flex-centered">
