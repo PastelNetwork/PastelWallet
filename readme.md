@@ -1,8 +1,14 @@
-## Run locally
+## How to run locally
  
  - `npm install`
  - `npm start` (it will open webpack dashboard and browser)
- - open http://localhost:3000/ in browser
- 
- - This frontend required local node running. To run local node - install docker and run `docker run -p 80:80 alexdobrushskiy/python_layer:0.1`
- 
+ - in `src/main_electron.js` make sure that `win.loadURL` loads `http://localhost:3000/`
+ - `npm run start-electron`
+
+
+## How to make a build
+
+ - `npm install`
+ - in `src/main_electron.js` make sure that `win.loadURL` loads `file://...` (not `localhost:3000`)
+ - `npm run electron-build`
+ - builded application will appear in `dist` folder
