@@ -1,0 +1,49 @@
+$arimo: 'Arimo', sans-serif;
+
+%flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+%flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+%list-style-type-none {
+  list-style-type: none;
+}
+
+%top-menu-padding {
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+}
+
+%flat-button {
+  border: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 5px;
+  height: 40px;
+  width: 100px;
+  color: white;
+  font-size: smaller;
+}
+
+
+%flex-centered {
+  display: flex;
+  justify-content: center;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}

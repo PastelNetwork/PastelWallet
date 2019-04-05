@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../artist.scss';
+import '../../styles.scss';
 
 export const FlexRow = (props) => {
     return <div className="flex-row">

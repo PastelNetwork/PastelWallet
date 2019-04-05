@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import '../artist.scss';
+import '../styles.scss';
 import {Header} from "./common/HeaderComponent";
 import {Footer} from "./common/FooterComponent";
 import {FlexRow} from "./common/FlexRowComponent";
 import {LeftMenu} from "./common/LeftMenuComponent";
 import axios from 'axios';
+import history from '../history';
 
 export class ArtWallet extends Component {
     constructor(props) {
@@ -16,9 +17,11 @@ export class ArtWallet extends Component {
     }
 
     componentDidMount() {
-        document.title = 'Wallet - Logged In';
+        document.title = 'Pastel wallet';
     }
-
+    onClick = () => {
+       history.push('/register');
+    };
     onUploadClick = () => {
         this.fileInputRef.current.click();
     };
@@ -56,7 +59,7 @@ export class ArtWallet extends Component {
                             </div>
                         </div>
                         <div className="flex-row flex-end">
-                            <div className="wallet-badge flex-col flex-centered">
+                            <div className="wallet-badge flex-col flex-centered" onClick={this.onClick}>
                                 <div className="flex-row flex-centered">
                                     Artwork estimate
                                 </div>

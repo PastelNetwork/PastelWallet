@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as PastelLogo from '../../assets2/image/pastel_logo.png';
-import '../../artist.scss';
+import '../../styles.scss';
 
 
 export class Header extends Component {

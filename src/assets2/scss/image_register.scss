@@ -1,0 +1,26 @@
+@import 'common';
+
+$input-border: #BDBDBD;
+$input-font-color: #616161;
+$register-btn-bg: #0275D8;
+
+.image-register-input {
+  border: 1px solid $input-border;
+  border-radius: 5px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  margin: 0 0 10px 0;
+  width: 90%;
+  margin-left: 2em;
+  color: $input-font-color;
+  font-size: larger;
+}
+
+.register-button {
+  @extend %flat-button;
+  background-color: $register-btn-bg;
+  font-family: $arimo;
+  font-weight: bold;
+  height: 50px;
+  width: 120px;
+}
