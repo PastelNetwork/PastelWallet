@@ -19,11 +19,9 @@ export class ArtWallet extends Component {
     componentDidMount() {
         document.title = 'Pastel wallet';
     }
-    onClick = () => {
-       history.push('/register');
-    };
     onUploadClick = () => {
-        this.fileInputRef.current.click();
+        history.push('/register');
+        // this.fileInputRef.current.click();
     };
     onAddFile = (e) => {
         let file = this.fileInputRef.current.files[0];
@@ -58,12 +56,7 @@ export class ArtWallet extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex-row flex-end">
-                            <div className="wallet-badge flex-col flex-centered" onClick={this.onClick}>
-                                <div className="flex-row flex-centered">
-                                    Artwork estimate
-                                </div>
-                            </div>
+                        <div className="flex-centered">
                             <div className="upload-btn flex-col flex-centered">
                                 <div className="flex-row flex-centered" onClick={this.onUploadClick}>
                                     <i className="fa fa-arrow-up"></i>
@@ -131,7 +124,6 @@ export class ArtWallet extends Component {
                     </section>
                 </div>
             </FlexRow>
-            <Footer/>
         </React.Fragment>
     }
 }

@@ -20,13 +20,9 @@ export class ImageRegisterForm extends Component {
         document.title = 'Pastel wallet';
     }
 
-// - Name of the art
-// - Number of copies
-// - Price for the copy
-// - Artist's Private key
-// - Address with enough funds to pay the fee (public key)
-// - Art file
-// - Submit button
+    onFormSubmit = () => {
+        history.push('/');
+    };
     render() {
         return <React.Fragment>
             <Header/>
@@ -53,7 +49,7 @@ export class ImageRegisterForm extends Component {
                                 </div>
                             </div>
                             <div className="flex-centered">
-                                <button className="register-button">Register</button>
+                                <button className="register-button" onClick={this.onFormSubmit}>Register</button>
                             </div>
 
                         </form>
