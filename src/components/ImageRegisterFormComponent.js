@@ -11,7 +11,12 @@ export class ImageRegisterForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            file: null
+            file: null,
+            artName: '',
+            numCopies: 0,
+            copyPrice: 0,
+            publicKey: '',
+            privateKey: ''
         }
     }
 
@@ -20,13 +25,16 @@ export class ImageRegisterForm extends Component {
     }
 
     onFormSubmit = () => {
+        //TODO: collect all info, put into container
         history.push('/');
     };
     onAddFile = (e) => {
         let file = e.target.files[0];
         this.setState({file: URL.createObjectURL(file)});
     };
-
+    onChange = (e) => {
+        this.setState({[e.target.name]: e.target.value});
+    };
     render() {
         return <React.Fragment>
             <Header/>
@@ -35,17 +43,19 @@ export class ImageRegisterForm extends Component {
                 <div className="main-page flex-col">
                     <section className="flex-col pt-3 pb-2 wrap">
                         <form>
-                            <input type="text" className="image-register-input" placeholder="Art name"/>
-                            <input type="number" className="image-register-input" placeholder="Number of copies"/>
-                            <input type="number" className="image-register-input" placeholder="Price of the copy, PSL"/>
-                            <textarea name="private key" className="image-register-input" rows="2"
-                                      placeholder="Public Key">
+                            <input type="text" className="image-register-input" placeholder="Art name" name="artName"
+                            value={this.state.artName} onChange={this.onChange}/>
+                            <input type="number" className="image-register-input" placeholder="Number of copies"
+                                   name="numCopies" value={this.state.numCopies}  onChange={this.onChange}/>
+                            <input type="number" className="image-register-input" placeholder="Price of the copy, PSL"
+                            name="copyPrice" value={this.state.copyPrice}  onChange={this.onChange}/>
+                            <textarea className="image-register-input" rows="2"
+                                      placeholder="Public Key" name="publicKey" value={this.state.publicKey}
+                             onChange={this.onChange}/>
 
-                            </textarea>
-                            <textarea name="private key" className="image-register-input" rows="5"
-                                      placeholder="Private Key">
+                            <textarea name="privateKey" className="image-register-input" rows="5"
+                                      placeholder="Private Key" value={this.state.privateKey} onChange={this.onChange}/>
 
-                            </textarea>
                             <div className="image-register-input">
                                 <div className={this.state.file ? '' : 'display-none'}>
                                     <div className="flex-row flex-centered">
