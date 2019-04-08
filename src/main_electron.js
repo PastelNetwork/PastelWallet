@@ -1,5 +1,20 @@
 const path = require('path');
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, ipcMain } = require('electron');
+
+ipcMain.on('imageRegFormSubmit', (event, arg) => {
+    // TODO: arg =
+    //     this.state = {
+    //         file: null,
+    //         artName: '',
+    //         numCopies: 0,
+    //         copyPrice: 0,
+    //         publicKey: '',
+    //         privateKey: '',
+    //         filePath: ''
+    //     }
+
+    console.log(arg);
+});
 
 function createWindow() {
     // Create the browser window.

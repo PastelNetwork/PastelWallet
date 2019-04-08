@@ -7,6 +7,8 @@ import {LeftMenu} from "./common/LeftMenuComponent";
 import axios from 'axios';
 import history from '../history';
 
+const ipcRenderer = window.require('electron').ipcRenderer;
+
 export class ImageRegisterForm extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +18,8 @@ export class ImageRegisterForm extends Component {
             numCopies: 0,
             copyPrice: 0,
             publicKey: '',
-            privateKey: ''
+            privateKey: '',
+            filePath: ''
         }
     }
 
@@ -26,11 +29,13 @@ export class ImageRegisterForm extends Component {
 
     onFormSubmit = () => {
         //TODO: collect all info, put into container
+        let data = this.state;
+        ipcRenderer.send('imageRegFormSubmit', data);
         history.push('/');
     };
     onAddFile = (e) => {
         let file = e.target.files[0];
-        this.setState({file: URL.createObjectURL(file)});
+        this.setState({file: URL.createObjectURL(file), filePath: file.path});
     };
     onChange = (e) => {
         this.setState({[e.target.name]: e.target.value});
