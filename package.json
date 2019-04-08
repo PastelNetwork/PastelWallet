@@ -1,5 +1,5 @@
 {
-  "name": "spa",
+  "name": "pastel-wallet",
   "version": "1.0.0",
   "description": "",
   "main": "src/main_electron.js",
