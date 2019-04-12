@@ -26,6 +26,8 @@ const reducer  = (state = {}, action) => {
             return {...state, ajaxInProgress: {...state.ajaxInProgress, [action.entity]: false}};
         case actionTypes.RESET_STORE:
             return {...initialState};
+        case actionTypes.SET_BLOCKCHAIN_ADDRESS:
+            return {...initialState, address: action.value};
         default:
             return state;
     }

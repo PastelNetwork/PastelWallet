@@ -100,3 +100,23 @@ export const updateUserProfileDetailsToEdit = (field, value) => ({
     field,
     value
 });
+
+export const setBlockchainAddress = (value) => ({
+    type: actionTypes.SET_BLOCKCHAIN_ADDRESS,
+    value
+});
+
+export const fetchBlockchainAddress = () => {
+    return (dispatch, getState) => {
+        dispatch(startAjax(ajaxEntities.USER_PROFILE_DETAILS));
+        return axios.post(settings.PASTELD_URL, {
+            "jsonrpc": "1.0",
+            "method": "getaccountaddress",
+            "params": [""]
+        }).then((response) => {
+            debugger;
+        }).catch((err) => {
+            debugger;
+        });
+    }
+};

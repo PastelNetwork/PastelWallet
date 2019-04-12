@@ -19,7 +19,7 @@
     "sass:watch": "node-sass -w --source-map true src/artist.scss src/artist.css",
     "start-electron": "electron .",
     "preelectron-pack": "npm run build",
-    "electron-pack": "build -c.extraMetadata.main=dist/main_electron.js",
+    "electron-pack": "build --linux --win --mac -c.extraMetadata.main=dist/main_electron.js",
     "electron-build": "rm -rf dist/*; cp src/main_electron.js dist/main_electron.js; npm run build; npm run electron-pack"
   },
   "keywords": [],
@@ -32,6 +32,8 @@
     "@babel/preset-react": "^7.0.0",
     "axios": "^0.18.0",
     "babel-loader": "^8.0.5",
+    "bip39": "^3.0.1",
+    "bitcoinjs-lib": "^5.0.2",
     "bootstrap": "^4.3.1",
     "css-loader": "^2.1.1",
     "electron": "^4.1.3",
@@ -62,5 +64,6 @@
     "webpack-cli": "^3.2.3",
     "webpack-dashboard": "^3.0.0",
     "webpack-dev-server": "^3.2.1"
-  }
+  },
+  "dependencies": {}
 }

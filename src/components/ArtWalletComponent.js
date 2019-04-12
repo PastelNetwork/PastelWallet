@@ -6,6 +6,7 @@ import {FlexRow} from "./common/FlexRowComponent";
 import {LeftMenu} from "./common/LeftMenuComponent";
 import axios from 'axios';
 import history from '../history';
+import {fetchBlockchainAddress} from "../actions";
 
 export class ArtWallet extends Component {
     constructor(props) {
@@ -18,6 +19,9 @@ export class ArtWallet extends Component {
 
     componentDidMount() {
         document.title = 'Pastel wallet';
+        if (this.props.address === null) {
+            this.props.dispatch(fetchBlockchainAddress());
+        }
     }
     onUploadClick = () => {
         history.push('/register');

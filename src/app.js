@@ -34,7 +34,8 @@ export const initialState = {
     ajaxInProgress: defaultAjaxInProgress,
     userProfile: null,
     profileEditMode: defaultProfileEditMode,
-    detailsToEdit: defaultDetailsToEdit
+    detailsToEdit: defaultDetailsToEdit,
+    address: null
 };
 const token = localStorage.getItem('token');
 const defaultStore = {...initialState, token};
