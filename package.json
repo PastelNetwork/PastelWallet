@@ -17,7 +17,7 @@
     "dev-server": "webpack-dev-server --open --mode development",
     "start": "webpack-dashboard npm run dev-server",
     "sass:watch": "node-sass -w --source-map true src/artist.scss src/artist.css",
-    "start-electron": "electron .",
+    "start-electron": "electron --inspect .",
     "preelectron-pack": "npm run build",
     "electron-pack": "build --linux --win --mac -c.extraMetadata.main=dist/main_electron.js",
     "electron-build": "rm -rf dist/*; cp src/main_electron.js dist/main_electron.js; npm run build; npm run electron-pack"

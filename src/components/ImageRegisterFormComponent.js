@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import '../styles.scss';
-import {Header} from "./common/HeaderComponent";
 import {Footer} from "./common/FooterComponent";
 import {FlexRow} from "./common/FlexRowComponent";
 import {LeftMenu} from "./common/LeftMenuComponent";
 import axios from 'axios';
 import history from '../history';
+import {HeaderContainer} from "../containers/HeaderContainer";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -42,7 +42,7 @@ export class ImageRegisterForm extends Component {
     };
     render() {
         return <React.Fragment>
-            <Header/>
+            <HeaderContainer/>
             <FlexRow>
                 <LeftMenu/>
                 <div className="main-page flex-col">

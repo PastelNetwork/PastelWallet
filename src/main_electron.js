@@ -2,7 +2,9 @@ const path = require('path');
 const {app, BrowserWindow, ipcMain} = require('electron');
 const bitcoin = require('bitcoinjs-lib');
 const fs = require('fs');
+const axios = require('axios');
 
+let win = null;
 
 ipcMain.on('imageRegFormSubmit', (event, arg) => {
     // TODO: arg =
@@ -21,9 +23,30 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
     console.log(arg);
 });
 
+ipcMain.on('requestWalletAddress', (event, arg) => {
+        return axios.post('http://localhost:9932', {
+            "jsonrpc": "1.0",
+            "id": "curltest",
+            "method": "getaccountaddress",
+            "params": [""]
+        }, {
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            auth: {
+                username: 'rpcuser',
+                password: 'rpcpassword'
+            }
+        }).then((response) => {
+            win.webContents.send('walletAddress', response.data.result);
+        }).catch((err) => {
+            win.webContents.send('walletAddress', 'Cannot connect to local pasteld!');
+        });
+});
+
 function createWindow() {
     // Create the browser window.
-    let win = new BrowserWindow({width: 800, height: 600});
+    win = new BrowserWindow({width: 800, height: 600});
     // TODO: make sure pasteld is running locally
     // TODO: generate key pair. store it in current folder.
     // TODO: check RPC port
@@ -35,6 +58,9 @@ function createWindow() {
     } else {
         win.loadURL(`file://${path.join(__dirname, '../dist/index.html')}`)
     }
+
+
+
     // console.log(__dirname);
     // const pubKeyPath = `${path.join(__dirname, 'keys/bc_public.key')}`;
     // const privKeyPath = `${path.join(__dirname, 'keys/bc_private.key')}`;

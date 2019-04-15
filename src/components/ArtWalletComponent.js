@@ -1,12 +1,18 @@
 import React, {Component} from 'react';
 import '../styles.scss';
-import {Header} from "./common/HeaderComponent";
-import {Footer} from "./common/FooterComponent";
 import {FlexRow} from "./common/FlexRowComponent";
 import {LeftMenu} from "./common/LeftMenuComponent";
 import axios from 'axios';
+import {store} from '../app';
 import history from '../history';
-import {fetchBlockchainAddress} from "../actions";
+import {fetchBlockchainAddress, setBlockchainAddress} from "../actions";
+import {HeaderContainer} from "../containers/HeaderContainer";
+
+const ipcRenderer = window.require('electron').ipcRenderer;
+
+ipcRenderer.on('walletAddress', (event, wallet) => {
+    store.dispatch(setBlockchainAddress(wallet));
+});
 
 export class ArtWallet extends Component {
     constructor(props) {
@@ -19,11 +25,13 @@ export class ArtWallet extends Component {
 
     componentDidMount() {
         document.title = 'Pastel wallet';
+
         if (this.props.address === null) {
-            this.props.dispatch(fetchBlockchainAddress());
+            ipcRenderer.send('requestWalletAddress', {});
         }
     }
     onUploadClick = () => {
+        // this.props.dispatch(fetchBlockchainAddress());
         history.push('/register');
         // this.fileInputRef.current.click();
     };
@@ -45,7 +53,7 @@ export class ArtWallet extends Component {
 
     render() {
         return <React.Fragment>
-            <Header/>
+            <HeaderContainer/>
             <FlexRow>
                 <LeftMenu/>
                 <div className="main-page flex-col">
