@@ -105,3 +105,8 @@ export const setBlockchainAddress = (value) => ({
     type: actionTypes.SET_BLOCKCHAIN_ADDRESS,
     value
 });
+
+export const setRegFee = (value) => ({
+    type: actionTypes.SET_REGISTRATION_FEE,
+    value
+});

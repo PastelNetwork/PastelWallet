@@ -1,13 +1,16 @@
 import React, {Component} from 'react';
 import '../styles.scss';
-import {Footer} from "./common/FooterComponent";
 import {FlexRow} from "./common/FlexRowComponent";
 import {LeftMenu} from "./common/LeftMenuComponent";
-import axios from 'axios';
-import history from '../history';
 import {HeaderContainer} from "../containers/HeaderContainer";
+import {store} from "../app";
+import {setRegFee} from "../actions";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
+
+ipcRenderer.on('regFee', (event, value) => {
+    store.dispatch(setRegFee(value));
+});
 
 export class ImageRegisterForm extends Component {
     constructor(props) {
@@ -27,11 +30,12 @@ export class ImageRegisterForm extends Component {
         document.title = 'Pastel wallet';
     }
 
-    onFormSubmit = () => {
+    onFormSubmit = (e) => {
         //TODO: collect all info, put into container
+        e.preventDefault();
         let data = this.state;
         ipcRenderer.send('imageRegFormSubmit', data);
-        history.push('/');
+        // history.push('/');
     };
     onAddFile = (e) => {
         let file = e.target.files[0];
@@ -40,6 +44,7 @@ export class ImageRegisterForm extends Component {
     onChange = (e) => {
         this.setState({[e.target.name]: e.target.value});
     };
+
     render() {
         return <React.Fragment>
             <HeaderContainer/>
@@ -49,14 +54,14 @@ export class ImageRegisterForm extends Component {
                     <section className="flex-col pt-3 pb-2 wrap">
                         <form>
                             <input type="text" className="image-register-input" placeholder="Art name" name="artName"
-                            value={this.state.artName} onChange={this.onChange}/>
+                                   value={this.state.artName} onChange={this.onChange}/>
                             <input type="number" className="image-register-input" placeholder="Number of copies"
-                                   name="numCopies" value={this.state.numCopies}  onChange={this.onChange}/>
+                                   name="numCopies" value={this.state.numCopies} onChange={this.onChange}/>
                             <input type="number" className="image-register-input" placeholder="Price of the copy, PSL"
-                            name="copyPrice" value={this.state.copyPrice}  onChange={this.onChange}/>
+                                   name="copyPrice" value={this.state.copyPrice} onChange={this.onChange}/>
                             <textarea className="image-register-input" rows="2"
                                       placeholder="Public Key" name="publicKey" value={this.state.publicKey}
-                             onChange={this.onChange}/>
+                                      onChange={this.onChange}/>
 
                             <textarea name="privateKey" className="image-register-input" rows="5"
                                       placeholder="Private Key" value={this.state.privateKey} onChange={this.onChange}/>
@@ -73,8 +78,16 @@ export class ImageRegisterForm extends Component {
                                            onChange={this.onAddFile}/>
                                 </div>
                             </div>
-                            <div className="flex-centered">
-                                <button className="register-button" onClick={this.onFormSubmit}>Register</button>
+                            <div className={this.props.regFee ? 'display-none' : ''}>
+                                <div className="flex-centered">
+                                    <button className="register-button" onClick={this.onFormSubmit}>Register</button>
+                                </div>
+                            </div>
+                            <div className={this.props.regFee ? '' : 'display-none'}>
+                                <div>Registration fee: {this.props.regFee}</div>
+                                <div className="flex-centered">
+                                    <button className="register-button" onClick={this.onFormSubmit}>Proceed</button>
+                                </div>
                             </div>
 
                         </form>

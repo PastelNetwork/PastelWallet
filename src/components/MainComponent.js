@@ -4,14 +4,14 @@ import {LogoutContainer} from "../containers/LogoutContainer";
 import {UserProfileContainer} from "../containers/UserProfileContainer";
 import {Artist} from "./ArtistComponent";
 import {ArtWalletContainer} from "../containers/ArtWalletContainer";
-import {ImageRegisterForm} from "./ImageRegisterFormComponent";
+import {ImageRegisterFormContainer} from "../containers/ImageRegisterFormContainer";
 
 const Main = () => {
     return <Switch>
         <Route exact path='/' component={ArtWalletContainer}/>
         <Route path='/logout' component={LogoutContainer}/>
         <Route path='/user_profile2' component={UserProfileContainer}/>
-        <Route path='/register' component={ImageRegisterForm}/>
+        <Route path='/register' component={ImageRegisterFormContainer}/>
         <Redirect to='/'/>
     </Switch>;
 };

@@ -5,7 +5,7 @@ import {LeftMenu} from "./common/LeftMenuComponent";
 import axios from 'axios';
 import {store} from '../app';
 import history from '../history';
-import {fetchBlockchainAddress, setBlockchainAddress} from "../actions";
+import {setBlockchainAddress} from "../actions";
 import {HeaderContainer} from "../containers/HeaderContainer";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
@@ -31,7 +31,6 @@ export class ArtWallet extends Component {
         }
     }
     onUploadClick = () => {
-        // this.props.dispatch(fetchBlockchainAddress());
         history.push('/register');
         // this.fileInputRef.current.click();
     };
@@ -48,7 +47,6 @@ export class ArtWallet extends Component {
             // axios.post()
         };
         reader.readAsBinaryString(file);
-        debugger;
     };
 
     render() {
