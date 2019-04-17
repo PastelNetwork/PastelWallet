@@ -3,7 +3,8 @@ import {connect} from 'react-redux';
 import {ImageRegisterForm} from "../components/ImageRegisterFormComponent";
 
 const mapStateToProps = state => ({
-    regFee: state.regFee
+    regFormError: state.regFormError,
+    regFormFee: state.regFormFee
 });
 
 const mapDispatchToProps = dispatch => ({

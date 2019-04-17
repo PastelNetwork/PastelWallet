@@ -4,12 +4,27 @@ import {FlexRow} from "./common/FlexRowComponent";
 import {LeftMenu} from "./common/LeftMenuComponent";
 import {HeaderContainer} from "../containers/HeaderContainer";
 import {store} from "../app";
-import {setRegFee} from "../actions";
-
+import {setImageRegFormError, setImageRegFormRegFee, setRegFee} from "../actions";
+import {RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK} from "../constants";
 const ipcRenderer = window.require('electron').ipcRenderer;
 
-ipcRenderer.on('regFee', (event, value) => {
-    store.dispatch(setRegFee(value));
+ipcRenderer.on('imageRegFormSubmitResponse', (event, data) => {
+    // TODO: parse response
+    // TODO: set appropriate values in store
+    switch (data.status) {
+        case RESPONSE_STATUS_ERROR:
+            console.log('error');
+            store.dispatch(setImageRegFormError(data.msg));
+            break;
+        case RESPONSE_STATUS_OK:
+            console.log('ok');
+            store.dispatch(setImageRegFormError(null));
+            store.dispatch(setImageRegFormRegFee(data.regFee));
+            break;
+        default:
+            break;
+    }
+    // store.dispatch(setRegFee(value));
 });
 
 export class ImageRegisterForm extends Component {
@@ -78,13 +93,20 @@ export class ImageRegisterForm extends Component {
                                            onChange={this.onAddFile}/>
                                 </div>
                             </div>
-                            <div className={this.props.regFee ? 'display-none' : ''}>
+                            <div className={this.props.regFormFee ? 'display-none' : ''}>
                                 <div className="flex-centered">
                                     <button className="register-button" onClick={this.onFormSubmit}>Register</button>
                                 </div>
+                                <div className="flex-centered">
+                                    <div className={this.props.regFormError ? '' : 'display-none'}>
+                                        <div>
+                                            {this.props.regFormError}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className={this.props.regFee ? '' : 'display-none'}>
-                                <div>Registration fee: {this.props.regFee}</div>
+                            <div className={this.props.regFormFee ? '' : 'display-none'}>
+                                <div>Registration fee: {this.props.regFormFee}</div>
                                 <div className="flex-centered">
                                     <button className="register-button" onClick={this.onFormSubmit}>Proceed</button>
                                 </div>

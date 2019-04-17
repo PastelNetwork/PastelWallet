@@ -106,7 +106,12 @@ export const setBlockchainAddress = (value) => ({
     value
 });
 
-export const setRegFee = (value) => ({
-    type: actionTypes.SET_REGISTRATION_FEE,
+export const setImageRegFormError = (value) => ({
+    type: actionTypes.SET_IMAGE_REGISTER_FORM_ERROR,
+    value
+});
+
+export const setImageRegFormRegFee = (value) => ({
+    type: actionTypes.SET_IMAGE_REGISTER_FORM_FEE,
     value
 });

@@ -28,8 +28,10 @@ const reducer  = (state = {}, action) => {
             return {...initialState};
         case actionTypes.SET_BLOCKCHAIN_ADDRESS:
             return {...initialState, address: action.value};
-        case actionTypes.SET_REGISTRATION_FEE:
-            return {...initialState, regFee: action.value};
+        case actionTypes.SET_IMAGE_REGISTER_FORM_ERROR:
+            return {...initialState, regFormError: action.value};
+        case actionTypes.SET_IMAGE_REGISTER_FORM_FEE:
+            return {...initialState, regFormFee: action.value};
         default:
             return state;
     }

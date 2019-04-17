@@ -5,15 +5,15 @@ const fs = require('fs');
 let win = null;
 
 const MASTERNODE_REGFEE_COMMAND = "masternode regfee";
+const RESPONSE_STATUS_OK = 'OK';
+const RESPONSE_STATUS_ERROR = 'ERROR';
 
-ipcMain.on('imageRegFormSubmit', (event, arg) => {
-    const stats = fs.statSync(arg.filePath);
-    const fileSizeInBytes = stats.size;
-    console.log(`File size is ${fileSizeInBytes} bytes`);
+const callRpcMethod = (method) => {
+    // return Promise
     return axios.post('http://localhost:9932', {
         "jsonrpc": "1.0",
         "id": "curltest",
-        "method": MASTERNODE_REGFEE_COMMAND,  // it is not implemented yet
+        "method": method,  // it is not implemented yet
         "params": [""]
     }, {
         headers: {
@@ -23,29 +23,32 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
             username: 'rpcuser',
             password: 'rpcpassword'
         }
-    }).then((response) => {
-        win.webContents.send('regFee', response.data.result);
-    }).catch((err) => {
-        win.webContents.send('regFee', `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}`);
     });
+};
 
+ipcMain.on('imageRegFormSubmit', (event, arg) => {
+    const stats = fs.statSync(arg.filePath);
+    const fileSizeInBytes = stats.size;
+    console.log(`File size is ${fileSizeInBytes} bytes`);
+    return callRpcMethod(MASTERNODE_REGFEE_COMMAND).then((response) => {
+        // TODO: check if user's address has enough funds to pay fee
+        const regFee = response.data.result;
+        callRpcMethod('getbalance').then((response) => {
+            if (response.data.result >= regFee) {
+                win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee})
+            } else {
+                win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_ERROR, msg: `Not enough funds to pay fee (need PSL${regFee}`, regFee})
+            }
+        }).catch((err) => {
+            win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_ERROR, msg: `Error accessing local cNode: ${err.response.data.error.message}`})
+        })
+    }).catch((err) => {
+        win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_ERROR, msg: `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}`});
+    });
 });
 
 ipcMain.on('requestWalletAddress', (event, arg) => {
-        return axios.post('http://localhost:9932', {
-            "jsonrpc": "1.0",
-            "id": "curltest",
-            "method": "getaccountaddress",
-            "params": [""]
-        }, {
-            headers: {
-                'Content-Type': 'text/plain'
-            },
-            auth: {
-                username: 'rpcuser',
-                password: 'rpcpassword'
-            }
-        }).then((response) => {
+        return callRpcMethod('getaccountaddress').then((response) => {
             win.webContents.send('walletAddress', response.data.result);
         }).catch((err) => {
             win.webContents.send('walletAddress', 'Cannot connect to local pasteld!');
