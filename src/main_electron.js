@@ -63,13 +63,6 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
     });
 });
 
-ipcMain.on('requestWalletAddress', (event, arg) => {
-    return callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND).then((response) => {
-        win.webContents.send('walletAddress', response.data.result);
-    }).catch((err) => {
-        win.webContents.send('walletAddress', `Cannot connect to local pasteld!, command: ${GET_ACCOUNT_ADDRESS_COMMAND}`);
-    });
-});
 
 ipcMain.on('blockchainDataRequest', (event, arg) => {
     return callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND).then((response) => {
@@ -86,20 +79,6 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
     }).catch((err) => {
         win.webContents.send('walletAddress', `Cannot connect to local pasteld!, command: ${GET_ACCOUNT_ADDRESS_COMMAND}`);
     });
-});
-
-ipcMain.on('requestPastelID', (event, arg) => {
-    console.log(__dirname);
-    if (!fs.existsSync(path.join(process.cwd(), 'private.key') || !fs.existsSync(path.join(process.cwd(), 'public.key')))) {
-        exec('/Users/alex/PycharmProjects/spa/src/assets2/executable/generate_keys', (error, stdout, stderr) => {
-            console.log('Executed');
-            console.log(error);
-        })
-    }
-    const publicKeyBuff = fs.readFileSync(path.join(process.cwd(), 'public.key'));
-    const pastelIdAddress = bs58.encode(publicKeyBuff);
-    console.log(pastelIdAddress);
-    win.webContents.send('responsePastelID', pastelIdAddress);
 });
 
 function createWindow() {

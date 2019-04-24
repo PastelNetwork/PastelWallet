@@ -101,16 +101,6 @@ export const updateUserProfileDetailsToEdit = (field, value) => ({
     value
 });
 
-export const setBlockchainAddress = (value) => ({
-    type: actionTypes.SET_BLOCKCHAIN_ADDRESS,
-    value
-});
-
-export const setPastelAddress = (value) => ({
-    type: actionTypes.SET_PASTEL_ADDRESS,
-    value
-});
-
 export const setBlockchainData = (value) => ({
     type: actionTypes.SET_BLOCKCHAIN_DATA,
     value

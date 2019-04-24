@@ -10,14 +10,6 @@ import {HeaderContainer} from "../containers/HeaderContainer";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
-ipcRenderer.on('walletAddress', (event, wallet) => {
-    store.dispatch(setBlockchainAddress(wallet));
-});
-
-ipcRenderer.on('responsePastelID', (event, address) => {
-    store.dispatch(setPastelAddress(address));
-});
-
 ipcRenderer.on('blockchainDataResponse', (event, data) => {
     store.dispatch(setBlockchainData(data));
 });
@@ -34,13 +26,7 @@ export class ArtWallet extends Component {
     componentDidMount() {
         document.title = 'Pastel wallet';
 
-        // if (this.props.pastelID === null) {
         ipcRenderer.send('blockchainDataRequest', {});
-        // ipcRenderer.send('requestPastelID', {});
-        // }
-        // if (this.props.address === null) {
-        //     ipcRenderer.send('requestWalletAddress', {});
-        // }
     }
     onUploadClick = () => {
         history.push('/register');
@@ -77,9 +63,6 @@ export class ArtWallet extends Component {
                                     <button onClick={this.onSubmitClick}>Submit</button>
                                 </div>
                             </div>
-                        </div>
-                        <div className="flex-centered">
-                            <h4>Pastel ID: {this.props.pastelID}</h4>
                         </div>
                         <div className="flex-centered">
                             <div className="upload-btn flex-col flex-centered">
