@@ -106,6 +106,16 @@ export const setBlockchainAddress = (value) => ({
     value
 });
 
+export const setPastelAddress = (value) => ({
+    type: actionTypes.SET_PASTEL_ADDRESS,
+    value
+});
+
+export const setBlockchainData = (value) => ({
+    type: actionTypes.SET_BLOCKCHAIN_DATA,
+    value
+});
+
 export const setImageRegFormError = (value) => ({
     type: actionTypes.SET_IMAGE_REGISTER_FORM_ERROR,
     value

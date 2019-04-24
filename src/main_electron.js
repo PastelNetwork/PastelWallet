@@ -1,19 +1,25 @@
 const path = require('path');
+const os = require('os')
 const {app, BrowserWindow, ipcMain} = require('electron');
 const axios = require('axios');
 const fs = require('fs');
+const exec = require('child_process').exec;
+const bs58 = require('bs58');
+
 let win = null;
 
 const MASTERNODE_REGFEE_COMMAND = "masternode regfee";
 const RESPONSE_STATUS_OK = 'OK';
 const RESPONSE_STATUS_ERROR = 'ERROR';
+const GETBALANCE_COMMAND = 'getbalance';
+const GET_ACCOUNT_ADDRESS_COMMAND = 'getaccountaddress';
 
 const callRpcMethod = (method) => {
     // return Promise
     return axios.post('http://localhost:9932', {
         "jsonrpc": "1.0",
         "id": "curltest",
-        "method": method,  // it is not implemented yet
+        "method": method,
         "params": [""]
     }, {
         headers: {
@@ -33,26 +39,67 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
     return callRpcMethod(MASTERNODE_REGFEE_COMMAND).then((response) => {
         // TODO: check if user's address has enough funds to pay fee
         const regFee = response.data.result;
-        callRpcMethod('getbalance').then((response) => {
+        callRpcMethod(GETBALANCE_COMMAND).then((response) => {
             if (response.data.result >= regFee) {
                 win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee})
             } else {
-                win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_ERROR, msg: `Not enough funds to pay fee (need PSL${regFee}`, regFee})
+                win.webContents.send('imageRegFormSubmitResponse', {
+                    status: RESPONSE_STATUS_ERROR,
+                    msg: `Not enough funds to pay fee (need PSL${regFee}`,
+                    regFee
+                })
             }
         }).catch((err) => {
-            win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_ERROR, msg: `Error accessing local cNode: ${err.response.data.error.message}`})
+            win.webContents.send('imageRegFormSubmitResponse', {
+                status: RESPONSE_STATUS_ERROR,
+                msg: `Error accessing local cNode: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
+            })
         })
     }).catch((err) => {
-        win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_ERROR, msg: `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}`});
+        win.webContents.send('imageRegFormSubmitResponse', {
+            status: RESPONSE_STATUS_ERROR,
+            msg: `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
+        });
     });
 });
 
 ipcMain.on('requestWalletAddress', (event, arg) => {
-        return callRpcMethod('getaccountaddress').then((response) => {
-            win.webContents.send('walletAddress', response.data.result);
-        }).catch((err) => {
-            win.webContents.send('walletAddress', 'Cannot connect to local pasteld!');
-        });
+    return callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND).then((response) => {
+        win.webContents.send('walletAddress', response.data.result);
+    }).catch((err) => {
+        win.webContents.send('walletAddress', `Cannot connect to local pasteld!, command: ${GET_ACCOUNT_ADDRESS_COMMAND}`);
+    });
+});
+
+ipcMain.on('blockchainDataRequest', (event, arg) => {
+    return callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND).then((response) => {
+        const bcAddress = response.data.result;
+        if (!fs.existsSync(path.join(process.cwd(), 'private.key') || !fs.existsSync(path.join(process.cwd(), 'public.key')))) {
+            exec('/Users/alex/PycharmProjects/spa/src/assets2/executable/generate_keys', (error, stdout, stderr) => {
+                console.log('Executed');
+                console.log(error);
+            })
+        }
+        const publicKeyBuff = fs.readFileSync(path.join(process.cwd(), 'public.key'));
+        const pastelIdAddress = bs58.encode(publicKeyBuff);
+        win.webContents.send('blockchainDataResponse', {address: bcAddress, pastelID: pastelIdAddress});
+    }).catch((err) => {
+        win.webContents.send('walletAddress', `Cannot connect to local pasteld!, command: ${GET_ACCOUNT_ADDRESS_COMMAND}`);
+    });
+});
+
+ipcMain.on('requestPastelID', (event, arg) => {
+    console.log(__dirname);
+    if (!fs.existsSync(path.join(process.cwd(), 'private.key') || !fs.existsSync(path.join(process.cwd(), 'public.key')))) {
+        exec('/Users/alex/PycharmProjects/spa/src/assets2/executable/generate_keys', (error, stdout, stderr) => {
+            console.log('Executed');
+            console.log(error);
+        })
+    }
+    const publicKeyBuff = fs.readFileSync(path.join(process.cwd(), 'public.key'));
+    const pastelIdAddress = bs58.encode(publicKeyBuff);
+    console.log(pastelIdAddress);
+    win.webContents.send('responsePastelID', pastelIdAddress);
 });
 
 function createWindow() {
@@ -66,6 +113,8 @@ function createWindow() {
     if (process.defaultApp) {
         win.loadURL('http://localhost:3000/');
         win.webContents.openDevTools();
+        BrowserWindow.addDevToolsExtension(
+            '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
     } else {
         win.loadURL(`file://${path.join(__dirname, '../dist/index.html')}`)
     }

@@ -7,6 +7,7 @@ export class Header extends Component {
     render() {
         return <React.Fragment>
             <div className="flex-centered wallet-address">Wallet address: {this.props.address}</div>
+            <div className="flex-centered wallet-address">Pastel ID: {this.props.pastelID}</div>
             <header className="page-header flex-row space-between wrap">
                 <div className="logo">
                     <img src={PastelLogo} alt="logo" className="image-logo"/>

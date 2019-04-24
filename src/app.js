@@ -35,7 +35,9 @@ export const initialState = {
     userProfile: null,
     profileEditMode: defaultProfileEditMode,
     detailsToEdit: defaultDetailsToEdit,
-    address: null
+    address: null,
+    pastelID: 'taksa',
+    blockchainData: {address: null, pastelID: null}
 };
 const token = localStorage.getItem('token');
 const defaultStore = {...initialState, token};
