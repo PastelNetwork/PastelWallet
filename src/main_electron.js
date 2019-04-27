@@ -1,5 +1,5 @@
 const path = require('path');
-const os = require('os')
+const os = require('os');
 const {app, BrowserWindow, ipcMain} = require('electron');
 const axios = require('axios');
 const fs = require('fs');
@@ -13,6 +13,60 @@ const RESPONSE_STATUS_OK = 'OK';
 const RESPONSE_STATUS_ERROR = 'ERROR';
 const GETBALANCE_COMMAND = 'getbalance';
 const GET_ACCOUNT_ADDRESS_COMMAND = 'getaccountaddress';
+
+/*************************************************************
+ * py process
+ *************************************************************/
+
+const PY_DIST_FOLDER = 'pydist';
+const PY_FOLDER = 'python_interface';
+const PY_MODULE = 'api'; // without .py suffix
+
+let pyProc = null;
+let pyPort = 4242;
+
+const guessPackaged = () => {
+    const fullPath = path.join(__dirname, PY_DIST_FOLDER)
+    return require('fs').existsSync(fullPath)
+};
+
+const getScriptPath = () => {
+    if (!guessPackaged()) {
+        return path.join(__dirname, '..', PY_FOLDER, PY_MODULE + '.py')
+    }
+    // TODO: adjust for compiled python script
+    if (process.platform === 'win32') {
+        return path.join(__dirname, PY_DIST_FOLDER, PY_MODULE, PY_MODULE + '.exe')
+    }
+    return path.join(__dirname, PY_DIST_FOLDER, PY_MODULE, PY_MODULE)
+};
+
+
+const createPyProc = () => {
+    let script = getScriptPath();
+    console.log('Script');
+    console.log(script);
+    let port = pyPort;
+
+    if (guessPackaged()) {
+        pyProc = require('child_process').execFile(script)
+    } else {
+        pyProc = require('child_process').spawn('python', [script])
+    }
+
+    if (pyProc != null) {
+        console.log('child process success on port ' + port)
+    }
+};
+
+const exitPyProc = () => {
+    pyProc.kill();
+    pyProc = null;
+};
+
+app.on('ready', createPyProc);
+app.on('will-quit', exitPyProc);
+
 
 const callRpcMethod = (method) => {
     // return Promise
