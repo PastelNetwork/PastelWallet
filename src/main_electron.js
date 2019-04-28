@@ -5,6 +5,7 @@ const axios = require('axios');
 const fs = require('fs');
 const exec = require('child_process').exec;
 const bs58 = require('bs58');
+const zerorpc = require("zerorpc");
 
 let win = null;
 
@@ -13,6 +14,13 @@ const RESPONSE_STATUS_OK = 'OK';
 const RESPONSE_STATUS_ERROR = 'ERROR';
 const GETBALANCE_COMMAND = 'getbalance';
 const GET_ACCOUNT_ADDRESS_COMMAND = 'getaccountaddress';
+
+
+const client = new zerorpc.Client();
+
+const ConnectRpc = () => {
+    client.connect("tcp://127.0.0.1:4242");
+};
 
 /*************************************************************
  * py process
@@ -47,11 +55,17 @@ const createPyProc = () => {
     console.log('Script');
     console.log(script);
     let port = pyPort;
-
+    const PyRpcStartCallback = (err, stdo, stde) => {
+            if (err === null) {
+                ConnectRpc();
+            } else {
+                console.log(`Error starting python RPC process : ${err}`);
+            }
+        };
     if (guessPackaged()) {
-        pyProc = require('child_process').execFile(script)
+        pyProc = require('child_process').execFile(script, PyRpcStartCallback);
     } else {
-        pyProc = require('child_process').spawn('python', [script])
+        pyProc = require('child_process').execFile('python', [script], PyRpcStartCallback);
     }
 
     if (pyProc != null) {
@@ -122,6 +136,7 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
     return callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND).then((response) => {
         const bcAddress = response.data.result;
         if (!fs.existsSync(path.join(process.cwd(), 'private.key') || !fs.existsSync(path.join(process.cwd(), 'public.key')))) {
+            // TODO: call rpc generate keys
             exec('/Users/alex/PycharmProjects/spa/src/assets2/executable/generate_keys', (error, stdout, stderr) => {
                 console.log('Executed');
                 console.log(error);
