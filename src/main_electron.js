@@ -5,7 +5,6 @@ const axios = require('axios');
 const fs = require('fs');
 const exec = require('child_process').exec;
 const bs58 = require('bs58');
-const zerorpc = require("zerorpc");
 
 let win = null;
 
@@ -16,11 +15,6 @@ const GETBALANCE_COMMAND = 'getbalance';
 const GET_ACCOUNT_ADDRESS_COMMAND = 'getaccountaddress';
 
 
-const client = new zerorpc.Client();
-
-const ConnectRpc = () => {
-    client.connect("tcp://127.0.0.1:4242");
-};
 
 /*************************************************************
  * py process
@@ -28,7 +22,7 @@ const ConnectRpc = () => {
 
 const PY_DIST_FOLDER = 'pydist';
 const PY_FOLDER = 'python_interface';
-const PY_MODULE = 'api'; // without .py suffix
+const PY_MODULE = 'http_api'; // without .py suffix
 
 let pyProc = null;
 let pyPort = 4242;
@@ -56,6 +50,7 @@ const createPyProc = () => {
     console.log(script);
     let port = pyPort;
     const PyRpcStartCallback = (err, stdo, stde) => {
+        // TODO: start flask server insead of zerorpc
             if (err === null) {
                 ConnectRpc();
             } else {
