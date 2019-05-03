@@ -14,6 +14,7 @@ ipcRenderer.on('blockchainDataResponse', (event, data) => {
     store.dispatch(setBlockchainData(data));
 });
 
+
 export class ArtWallet extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +26,6 @@ export class ArtWallet extends Component {
 
     componentDidMount() {
         document.title = 'Pastel wallet';
-
         ipcRenderer.send('blockchainDataRequest', {});
     }
     onUploadClick = () => {

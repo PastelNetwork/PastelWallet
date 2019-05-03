@@ -15,7 +15,6 @@ const GETBALANCE_COMMAND = 'getbalance';
 const GET_ACCOUNT_ADDRESS_COMMAND = 'getaccountaddress';
 
 
-
 /*************************************************************
  * py process
  *************************************************************/
@@ -51,12 +50,12 @@ const createPyProc = () => {
     let port = pyPort;
     const PyRpcStartCallback = (err, stdo, stde) => {
         // TODO: start flask server insead of zerorpc
-            if (err === null) {
-                ConnectRpc();
-            } else {
-                console.log(`Error starting python RPC process : ${err}`);
-            }
-        };
+        if (err === null) {
+            ConnectRpc();
+        } else {
+            console.log(`Error starting python RPC process : ${err}`);
+        }
+    };
     if (guessPackaged()) {
         pyProc = require('child_process').execFile(script, PyRpcStartCallback);
     } else {
@@ -147,7 +146,7 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
 
 function createWindow() {
     // Create the browser window.
-    win = new BrowserWindow({width: 800, height: 600});
+    win = new BrowserWindow({width: 800, height: 600, webPreferences: {nodeIntegration: true}});
     // TODO: make sure pasteld is running locally
     // TODO: generate key pair. store it in current folder.
     // TODO: check RPC port
