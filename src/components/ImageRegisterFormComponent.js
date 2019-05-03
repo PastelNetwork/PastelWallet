@@ -35,8 +35,6 @@ export class ImageRegisterForm extends Component {
             artName: '',
             numCopies: 0,
             copyPrice: 0,
-            publicKey: '',
-            privateKey: '',
             filePath: ''
         }
     }
@@ -46,7 +44,14 @@ export class ImageRegisterForm extends Component {
     }
 
     onFormSubmit = (e) => {
-        //TODO: collect all info, put into container
+        e.preventDefault();
+        let data = this.state;
+        ipcRenderer.send('imageRegFormSubmit', data);
+        // history.push('/');
+    };
+    onProceedClick = (e) => {
+        //TODO: create image registration ticket
+        //TODO: calculate image hash
         e.preventDefault();
         let data = this.state;
         ipcRenderer.send('imageRegFormSubmit', data);
@@ -74,12 +79,6 @@ export class ImageRegisterForm extends Component {
                                    name="numCopies" value={this.state.numCopies} onChange={this.onChange}/>
                             <input type="number" className="image-register-input" placeholder="Price of the copy, PSL"
                                    name="copyPrice" value={this.state.copyPrice} onChange={this.onChange}/>
-                            <textarea className="image-register-input" rows="2"
-                                      placeholder="Public Key" name="publicKey" value={this.state.publicKey}
-                                      onChange={this.onChange}/>
-
-                            <textarea name="privateKey" className="image-register-input" rows="5"
-                                      placeholder="Private Key" value={this.state.privateKey} onChange={this.onChange}/>
 
                             <div className="image-register-input">
                                 <div className={this.state.file ? '' : 'display-none'}>
@@ -108,7 +107,7 @@ export class ImageRegisterForm extends Component {
                             <div className={this.props.regFormFee ? '' : 'display-none'}>
                                 <div>Registration fee: {this.props.regFormFee}</div>
                                 <div className="flex-centered">
-                                    <button className="register-button" onClick={this.onFormSubmit}>Proceed</button>
+                                    <button className="register-button" onClick={this.onProceedClick}>Proceed</button>
                                 </div>
                             </div>
 
