@@ -24,14 +24,16 @@ const reducer  = (state = {}, action) => {
             return {...state, ajaxInProgress: {...state.ajaxInProgress, [action.entity]: true}};
         case actionTypes.STOP_AJAX:
             return {...state, ajaxInProgress: {...state.ajaxInProgress, [action.entity]: false}};
+        case actionTypes.SET_IMAGE_REGISTER_FORM_ERROR:
+            return {...state, regFormError: action.value};
+        case actionTypes.SET_IMAGE_REGISTER_FORM_FEE:
+            return {...state, regFormFee: action.value};
+        case actionTypes.SET_BLOCKCHAIN_DATA:
+            return {...state, blockchainData: action.value};
+        case actionTypes.SWITCH_LEFT_MENU:
+            return {...state, leftMenuShow: !state.leftMenuShow};
         case actionTypes.RESET_STORE:
             return {...initialState};
-        case actionTypes.SET_IMAGE_REGISTER_FORM_ERROR:
-            return {...initialState, regFormError: action.value};
-        case actionTypes.SET_IMAGE_REGISTER_FORM_FEE:
-            return {...initialState, regFormFee: action.value};
-        case actionTypes.SET_BLOCKCHAIN_DATA:
-            return {...initialState, blockchainData: action.value};
         default:
             return state;
     }

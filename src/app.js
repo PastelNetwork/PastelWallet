@@ -6,7 +6,7 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import {Router} from 'react-router-dom';
 import reducer from './reducers';
 import * as ajaxEntities from './ajaxEntities';
-
+import 'font-awesome/css/font-awesome.css';
 import Main from "./components/MainComponent";
 import history from './history';
 
@@ -37,7 +37,8 @@ export const initialState = {
     detailsToEdit: defaultDetailsToEdit,
     address: null,
     pastelID: 'taksa',
-    blockchainData: {address: null, pastelID: null}
+    blockchainData: {address: null, pastelID: null},
+    leftMenuShow: false
 };
 const token = localStorage.getItem('token');
 const defaultStore = {...initialState, token};

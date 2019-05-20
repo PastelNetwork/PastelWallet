@@ -51,7 +51,7 @@ export class ArtWallet extends Component {
         return <React.Fragment>
             <HeaderContainer/>
             <FlexRow>
-                <LeftMenu/>
+                <LeftMenu show={this.props.leftMenuShow}/>
                 <div className="main-page flex-col">
                     <section className="flex-col pt-3 pb-2 wrap">
                         <div className={this.state.file ? '' : 'display-none'}>

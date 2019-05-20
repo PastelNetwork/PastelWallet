@@ -115,3 +115,7 @@ export const setImageRegFormRegFee = (value) => ({
     type: actionTypes.SET_IMAGE_REGISTER_FORM_FEE,
     value
 });
+
+export const switchLeftMenu = () => ({
+    type: actionTypes.SWITCH_LEFT_MENU
+});

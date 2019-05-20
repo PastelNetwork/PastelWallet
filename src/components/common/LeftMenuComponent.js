@@ -3,7 +3,7 @@ import '../../styles.scss';
 
 export class LeftMenu extends Component {
     render() {
-        return <aside className="aside flex-col">
+        return <aside className={this.props.show ? "aside flex-col" : "display-none"}>
             <div className="left-menu-point selected">Dashboard</div>
             <div className="left-menu-point">Profile</div>
             <div className="left-menu-point">My Art (Wallet)</div>

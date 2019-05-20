@@ -4,7 +4,8 @@ import {ArtWallet} from "../components/ArtWalletComponent";
 
 const mapStateToProps = state => ({
     address: state.blockchainData.address,
-    pastelID: state.blockchainData.pastelID
+    pastelID: state.blockchainData.pastelID,
+    leftMenuShow: state.leftMenuShow
 });
 
 const mapDispatchToProps = dispatch => ({
