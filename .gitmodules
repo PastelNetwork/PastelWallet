@@ -1,0 +1,3 @@
+[submodule "src/StoVaCore"]
+	path = src/StoVaCore
+	url = git@github.com:ANIME-AnimeCoin/StoVaCore.git

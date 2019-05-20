@@ -20,11 +20,11 @@ const LOCAL_PY_URL = 'http://127.0.0.1:5000/';
  *************************************************************/
 
 const PY_DIST_FOLDER = 'pydist';
-const PY_FOLDER = 'python_interface';
-const PY_MODULE = 'http_api'; // without .py suffix
+const PY_FOLDER = 'StoVaCore';
+const PY_MODULE = 'wallet_api'; // without .py suffix
 
 let pyProc = null;
-let pyPort = 4242;
+let pyPort = 5000;
 
 const guessPackaged = () => {
     const fullPath = path.join(__dirname, PY_DIST_FOLDER)
@@ -33,7 +33,7 @@ const guessPackaged = () => {
 
 const getScriptPath = () => {
     if (!guessPackaged()) {
-        return path.join(__dirname, '..', PY_FOLDER, PY_MODULE + '.py')
+        return path.join(__dirname, PY_FOLDER, PY_MODULE + '.py');
     }
     // TODO: adjust for compiled python script
     if (process.platform === 'win32') {
