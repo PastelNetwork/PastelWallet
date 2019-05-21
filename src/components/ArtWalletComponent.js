@@ -55,23 +55,11 @@ export class ArtWallet extends Component {
                 <LeftMenu show={this.props.leftMenuShow}/>
                 <div className="main-page flex-col">
                     <section className="flex-col pt-3 pb-2 wrap">
-                        <div className={this.state.file ? '' : 'display-none'}>
-                            <div className="flex-col pb-2">
-                                <div className="flex-row flex-centered">
-                                    <img src={this.state.file} className="img-preview pb-1" alt=""/>
-                                </div>
-                                <div className="flex-row flex-centered">
-                                    <button onClick={this.onSubmitClick}>Submit</button>
-                                </div>
-                            </div>
-                        </div>
                         <div className="flex-centered">
                             <div className="upload-btn flex-col flex-centered">
                                 <div className="flex-row flex-centered" onClick={this.onUploadClick}>
                                     <i className="fa fa-arrow-up"></i>
                                     Upload artwork
-                                    <input type="file" className="display-none" ref={this.fileInputRef}
-                                           accept="image/*" onChange={this.onAddFile}/>
                                 </div>
                             </div>
                         </div>

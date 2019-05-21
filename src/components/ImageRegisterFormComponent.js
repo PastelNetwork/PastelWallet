@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../styles.scss';
 import {FlexRow} from "./common/FlexRowComponent";
-import {LeftMenu} from "./common/LeftMenuComponent";
+import {LeftDummy, LeftMenu} from "./common/LeftMenuComponent";
 import {HeaderContainer} from "../containers/HeaderContainer";
 import {store} from "../app";
 import {setImageRegFormError, setImageRegFormRegFee, setRegFee} from "../actions";
@@ -69,7 +69,8 @@ export class ImageRegisterForm extends Component {
         return <React.Fragment>
             <HeaderContainer/>
             <FlexRow>
-                <LeftMenu/>
+                <LeftDummy show={this.props.leftMenuShow}/>
+                <LeftMenu show={this.props.leftMenuShow}/>
                 <div className="main-page flex-col">
                     <section className="flex-col pt-3 pb-2 wrap">
                         <form>
