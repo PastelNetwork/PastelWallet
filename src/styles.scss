@@ -12,7 +12,8 @@ $grey: #8A8A8A;
 $blue-bg: #1779BA;
 $footer-bg: #424242;
 $bright-green: #3ADB76;
-
+$aside-transition-time: 1s;
+$aside-transition-effect: linear;
 
 
 .flex-row {
@@ -86,6 +87,26 @@ $bright-green: #3ADB76;
   border-bottom: $px1-border;
   font-family: $source-sans-pro;
   padding-bottom: 50px;
+  position: absolute;
+  left: 0;
+  transition: left $aside-transition-time $aside-transition-effect;
+}
+
+.aside-hidden {
+  flex-basis: 0;
+  position: absolute;
+  left: -25%;
+  transition: left $aside-transition-time $aside-transition-effect;
+}
+
+.left-dummy {
+  width: 25%;
+  transition: width $aside-transition-time $aside-transition-effect;
+}
+
+.left-dummy-hidden {
+  width: 0;
+  transition: width $aside-transition-time $aside-transition-effect;
 }
 
 .main-page {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../styles.scss';
 import {FlexRow} from "./common/FlexRowComponent";
-import {LeftMenu} from "./common/LeftMenuComponent";
+import {LeftDummy, LeftMenu} from "./common/LeftMenuComponent";
 import axios from 'axios';
 import {store} from '../app';
 import history from '../history';
@@ -51,6 +51,7 @@ export class ArtWallet extends Component {
         return <React.Fragment>
             <HeaderContainer/>
             <FlexRow>
+                <LeftDummy show={this.props.leftMenuShow}/>
                 <LeftMenu show={this.props.leftMenuShow}/>
                 <div className="main-page flex-col">
                     <section className="flex-col pt-3 pb-2 wrap">

@@ -3,7 +3,7 @@ import '../../styles.scss';
 
 export class LeftMenu extends Component {
     render() {
-        return <aside className={this.props.show ? "aside flex-col" : "display-none"}>
+        return <aside className={this.props.show ? "aside flex-col" : "aside flex-col aside-hidden"}>
             <div className="left-menu-point selected">Dashboard</div>
             <div className="left-menu-point">Profile</div>
             <div className="left-menu-point">My Art (Wallet)</div>
@@ -14,3 +14,8 @@ export class LeftMenu extends Component {
         </aside>
     }
 }
+
+export const LeftDummy = (props) => {
+    return <aside className={props.show ? "left-dummy" : "left-dummy-hidden"}>
+    </aside>;
+};
