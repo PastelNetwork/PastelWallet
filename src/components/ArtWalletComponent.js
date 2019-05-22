@@ -28,6 +28,7 @@ export class ArtWallet extends Component {
         document.title = 'Pastel wallet';
         ipcRenderer.send('blockchainDataRequest', {});
     }
+
     onUploadClick = () => {
         history.push('/register');
         // this.fileInputRef.current.click();
@@ -48,12 +49,39 @@ export class ArtWallet extends Component {
     };
 
     render() {
+        const mainPageClass = this.props.leftMenuShow ? "main-page flex-col menu-expanded" : "main-page flex-col";
         return <React.Fragment>
             <HeaderContainer/>
             <FlexRow>
                 <LeftDummy show={this.props.leftMenuShow}/>
                 <LeftMenu show={this.props.leftMenuShow}/>
-                <div className="main-page flex-col">
+                <div className={mainPageClass}>
+                    <section className="flex-row wrap">
+                        <div className="flex-col half addreses">
+                            <div className="pl-1 pt-1">
+                                My wallet address
+                            </div>
+                            <div className="pl-1 pt-0_5 bc-address">
+                                <div className="framed">
+                                    1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2
+                                </div>
+                            </div>
+                            <div className="pl-1 pt-1">
+                                My Pastel ID
+                            </div>
+                            <div className="pl-1 pt-0_5 bc-address">
+                                <div className="framed">
+                                    1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2
+                                </div>
+                            </div>
+                        </div>
+                        <div className="half flex-centered">
+                            <div className="p-1">
+                                <img src="https://i.pravatar.cc/200" alt="profile pic" className="avagar-pic"/>
+                            </div>
+
+                        </div>
+                    </section>
                     <section className="flex-col pt-3 pb-2 wrap">
                         <div className="flex-centered">
                             <div className="upload-btn flex-col flex-centered">

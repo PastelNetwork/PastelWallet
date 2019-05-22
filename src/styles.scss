@@ -17,6 +17,9 @@ $aside-transition-time: 0.3s;
 $aside-transition-effect: linear;
 
 
+//* {
+//  outline: 1px solid red !important;
+//}
 .flex-row {
   @extend %flex-row;
 }
@@ -82,6 +85,7 @@ $aside-transition-effect: linear;
 }
 
 .aside {
+  width: 25%;
   flex-basis: 25%;
   border-right: $px1-border;
   border-left: $px1-border;
@@ -94,6 +98,7 @@ $aside-transition-effect: linear;
 }
 
 .aside-hidden {
+  width: 25%;
   flex-basis: 0;
   position: absolute;
   left: -25%;
@@ -111,6 +116,11 @@ $aside-transition-effect: linear;
 }
 
 .main-page {
+  flex-basis: 100%;
+  transition: flex-basis $aside-transition-time $aside-transition-effect;
+}
+
+.main-page.menu-expanded {
   flex-basis: 75%;
 }
 
@@ -229,7 +239,7 @@ $aside-transition-effect: linear;
   margin-left: 10%;
 }
 
-.my-artwork {
+.my-artwork, .addreses {
   font-family: $source-sans-pro;
 }
 
@@ -311,4 +321,27 @@ footer {
 .wallet-address {
   font-size: 0.7em;
   background-color: $header-bg-color;
+}
+
+.half {
+  flex-basis: 50%;
+  width: 50%;
+}
+
+.bc-address {
+  word-break: break-all;
+}
+
+.framed {
+  border: 1px solid #c0c0c0;
+  border-radius: 3px;
+  padding: 5px;
+  background-color: #fbfbfb;
+}
+
+.avagar-pic {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 1px solid #c0c0c0;
 }
