@@ -68,7 +68,7 @@ app.on('will-quit', exitPyProc);
 
 const callRpcMethod = (method) => {
     // return Promise
-    return axios.post('http://localhost:9932', {
+    return axios.post('http://localhost:19932', {
         "jsonrpc": "1.0",
         "id": "curltest",
         "method": method,
@@ -78,8 +78,8 @@ const callRpcMethod = (method) => {
             'Content-Type': 'text/plain'
         },
         auth: {
-            username: 'rpcuser',
-            password: 'rpcpassword'
+            username: 'rt',
+            password: 'rt'
         }
     });
 };
@@ -123,7 +123,16 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
         axios.get(`${LOCAL_PY_URL}generate_keys`).then((response) => {
             const publicKeyBuff = fs.readFileSync(path.join(process.cwd(), response.data.public));
             const pastelIdAddress = bs58.encode(publicKeyBuff);
-            win.webContents.send('blockchainDataResponse', {address: bcAddress, pastelID: pastelIdAddress});
+            win.webContents.send('blockchainDataResponse', {
+                status: RESPONSE_STATUS_OK,
+                address: bcAddress,
+                pastelID: pastelIdAddress
+            });
+        }).catch((err) => {
+            win.webContents.send('blockchainDataResponse', {
+                status: RESPONSE_STATUS_ERROR,
+                error: 'Request errror. Try again later'
+            });
         });
     }).catch((err) => {
         win.webContents.send('walletAddress', `Cannot connect to local pasteld!, command: ${GET_ACCOUNT_ADDRESS_COMMAND}`);
@@ -132,7 +141,7 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
 
 function createWindow() {
     // Create the browser window.
-    win = new BrowserWindow({width: 800, height: 600, webPreferences: {nodeIntegration: true}});
+    win = new BrowserWindow({width: 800, height: 600, minWidth: 600, minHeight: 400, webPreferences: {nodeIntegration: true}});
     if (process.defaultApp) {
         win.loadURL('http://localhost:3000/');
         win.webContents.openDevTools();

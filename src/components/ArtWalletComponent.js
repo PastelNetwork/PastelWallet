@@ -7,11 +7,19 @@ import {store} from '../app';
 import history from '../history';
 import {setBlockchainAddress, setBlockchainData, setPastelAddress} from "../actions";
 import {HeaderContainer} from "../containers/HeaderContainer";
+import {RESPONSE_STATUS_OK} from "../constants";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
 ipcRenderer.on('blockchainDataResponse', (event, data) => {
-    store.dispatch(setBlockchainData(data));
+    if (data.status === RESPONSE_STATUS_OK) {
+        store.dispatch(setBlockchainData(data));
+    } else {
+        // if error - try until service will start
+        setTimeout(() => {
+            ipcRenderer.send('blockchainDataRequest', {})
+        }, 500);
+    }
 });
 
 
@@ -63,7 +71,7 @@ export class ArtWallet extends Component {
                             </div>
                             <div className="pl-1 pt-0_5 bc-address">
                                 <div className="framed">
-                                    {this.props.address || '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2'}
+                                    {this.props.address || 'Loading...'}
                                 </div>
                             </div>
                             <div className="pl-1 pt-1">
@@ -71,7 +79,7 @@ export class ArtWallet extends Component {
                             </div>
                             <div className="pl-1 pt-0_5 bc-address">
                                 <div className="framed">
-                                    {this.props.pastelID || '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2'}
+                                    {this.props.pastelID || 'Loading...'}
                                 </div>
                             </div>
                         </div>
