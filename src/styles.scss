@@ -15,7 +15,7 @@ $footer-bg: #424242;
 $bright-green: #3ADB76;
 $aside-transition-time: 0.3s;
 $aside-transition-effect: linear;
-
+$header-height: 65px;
 
 //* {
 //  outline: 1px solid red !important;
@@ -30,6 +30,9 @@ $aside-transition-effect: linear;
 
 .page-header {
   background-color: $header-bg-color;
+  height: $header-height;
+  position: fixed;
+  width: 100%;
 }
 
 .flex-end {
@@ -287,7 +290,7 @@ footer {
   font-family: $source-sans-pro;
 }
 
-.wallet-badge, .upload-btn {
+.wallet-badge {
   width: 250px;
   height: 90px;
   border-radius: 5px;
@@ -304,7 +307,11 @@ footer {
   background-color: $bright-green;
   color: white;
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 4rem;
+  width: 150px;
+  height: 150px;
+  border-radius: 10%;
+  font-family: $source-sans-pro;
 }
 
 .display-none {
@@ -344,4 +351,19 @@ footer {
   height: 200px;
   border-radius: 50%;
   border: 1px solid #c0c0c0;
+}
+
+.artwork-container {
+
+}
+
+.artwork-img {
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+  border-radius: 10%;
+}
+
+.main-content {
+  padding-top: $header-height;
 }

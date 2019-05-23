@@ -63,7 +63,7 @@ export class ArtWallet extends Component {
                             </div>
                             <div className="pl-1 pt-0_5 bc-address">
                                 <div className="framed">
-                                    1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2
+                                    {this.props.address || '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2'}
                                 </div>
                             </div>
                             <div className="pl-1 pt-1">
@@ -71,7 +71,7 @@ export class ArtWallet extends Component {
                             </div>
                             <div className="pl-1 pt-0_5 bc-address">
                                 <div className="framed">
-                                    1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2
+                                    {this.props.pastelID || '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2'}
                                 </div>
                             </div>
                         </div>
@@ -82,13 +82,29 @@ export class ArtWallet extends Component {
 
                         </div>
                     </section>
-                    <section className="flex-col pt-3 pb-2 wrap">
+                    <section className="flex-col">
                         <div className="flex-centered">
-                            <div className="upload-btn flex-col flex-centered">
-                                <div className="flex-row flex-centered" onClick={this.onUploadClick}>
-                                    <i className="fa fa-arrow-up"></i>
-                                    Upload artwork
+                            <h2>Artworks</h2>
+                        </div>
+                        <div className="wrap flex-row">
+                            <div className="artwork-container p-1">
+                                <div className="upload-btn flex-centered flex-row" onClick={this.onUploadClick}>
+                                    <div className="flex-centered flex-col">
+                                        <i className="fa fa-plus"></i>
+                                    </div>
                                 </div>
+                            </div>
+                            <div className="artwork-container p-1">
+                                <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
+                            </div>
+                            <div className="artwork-container p-1">
+                                <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
+                            </div>
+                            <div className="artwork-container p-1">
+                                <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
+                            </div>
+                            <div className="artwork-container p-1">
+                                <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
                             </div>
                         </div>
                     </section>
