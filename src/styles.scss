@@ -33,6 +33,7 @@ $header-height: 65px;
   height: $header-height;
   position: fixed;
   width: 100%;
+  z-index: 5;
 }
 
 .flex-end {
@@ -89,21 +90,22 @@ $header-height: 65px;
 
 .aside {
   width: 25%;
+  max-width: 150px;
   flex-basis: 25%;
   border-right: $px1-border;
   border-left: $px1-border;
   border-bottom: $px1-border;
   font-family: $source-sans-pro;
-  padding-bottom: 50px;
-  position: absolute;
+  position: fixed;
   left: 0;
   transition: left $aside-transition-time $aside-transition-effect;
 }
 
 .aside-hidden {
   width: 25%;
+  max-width: 150px;
   flex-basis: 0;
-  position: absolute;
+  position: fixed;
   left: -25%;
   transition: left $aside-transition-time $aside-transition-effect;
 }
