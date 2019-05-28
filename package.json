@@ -5,11 +5,12 @@
   "main": "src/main_electron.js",
   "homepage": "./",
   "build": {
-    "appId": "nonExistentID",
+    "appId": "com.Pastel.Wallet",
     "files": [
       "dist/*",
       "node_modules/**/*"
-    ]
+    ],
+    "extraResources": ["src/StoVaCore/dist/wallet_api"]
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,7 +20,7 @@
     "sass:watch": "node-sass -w --source-map true src/artist.scss src/artist.css",
     "start-electron": "electron --inspect .",
     "preelectron-pack": "npm run build",
-    "electron-pack": "build --linux --win --mac -c.extraMetadata.main=dist/main_electron.js",
+    "electron-pack": "build --mac -c.extraMetadata.main=dist/main_electron.js",
     "electron-build": "rm -rf dist/*; cp src/main_electron.js dist/main_electron.js; npm run build; npm run electron-pack"
   },
   "keywords": [],

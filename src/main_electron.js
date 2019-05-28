@@ -19,7 +19,7 @@ const LOCAL_PY_URL = 'http://127.0.0.1:5000/';
  * py process
  *************************************************************/
 
-const PY_DIST_FOLDER = 'pydist';
+const PY_DIST_FOLDER = 'src';
 const PY_FOLDER = 'StoVaCore';
 const PY_MODULE = 'wallet_api'; // without .py suffix
 
@@ -39,7 +39,7 @@ const getScriptPath = () => {
     if (process.platform === 'win32') {
         return path.join(__dirname, PY_DIST_FOLDER, PY_MODULE, PY_MODULE + '.exe')
     }
-    return path.join(__dirname, PY_DIST_FOLDER, PY_MODULE, PY_MODULE)
+    return path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, PY_MODULE)
 };
 
 
