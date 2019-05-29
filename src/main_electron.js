@@ -1,10 +1,10 @@
 const path = require('path');
-const os = require('os');
 const {app, BrowserWindow, ipcMain} = require('electron');
 const axios = require('axios');
 const fs = require('fs');
 const exec = require('child_process').exec;
 const bs58 = require('bs58');
+const log = require('electron-log');
 
 let win = null;
 
@@ -26,34 +26,38 @@ const PY_MODULE = 'wallet_api'; // without .py suffix
 let pyProc = null;
 let pyPort = 5000;
 
-const guessPackaged = () => {
-    const fullPath = path.join(__dirname, PY_DIST_FOLDER)
-    return require('fs').existsSync(fullPath)
-};
 
 const getScriptPath = () => {
-    if (!guessPackaged()) {
+    if (process.defaultApp) {
         return path.join(__dirname, PY_FOLDER, PY_MODULE + '.py');
     }
     // TODO: adjust for compiled python script
     if (process.platform === 'win32') {
-        return path.join(__dirname, PY_DIST_FOLDER, PY_MODULE, PY_MODULE + '.exe')
+        return path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, 'dist', PY_MODULE + '.exe')
     }
-    return path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, PY_MODULE)
+    const scriptPath = path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, 'dist', PY_MODULE);
+    log.warn(`Script path: ${scriptPath}`);
+    return scriptPath;
 };
 
 
 const createPyProc = () => {
     let script = getScriptPath();
     let port = pyPort;
-    if (guessPackaged()) {
-        pyProc = require('child_process').execFile(script);
+    if (process.defaultApp) {
+        pyProc = require('child_process').execFile('python', [script, path.join(process.resourcesPath, '..', '..')]);
     } else {
-        pyProc = require('child_process').execFile('python', [script]);
+        pyProc = require('child_process').execFile(script, [path.join(process.resourcesPath, '..', '..')], (error, stdout, stderr) => {
+            log.error(`[wallet_api.py] Error: ${error}`);
+            log.info(`[wallet_api.py] Stdout: ${stdout}`);
+            log.warn(`[wallet_api.py] Stderr: ${stderr}`);
+        });
     }
 
     if (pyProc != null) {
-        console.log('child process success on port ' + port)
+        log.info('child process success on port ' + port)
+    } else {
+        log.warn('Wallet api proccess failed to start')
     }
 };
 
@@ -140,15 +144,25 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
 });
 
 function createWindow() {
+    log.silly('Starting main proccess....');
     // Create the browser window.
-    win = new BrowserWindow({width: 800, height: 600, minWidth: 600, minHeight: 400, webPreferences: {nodeIntegration: true}});
+    win = new BrowserWindow({
+        width: 800,
+        height: 600,
+        minWidth: 600,
+        minHeight: 400,
+        webPreferences: {nodeIntegration: true, webSecurity: false}
+    });
     if (process.defaultApp) {
         win.loadURL('http://localhost:3000/');
         win.webContents.openDevTools();
         BrowserWindow.addDevToolsExtension(
             '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
     } else {
-        win.loadURL(`file://${path.join(__dirname, '../dist/index.html')}`)
+        win.loadURL(`file://${path.join(__dirname, '../build/index.html')}`)
+        win.webContents.openDevTools();
+        BrowserWindow.addDevToolsExtension(
+            '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
     }
 }
 
