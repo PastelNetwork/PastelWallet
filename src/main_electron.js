@@ -24,6 +24,7 @@ const PY_FOLDER = 'StoVaCore';
 const PY_MODULE = 'wallet_api'; // without .py suffix
 
 let pyProc = null;
+let pastelProc = null;
 let pyPort = 5000;
 
 
@@ -31,12 +32,27 @@ const getScriptPath = () => {
     if (process.defaultApp) {
         return path.join(__dirname, PY_FOLDER, PY_MODULE + '.py');
     }
-    // TODO: adjust for compiled python script
     if (process.platform === 'win32') {
         return path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, 'dist', PY_MODULE + '.exe')
     }
     const scriptPath = path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, 'dist', PY_MODULE);
     log.warn(`Script path: ${scriptPath}`);
+    return scriptPath;
+};
+
+
+const getPasteldPath = () => {
+    if (process.defaultApp) {
+        return null;
+    }
+    let scriptPath;
+    if (process.platform === 'win32') {
+        scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld' + '.exe')
+    } else {
+        scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld');
+    }
+
+    log.warn(`Pasteld path: ${scriptPath}`);
     return scriptPath;
 };
 
@@ -61,13 +77,37 @@ const createPyProc = () => {
     }
 };
 
-const exitPyProc = () => {
+const checkAndRunPastelD = () => {
+    //TODO: stqart pastelD proccess
+    //TODO: stop it on exit
+    //TODO: as this is no mac build for pastelD available -
+    const pastelPath = getPasteldPath();
+    if (!process.defaultApp) {
+        pastelProc = require('child_process').execFile(pastelPath, [], (error, stdout, stderr) => {
+            log.error(`[pasteld] Error: ${error}`);
+            log.info(`[pasteld] Stdout: ${stdout}`);
+            log.warn(`[pasteld] Stderr: ${stderr}`);
+        });
+    }
+
+    if (pastelProc != null) {
+        log.info('PastelD is running')
+    } else {
+        log.warn('PastelD proccess failed to start')
+    }
+};
+
+
+const cleanUp = () => {
     pyProc.kill();
+    pastelProc.kill()
+    pastelProc = null;
     pyProc = null;
 };
 
 app.on('ready', createPyProc);
-app.on('will-quit', exitPyProc);
+app.on('ready', checkAndRunPastelD);
+app.on('will-quit', cleanUp);
 
 
 const callRpcMethod = (method) => {
