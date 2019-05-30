@@ -19,3 +19,7 @@
  - on the top level of the repository: `npm install`
  - `npm run electron-build`
  - builded application will appear in `dist` folder (for OS X it is *.dmg file)
+
+## Logging
+ - For development run all logs will appear in the terminal
+ - For packaged run logs path depends on the operation system. For OS X it is `/Users/<currentUser>/Library/Logs/pastel-wallet/log.log`
