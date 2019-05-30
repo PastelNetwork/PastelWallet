@@ -124,9 +124,12 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
 ipcMain.on('blockchainDataRequest', (event, arg) => {
     return callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND).then((response) => {
         const bcAddress = response.data.result;
-        axios.get(`${LOCAL_PY_URL}generate_keys`).then((response) => {
+        log.info(`BC data result ${bcAddress}`);
+        axios.get(`${LOCAL_PY_URL}get_keys`).then((response) => {
             const publicKeyBuff = fs.readFileSync(path.join(process.cwd(), response.data.public));
             const pastelIdAddress = bs58.encode(publicKeyBuff);
+            log.info(`BC data result2 ${pastelIdAddress}`);
+            log.info(`BC data result2-1 ${response.data.public}`);
             win.webContents.send('blockchainDataResponse', {
                 status: RESPONSE_STATUS_OK,
                 address: bcAddress,
