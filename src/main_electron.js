@@ -45,7 +45,7 @@ const createPyProc = () => {
     let script = getScriptPath();
     let port = pyPort;
     if (process.defaultApp) {
-        pyProc = require('child_process').execFile('python', [script, path.join(process.resourcesPath, '..', '..')]);
+        pyProc = require('child_process').execFile('python', [script, process.cwd()]);
     } else {
         pyProc = require('child_process').execFile(script, [path.join(process.resourcesPath, '..', '..')], (error, stdout, stderr) => {
             log.error(`[wallet_api.py] Error: ${error}`);
@@ -126,7 +126,7 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
         const bcAddress = response.data.result;
         log.info(`BC data result ${bcAddress}`);
         axios.get(`${LOCAL_PY_URL}get_keys`).then((response) => {
-            const publicKeyBuff = fs.readFileSync(path.join(process.cwd(), response.data.public));
+            const publicKeyBuff = fs.readFileSync(response.data.public);
             const pastelIdAddress = bs58.encode(publicKeyBuff);
             log.info(`BC data result2 ${pastelIdAddress}`);
             log.info(`BC data result2-1 ${response.data.public}`);
