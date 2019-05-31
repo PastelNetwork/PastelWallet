@@ -63,7 +63,16 @@ const createPyProc = () => {
     if (process.defaultApp) {
         pyProc = require('child_process').execFile('python', [script, process.cwd()]);
     } else {
-        pyProc = require('child_process').execFile(script, [path.join(process.resourcesPath, '..', '..')], (error, stdout, stderr) => {
+        let appPath;
+        switch (process.platform) {
+            case "linux":
+               appPath = path.join(process.resourcesPath, '..');
+               break;
+            default:
+                appPath = path.join(process.resourcesPath, '..','..');
+                break;
+        }
+        pyProc = require('child_process').execFile(script, [appPath], (error, stdout, stderr) => {
             log.error(`[wallet_api.py] Error: ${error}`);
             log.info(`[wallet_api.py] Stdout: ${stdout}`);
             log.warn(`[wallet_api.py] Stderr: ${stderr}`);
@@ -199,8 +208,8 @@ function createWindow() {
     if (process.defaultApp) {
         win.loadURL('http://localhost:3000/');
         win.webContents.openDevTools();
-        BrowserWindow.addDevToolsExtension(
-            '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
+        // BrowserWindow.addDevToolsExtension(
+        //     '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
     } else {
         win.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
     }
