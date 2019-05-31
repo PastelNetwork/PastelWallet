@@ -30,3 +30,5 @@ private.key
 python_interface/keys
 
 keys
+pasteld_binary/pasteld
+pasteld_binary/main.cpp
