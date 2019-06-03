@@ -106,6 +106,11 @@ export const setBlockchainData = (value) => ({
     value
 });
 
+export const setBalance = (value) => ({
+    type: actionTypes.SET_BALANCE,
+    value
+});
+
 export const setImageRegFormError = (value) => ({
     type: actionTypes.SET_IMAGE_REGISTER_FORM_ERROR,
     value

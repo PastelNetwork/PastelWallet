@@ -38,7 +38,8 @@ export const initialState = {
     address: null,
     pastelID: 'taksa',
     blockchainData: {address: null, pastelID: null},
-    leftMenuShow: false
+    leftMenuShow: false,
+    balance: null
 };
 const token = localStorage.getItem('token');
 const defaultStore = {...initialState, token};

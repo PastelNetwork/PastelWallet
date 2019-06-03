@@ -30,6 +30,8 @@ const reducer  = (state = {}, action) => {
             return {...state, regFormFee: action.value};
         case actionTypes.SET_BLOCKCHAIN_DATA:
             return {...state, blockchainData: action.value};
+        case actionTypes.SET_BALANCE:
+            return {...state, balance: action.value};
         case actionTypes.SWITCH_LEFT_MENU:
             return {...state, leftMenuShow: !state.leftMenuShow};
         case actionTypes.RESET_STORE:

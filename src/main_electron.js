@@ -66,10 +66,10 @@ const createPyProc = () => {
         let appPath;
         switch (process.platform) {
             case "linux":
-               appPath = path.join(process.resourcesPath, '..');
-               break;
+                appPath = path.join(process.resourcesPath, '..');
+                break;
             default:
-                appPath = path.join(process.resourcesPath, '..','..');
+                appPath = path.join(process.resourcesPath, '..', '..');
                 break;
         }
         pyProc = require('child_process').execFile(script, [appPath], (error, stdout, stderr) => {
@@ -109,7 +109,9 @@ const checkAndRunPastelD = () => {
 
 const cleanUp = () => {
     pyProc.kill();
-    pastelProc.kill()
+    if (pastelProc) {
+        pastelProc.kill();
+    }
     pastelProc = null;
     pyProc = null;
 };
@@ -169,6 +171,20 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
     });
 });
 
+ipcMain.on('getBalanceRequest', (event, arg) => {
+    return callRpcMethod(GETBALANCE_COMMAND).then((response) => {
+        const balance = response.data.result;
+        win.webContents.send('getBalanceResponse', {
+            status: RESPONSE_STATUS_OK,
+            balance
+        })
+    }).catch((err) => {
+        win.webContents.send('getBalanceResponse', {
+            status: RESPONSE_STATUS_ERROR,
+            msg: `Error accessing local cNode: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
+        })
+    });
+});
 
 ipcMain.on('blockchainDataRequest', (event, arg) => {
     return callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND).then((response) => {

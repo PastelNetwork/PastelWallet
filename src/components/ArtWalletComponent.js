@@ -5,7 +5,7 @@ import {LeftDummy, LeftMenu} from "./common/LeftMenuComponent";
 import axios from 'axios';
 import {store} from '../app';
 import history from '../history';
-import {setBlockchainAddress, setBlockchainData, setPastelAddress} from "../actions";
+import {setBalance, setBlockchainAddress, setBlockchainData, setPastelAddress} from "../actions";
 import {HeaderContainer} from "../containers/HeaderContainer";
 import {RESPONSE_STATUS_OK} from "../constants";
 
@@ -22,6 +22,17 @@ ipcRenderer.on('blockchainDataResponse', (event, data) => {
     }
 });
 
+ipcRenderer.on('getBalanceResponse', (event, data) => {
+    if (data.status === RESPONSE_STATUS_OK) {
+        store.dispatch(setBalance(data.balance));
+    } else {
+        // if error - try until service will start
+        setTimeout(() => {
+            ipcRenderer.send('getBalanceResponse', {})
+        }, 1000);
+    }
+});
+
 
 export class ArtWallet extends Component {
     constructor(props) {
@@ -35,6 +46,7 @@ export class ArtWallet extends Component {
     componentDidMount() {
         document.title = 'Pastel wallet';
         ipcRenderer.send('blockchainDataRequest', {});
+        ipcRenderer.send('getBalanceRequest', {});
     }
 
     onUploadClick = () => {
@@ -58,6 +70,7 @@ export class ArtWallet extends Component {
 
     render() {
         const mainPageClass = this.props.leftMenuShow ? "main-page flex-col menu-expanded" : "main-page flex-col";
+        console.log(this.props.balance);
         return <React.Fragment>
             <HeaderContainer/>
             <FlexRow>
@@ -66,6 +79,14 @@ export class ArtWallet extends Component {
                 <div className={mainPageClass}>
                     <section className="flex-row wrap">
                         <div className="flex-col half addreses">
+                            <div className="pl-1 pt-1">
+                                Balance
+                            </div>
+                            <div className="pl-1 pt-0_5 bc-address">
+                                <div className="framed">
+                                    {this.props.balance === null ? 'Loading...' : + this.props.balance + ' PSL'}
+                                </div>
+                            </div>
                             <div className="pl-1 pt-1">
                                 My wallet address
                             </div>
