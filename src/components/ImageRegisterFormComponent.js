@@ -66,6 +66,7 @@ export class ImageRegisterForm extends Component {
     };
 
     render() {
+        // TODO: wrap into MainWrapperContainer
         return <React.Fragment>
             <HeaderContainer/>
             <FlexRow>

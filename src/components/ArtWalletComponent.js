@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import '../styles.scss';
-import {FlexRow} from "./common/FlexRowComponent";
-import {LeftDummy, LeftMenu} from "./common/LeftMenuComponent";
-import axios from 'axios';
 import {store} from '../app';
 import history from '../history';
 import {setBalance, setBlockchainAddress, setBlockchainData, setPastelAddress} from "../actions";
-import {HeaderContainer} from "../containers/HeaderContainer";
 import {RESPONSE_STATUS_OK} from "../constants";
+import {MainWrapperContainer} from "../containers/MainWrapperContainer";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -70,75 +67,67 @@ export class ArtWallet extends Component {
 
     render() {
         const mainPageClass = this.props.leftMenuShow ? "main-page flex-col menu-expanded" : "main-page flex-col";
-        console.log(this.props.balance);
-        return <React.Fragment>
-            <HeaderContainer/>
-            <FlexRow>
-                <LeftDummy show={this.props.leftMenuShow}/>
-                <LeftMenu show={this.props.leftMenuShow}/>
-                <div className={mainPageClass}>
-                    <section className="flex-row wrap">
-                        <div className="flex-col half addreses">
-                            <div className="pl-1 pt-1">
-                                Balance
-                            </div>
-                            <div className="pl-1 pt-0_5 bc-address">
-                                <div className="framed">
-                                    {this.props.balance === null ? 'Loading...' : + this.props.balance + ' PSL'}
-                                </div>
-                            </div>
-                            <div className="pl-1 pt-1">
-                                My wallet address
-                            </div>
-                            <div className="pl-1 pt-0_5 bc-address">
-                                <div className="framed">
-                                    {this.props.address || 'Loading...'}
-                                </div>
-                            </div>
-                            <div className="pl-1 pt-1">
-                                My Pastel ID
-                            </div>
-                            <div className="pl-1 pt-0_5 bc-address">
-                                <div className="framed">
-                                    {this.props.pastelID || 'Loading...'}
-                                </div>
-                            </div>
+        return <MainWrapperContainer>
+            <section className="flex-row wrap">
+                <div className="flex-col half addreses">
+                    <div className="pl-1 pt-1">
+                        Balance
+                    </div>
+                    <div className="pl-1 pt-0_5 bc-address">
+                        <div className="framed">
+                            {this.props.balance === null ? 'Loading...' : +this.props.balance + ' PSL'}
                         </div>
-                        <div className="half flex-centered">
-                            <div className="p-1">
-                                <img src="https://i.pravatar.cc/200" alt="profile pic" className="avagar-pic"/>
-                            </div>
-
+                    </div>
+                    <div className="pl-1 pt-1">
+                        My wallet address
+                    </div>
+                    <div className="pl-1 pt-0_5 bc-address">
+                        <div className="framed">
+                            {this.props.address || 'Loading...'}
                         </div>
-                    </section>
-                    <section className="flex-col">
-                        <div className="flex-centered">
-                            <h2>Artworks</h2>
+                    </div>
+                    <div className="pl-1 pt-1">
+                        My Pastel ID
+                    </div>
+                    <div className="pl-1 pt-0_5 bc-address">
+                        <div className="framed">
+                            {this.props.pastelID || 'Loading...'}
                         </div>
-                        <div className="wrap flex-row">
-                            <div className="artwork-container p-1">
-                                <div className="upload-btn flex-centered flex-row" onClick={this.onUploadClick}>
-                                    <div className="flex-centered flex-col">
-                                        <i className="fa fa-plus"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="artwork-container p-1">
-                                <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
-                            </div>
-                            <div className="artwork-container p-1">
-                                <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
-                            </div>
-                            <div className="artwork-container p-1">
-                                <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
-                            </div>
-                            <div className="artwork-container p-1">
-                                <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
-                            </div>
-                        </div>
-                    </section>
+                    </div>
                 </div>
-            </FlexRow>
-        </React.Fragment>
+                <div className="half flex-centered">
+                    <div className="p-1">
+                        <img src="https://i.pravatar.cc/200" alt="profile pic" className="avagar-pic"/>
+                    </div>
+
+                </div>
+            </section>
+            <section className="flex-col">
+                <div className="flex-centered">
+                    <h2>Artworks</h2>
+                </div>
+                <div className="wrap flex-row">
+                    <div className="artwork-container p-1">
+                        <div className="upload-btn flex-centered flex-row" onClick={this.onUploadClick}>
+                            <div className="flex-centered flex-col">
+                                <i className="fa fa-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="artwork-container p-1">
+                        <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
+                    </div>
+                    <div className="artwork-container p-1">
+                        <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
+                    </div>
+                    <div className="artwork-container p-1">
+                        <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
+                    </div>
+                    <div className="artwork-container p-1">
+                        <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
+                    </div>
+                </div>
+            </section>
+        </MainWrapperContainer>;
     }
 }
