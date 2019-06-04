@@ -6,6 +6,7 @@ import {HeaderContainer} from "../containers/HeaderContainer";
 import {store} from "../app";
 import {setImageRegFormError, setImageRegFormRegFee, setRegFee} from "../actions";
 import {RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK} from "../constants";
+import {MainWrapperContainer} from "../containers/MainWrapperContainer";
 const ipcRenderer = window.require('electron').ipcRenderer;
 
 ipcRenderer.on('imageRegFormSubmitResponse', (event, data) => {
@@ -67,12 +68,7 @@ export class ImageRegisterForm extends Component {
 
     render() {
         // TODO: wrap into MainWrapperContainer
-        return <React.Fragment>
-            <HeaderContainer/>
-            <FlexRow>
-                <LeftDummy show={this.props.leftMenuShow}/>
-                <LeftMenu show={this.props.leftMenuShow}/>
-                <div className="main-page flex-col">
+        return <MainWrapperContainer>
                     <section className="flex-col pt-3 pb-2 wrap">
                         <form>
                             <input type="text" className="image-register-input" placeholder="Art name" name="artName"
@@ -115,8 +111,6 @@ export class ImageRegisterForm extends Component {
 
                         </form>
                     </section>
-                </div>
-            </FlexRow>
-        </React.Fragment>
+        </MainWrapperContainer>;
     }
 }

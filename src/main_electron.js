@@ -13,6 +13,7 @@ const RESPONSE_STATUS_OK = 'OK';
 const RESPONSE_STATUS_ERROR = 'ERROR';
 const GETBALANCE_COMMAND = 'getbalance';
 const GET_ACCOUNT_ADDRESS_COMMAND = 'getaccountaddress';
+const SEND_TO_ADDRESS_COMMAND = 'sendtoaddress';
 const LOCAL_PY_URL = 'http://127.0.0.1:5000/';
 
 /*************************************************************
@@ -173,6 +174,21 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
 
 ipcMain.on('getBalanceRequest', (event, arg) => {
     return callRpcMethod(GETBALANCE_COMMAND).then((response) => {
+        const balance = response.data.result;
+        win.webContents.send('getBalanceResponse', {
+            status: RESPONSE_STATUS_OK,
+            balance
+        })
+    }).catch((err) => {
+        win.webContents.send('getBalanceResponse', {
+            status: RESPONSE_STATUS_ERROR,
+            msg: `Error accessing local cNode: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
+        })
+    });
+});
+
+ipcMain.on('sendPSLRequest', (event, arg) => {
+    return callRpcMethod(SEND_TO_ADDRESS_COMMAND).then((response) => {
         const balance = response.data.result;
         win.webContents.send('getBalanceResponse', {
             status: RESPONSE_STATUS_OK,
