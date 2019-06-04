@@ -122,13 +122,13 @@ app.on('ready', checkAndRunPastelD);
 app.on('will-quit', cleanUp);
 
 
-const callRpcMethod = (method) => {
+const callRpcMethod = (method, params) => {
     // return Promise
     return axios.post('http://localhost:19932', {
         "jsonrpc": "1.0",
         "id": "curltest",
         "method": method,
-        "params": [""]
+        "params": params ? params : [""]
     }, {
         headers: {
             'Content-Type': 'text/plain'
@@ -188,16 +188,18 @@ ipcMain.on('getBalanceRequest', (event, arg) => {
 });
 
 ipcMain.on('sendPSLRequest', (event, arg) => {
-    return callRpcMethod(SEND_TO_ADDRESS_COMMAND).then((response) => {
-        const balance = response.data.result;
-        win.webContents.send('getBalanceResponse', {
+    log.info(`Send PSL request received to ${arg.address} for ${arg.amount} PSL`);
+    return callRpcMethod(SEND_TO_ADDRESS_COMMAND, [arg.address, arg.amount]).then((response) => {
+        log.warn('PSL sent ok');
+        win.webContents.send('sendPSLResponse', {
             status: RESPONSE_STATUS_OK,
-            balance
+            msg: 'Funds succesfully sent'
         })
     }).catch((err) => {
-        win.webContents.send('getBalanceResponse', {
+        log.warn('PSL sent error');
+        win.webContents.send('sendPSLResponse', {
             status: RESPONSE_STATUS_ERROR,
-            msg: `Error accessing local cNode: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
+            msg: `Error send PSL`
         })
     });
 });

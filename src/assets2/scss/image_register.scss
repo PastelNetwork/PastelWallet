@@ -4,7 +4,7 @@ $input-border: #BDBDBD;
 $input-font-color: #616161;
 $register-btn-bg: #0275D8;
 
-.image-register-input {
+.image-register-input, .psl-send-input {
   border: 1px solid $input-border;
   border-radius: 5px;
   padding: 15px;
@@ -16,7 +16,7 @@ $register-btn-bg: #0275D8;
   font-size: larger;
 }
 
-.register-button {
+.register-button, .send-psl-button {
   @extend %flat-button;
   background-color: $left-menu-blue;
   font-family: $arimo;
