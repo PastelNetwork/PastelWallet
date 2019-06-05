@@ -196,10 +196,10 @@ ipcMain.on('sendPSLRequest', (event, arg) => {
             msg: 'Funds succesfully sent'
         })
     }).catch((err) => {
-        log.warn('PSL sent error');
+        log.warn(`PSL sent error: ${err.response.data.error.message}`);
         win.webContents.send('sendPSLResponse', {
             status: RESPONSE_STATUS_ERROR,
-            msg: `Error send PSL`
+            msg: err.response.data.error.message
         })
     });
 });

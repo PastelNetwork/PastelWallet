@@ -9,6 +9,7 @@ import * as ajaxEntities from './ajaxEntities';
 import 'font-awesome/css/font-awesome.css';
 import Main from "./components/MainComponent";
 import history from './history';
+import {RESPONSE_STATUS_OK} from "./constants";
 
 
 let defaultAjaxInProgress = Object.getOwnPropertyNames(ajaxEntities).filter(a => a !== '__esModule').reduce((acc, curr) => {
@@ -29,6 +30,8 @@ export const defaultDetailsToEdit = {
     phone: ''
 };
 
+export const defaultSendPslStatusData = {status: null, msg: ''};
+
 export const initialState = {
     token: '',
     ajaxInProgress: defaultAjaxInProgress,
@@ -39,7 +42,8 @@ export const initialState = {
     pastelID: 'taksa',
     blockchainData: {address: null, pastelID: null},
     leftMenuShow: false,
-    balance: null
+    balance: null,
+    sendPslStatusData: defaultSendPslStatusData
 };
 const token = localStorage.getItem('token');
 const defaultStore = {...initialState, token};

@@ -3,6 +3,7 @@ import {SendPSL} from "../components/SendPSL";
 
 
 const mapStateToProps = state => ({
+    sendPslStatusData: state.sendPslStatusData
 });
 
 const mapDispatchToProps = dispatch => ({

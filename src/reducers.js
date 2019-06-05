@@ -34,6 +34,8 @@ const reducer  = (state = {}, action) => {
             return {...state, balance: action.value};
         case actionTypes.SWITCH_LEFT_MENU:
             return {...state, leftMenuShow: !state.leftMenuShow};
+        case actionTypes.SET_SEND_PSL_SEND_STATUS_DATA:
+            return {...state, sendPslStatusData: action.value};
         case actionTypes.RESET_STORE:
             return {...initialState};
         default:
