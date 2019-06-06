@@ -2,9 +2,13 @@ import React, {Component} from 'react';
 import '../styles.scss';
 import {store} from '../app';
 import history from '../history';
-import {setBalance, setBlockchainAddress, setBlockchainData, setPastelAddress} from "../actions";
+import {setBalance, setBlockchainData} from "../actions";
 import {RESPONSE_STATUS_OK} from "../constants";
+import * as PastelLogo from '../assets2/image/pastel_logo.png';
+import '../assets/scss/core.scss';
+import '../assets/scss/custom.scss';
 import {MainWrapperContainer} from "../containers/MainWrapperContainer";
+import 'bulma/bulma.sass';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -67,67 +71,60 @@ export class ArtWallet extends Component {
 
     render() {
         const mainPageClass = this.props.leftMenuShow ? "main-page flex-col menu-expanded" : "main-page flex-col";
-        return <MainWrapperContainer>
-            <section className="flex-row wrap">
-                <div className="flex-col half addreses">
-                    <div className="pl-1 pt-1">
-                        Balance
-                    </div>
-                    <div className="pl-1 pt-0_5 bc-address">
-                        <div className="framed">
-                            {this.props.balance === null ? 'Loading...' : +this.props.balance + ' PSL'}
-                        </div>
-                    </div>
-                    <div className="pl-1 pt-1">
-                        My wallet address
-                    </div>
-                    <div className="pl-1 pt-0_5 bc-address">
-                        <div className="framed">
-                            {this.props.address || 'Loading...'}
-                        </div>
-                    </div>
-                    <div className="pl-1 pt-1">
-                        My Pastel ID
-                    </div>
-                    <div className="pl-1 pt-0_5 bc-address">
-                        <div className="framed">
-                            {this.props.pastelID || 'Loading...'}
-                        </div>
-                    </div>
-                </div>
-                <div className="half flex-centered">
-                    <div className="p-1">
-                        <img src="https://i.pravatar.cc/200" alt="profile pic" className="avagar-pic"/>
-                    </div>
+        return <div className="section">
+            <div className="container">
+                <div className="columns account-header">
+                    <div className="column is-10 is-offset-1 is-tablet-landscape-padded">
 
-                </div>
-            </section>
-            <section className="flex-col">
-                <div className="flex-centered">
-                    <h2>Artworks</h2>
-                </div>
-                <div className="wrap flex-row">
-                    <div className="artwork-container p-1">
-                        <div className="upload-btn flex-centered flex-row" onClick={this.onUploadClick}>
-                            <div className="flex-centered flex-col">
-                                <i className="fa fa-plus"></i>
+                        <div className="account-title">
+                            <img className="brand-filigrane" src={PastelLogo} alt=""/>
+                        </div>
+
+                        <div className="columns is-account-grid is-multiline">
+
+
+
+                            <div className="column is-7">
+                                <div className="flat-card profile-info-card is-auto">
+
+                                    <div className="card-title">
+                                        <h3>Balances</h3>
+                                    </div>
+
+                                    <div className="card-body">
+                                        <div className="columns">
+                                            <div className="column balance-col">
+                                                {this.props.balance} PSL
+                                            </div>
+                                            <div className="column balance-col">
+                                                {this.props.artworks} Artworks
+                                            </div>
+                                            <div className="column balance-col">
+                                                {this.props.masternodes} Masternodes
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            <div className="column is-5">
+
+                                <div className="flat-card profile-card is-auto">
+                                    <div className="card-body">
+                                        <div className="profile-image">
+                                            <img src="http://via.placeholder.com/250x250" alt=""/>
+                                        </div>
+                                        <div className="username has-text-centered">
+                                            <span>Elie Daniels</span>
+                                            <small>Member since Sep 23 2017</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                    <div className="artwork-container p-1">
-                        <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
-                    </div>
-                    <div className="artwork-container p-1">
-                        <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
-                    </div>
-                    <div className="artwork-container p-1">
-                        <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
-                    </div>
-                    <div className="artwork-container p-1">
-                        <img src="https://via.placeholder.com/150" alt="artwork" className="artwork-img"/>
-                    </div>
                 </div>
-            </section>
-        </MainWrapperContainer>;
+            </div>
+        </div>;
     }
 }

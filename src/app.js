@@ -43,7 +43,9 @@ export const initialState = {
     blockchainData: {address: null, pastelID: null},
     leftMenuShow: false,
     balance: null,
-    sendPslStatusData: defaultSendPslStatusData
+    sendPslStatusData: defaultSendPslStatusData,
+    artworks: 16, // TODO: fetch amount of artworks from pastel network when backend is ready
+    masternodes: 2 // TODO: fetch amount of masternodes from pastel network when backend is ready
 };
 const token = localStorage.getItem('token');
 const defaultStore = {...initialState, token};

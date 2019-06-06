@@ -6,7 +6,9 @@ const mapStateToProps = state => ({
     address: state.blockchainData.address,
     pastelID: state.blockchainData.pastelID,
     leftMenuShow: state.leftMenuShow,
-    balance: state.balance
+    balance: state.balance,
+    artworks: state.artworks,
+    masternodes: state.masternodes
 });
 
 const mapDispatchToProps = dispatch => ({
