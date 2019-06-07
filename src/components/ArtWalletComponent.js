@@ -12,7 +12,7 @@ import {MainWrapperContainer} from "../containers/MainWrapperContainer";
 import 'bulma/bulma.sass';
 import {BalancesContainer} from "../containers/dashboard/BalancesContainer";
 import {Profile} from "./dashboard/ProfileComponent";
-import * as Feather from 'react-feather';
+import {SideBar} from "./common/SideBarComponent";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -76,56 +76,9 @@ export class ArtWallet extends Component {
     render() {
         const mainPageClass = this.props.leftMenuShow ? "main-page flex-col menu-expanded" : "main-page flex-col";
         return <React.Fragment>
-            <div className="main-sidebar">
-                <div className="sidebar-brand">
-                    <a href="pastel-.html"><img src={PastelFavicon} alt=""/></a>
-                </div>
-                <div className="sidebar-inner">
-                    <ul className="icon-menu">
-                        <li>
-                            <a href="javascript:void(0);" id="open-shop" className="has-popover-top"
-                               data-placement="right">
-                                <Feather.User/>
-                            </a>
-                        </li>
-                        <li className=" ">
-                            <a href="/pastel-wallet" className="has-popover-top" data-placement="right">
-                                <Feather.Folder/>
-                            </a>
-                        </li>
+            <SideBar/>
 
-                        <li className="">
-                            <a href="pastel-categories.html" className="has-popover-top" data-placement="right">
-                                <Feather.Grid/>
-                            </a>
-                        </li>
-                        
-                        <li className="">
-                            <a href="pastel-sell.html" className="has-popover-top" data-placement="right">
-                                <Feather.UploadCloud/>
-                            </a>
-                        </li>
-                        <li className="">
-                            <a href="pastel-masternodes.html" className="has-popover-top" data-placement="right">
-                                <Feather.Layers/>
-                            </a>
-                        </li>
-                        
-                        <li className="is-hidden-desktop is-hidden-tablet">
-                            <a href="javascript:void(0);" id="mobile-mode"><i data-feather="smartphone"></i></a>
-                        </li>
-                    </ul>
-                    
-                    <ul className="bottom-menu is-hidden-mobile">
-                        <li>
-                            <a href="authentication.html"><i data-feather="log-out"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-
-            <div className="section">
+            <div className="section main-wrapper">
                 <div className="container">
                     <div className="columns account-header">
                         <div className="column is-10 is-offset-1 is-tablet-landscape-padded">
