@@ -3,6 +3,7 @@
 /* ==========================================================================
 Nephos/CSS Ninja theme customization
 ========================================================================== */
+@import 'partials/colors';
 
 .account-title {
   margin-bottom: 5rem;
@@ -14,4 +15,16 @@ Nephos/CSS Ninja theme customization
 
 .main-wrapper {
   padding-left: 7em !important;
+}
+
+.expandable-header {
+  justify-content: normal !important;
+  padding-left: 5px !important;
+  color: $muted-grey-bold;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.break-all {
+  word-break: break-all;
 }

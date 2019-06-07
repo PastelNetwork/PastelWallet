@@ -5,7 +5,9 @@ import {Balances} from "../../components/dashboard/BalancesComponent";
 const mapStateToProps = state => ({
     balance: state.balance,
     artworks: state.artworks,
-    masternodes: state.masternodes
+    masternodes: state.masternodes,
+    address: state.blockchainData.address,
+    pastelID: state.blockchainData.pastelID
 });
 
 const mapDispatchToProps = dispatch => ({

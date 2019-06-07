@@ -43,17 +43,6 @@ class SideBarWithoutRouter extends Component {
                     <LeftMenuPoint active={path==="/layers"} onClick={() => history.push('/layers')}>
                         <Feather.Layers/>
                     </LeftMenuPoint>
-
-
-                    <li className="is-hidden-desktop is-hidden-tablet">
-                        <a href="javascript:void(0);" id="mobile-mode"><i data-feather="smartphone"></i></a>
-                    </li>
-                </ul>
-
-                <ul className="bottom-menu is-hidden-mobile">
-                    <li>
-                        <a href="authentication.html"><i data-feather="log-out"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>;

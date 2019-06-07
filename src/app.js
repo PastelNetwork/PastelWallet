@@ -38,8 +38,6 @@ export const initialState = {
     userProfile: null,
     profileEditMode: defaultProfileEditMode,
     detailsToEdit: defaultDetailsToEdit,
-    address: null,
-    pastelID: 'taksa',
     blockchainData: {address: null, pastelID: null},
     leftMenuShow: false,
     balance: null,
