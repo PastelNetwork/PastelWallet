@@ -5,7 +5,6 @@ import {ArtWallet} from "../components/ArtWalletComponent";
 const mapStateToProps = state => ({
     address: state.blockchainData.address,
     pastelID: state.blockchainData.pastelID,
-    leftMenuShow: state.leftMenuShow,
     balance: state.balance,
     artworks: state.artworks,
     masternodes: state.masternodes

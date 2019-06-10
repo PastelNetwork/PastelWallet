@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {MainWrapperContainer} from "../containers/MainWrapperContainer";
 import {RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK} from "../constants";
 import {defaultSendPslStatusData, store} from "../app";
 import {setPSLSendStatusData} from "../actions";
+import {MainWrapper} from "./MainWrapperComponent";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -42,21 +42,19 @@ export class SendPSL extends Component {
             className={`send-psl-status-msg ${statusClassName}`}>
             {this.props.sendPslStatusData.msg}
         </div>;
-        return <MainWrapperContainer>
-            <section className="flex-col pt-3 pb-2 wrap">
-                <form>
-                    <input type="text" className="psl-send-input" placeholder="Address" name="address"
-                           value={this.state.address} onChange={this.onChange}
-                    />
-                    <input type="number" step="0.0001" className="psl-send-input" placeholder="Amount, PSL"
-                           value={this.state.amount} name="amount" onChange={this.onChange}
-                    />
-                    {infoBlock}
-                    <div className="flex-centered">
-                        <button className="send-psl-button" onClick={this.onClick}>Send</button>
-                    </div>
-                </form>
-            </section>
-        </MainWrapperContainer>;
+        return <MainWrapper>
+            <form>
+                <input type="text" className="psl-send-input" placeholder="Address" name="address"
+                       value={this.state.address} onChange={this.onChange}
+                />
+                <input type="number" step="0.0001" className="psl-send-input" placeholder="Amount, PSL"
+                       value={this.state.amount} name="amount" onChange={this.onChange}
+                />
+                {infoBlock}
+                <div className="flex-centered">
+                    <button className="send-psl-button" onClick={this.onClick}>Send</button>
+                </div>
+            </form>
+        </MainWrapper>;
     }
 }

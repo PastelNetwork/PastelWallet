@@ -1,18 +1,18 @@
 import React from "react";
-import {HeaderContainer} from "../containers/HeaderContainer";
-import {FlexRow} from "./common/FlexRowComponent";
-import {LeftDummy, LeftMenu} from "./common/LeftMenuComponent";
+import * as PastelLogo from "../assets2/image/pastel_logo.png";
 
 export const MainWrapper = (props) => {
-    const mainPageClass = props.leftMenuShow ? "main-page flex-col menu-expanded" : "main-page flex-col";
-    return <React.Fragment>
-        <HeaderContainer/>
-        <FlexRow>
-            <LeftDummy show={props.leftMenuShow}/>
-            <LeftMenu show={props.leftMenuShow}/>
-            <div className={mainPageClass}>
-                {props.children}
+    return <div className="section main-wrapper">
+        <div className="container">
+            <div className="columns account-header">
+                <div className="column is-10 is-offset-1 is-tablet-landscape-padded">
+
+                    <div className="account-title">
+                        <img className="brand-filigrane" src={PastelLogo} alt=""/>
+                    </div>
+                    {props.children}
+                </div>
             </div>
-        </FlexRow>
-    </React.Fragment>
+        </div>
+    </div>;
 };

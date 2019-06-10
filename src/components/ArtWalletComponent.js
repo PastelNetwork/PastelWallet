@@ -8,11 +8,11 @@ import * as PastelLogo from '../assets2/image/pastel_logo.png';
 import * as PastelFavicon from '../assets/images/favicon.png';
 import '../assets/scss/core.scss';
 import '../assets/scss/custom.scss';
-import {MainWrapperContainer} from "../containers/MainWrapperContainer";
 import 'bulma/bulma.sass';
 import {BalancesContainer} from "../containers/dashboard/BalancesContainer";
 import {Profile} from "./dashboard/ProfileComponent";
 import {SideBar} from "./common/SideBarComponent";
+import {MainWrapper} from "./MainWrapperComponent";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -74,27 +74,11 @@ export class ArtWallet extends Component {
     };
 
     render() {
-        const mainPageClass = this.props.leftMenuShow ? "main-page flex-col menu-expanded" : "main-page flex-col";
-        return <React.Fragment>
-            <SideBar/>
-
-            <div className="section main-wrapper">
-                <div className="container">
-                    <div className="columns account-header">
-                        <div className="column is-10 is-offset-1 is-tablet-landscape-padded">
-
-                            <div className="account-title">
-                                <img className="brand-filigrane" src={PastelLogo} alt=""/>
-                            </div>
-
-                            <div className="columns is-account-grid is-multiline">
-                                <BalancesContainer/>
-                                <Profile/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        return <MainWrapper>
+            <div className="columns is-account-grid is-multiline">
+                <BalancesContainer/>
+                <Profile/>
             </div>
-        </React.Fragment>;
+        </MainWrapper>;
     }
 }

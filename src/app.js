@@ -39,7 +39,6 @@ export const initialState = {
     profileEditMode: defaultProfileEditMode,
     detailsToEdit: defaultDetailsToEdit,
     blockchainData: {address: null, pastelID: null},
-    leftMenuShow: false,
     balance: null,
     sendPslStatusData: defaultSendPslStatusData,
     artworks: 16, // TODO: fetch amount of artworks from pastel network when backend is ready

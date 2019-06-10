@@ -4,8 +4,7 @@ import {ImageRegisterForm} from "../components/ImageRegisterFormComponent";
 
 const mapStateToProps = state => ({
     regFormError: state.regFormError,
-    regFormFee: state.regFormFee,
-    leftMenuShow: state.leftMenuShow
+    regFormFee: state.regFormFee
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -121,10 +121,6 @@ export const setImageRegFormRegFee = (value) => ({
     value
 });
 
-export const switchLeftMenu = () => ({
-    type: actionTypes.SWITCH_LEFT_MENU
-});
-
 export const setPSLSendStatusData = (value) => ({
     type: actionTypes.SET_SEND_PSL_SEND_STATUS_DATA,
     value

@@ -32,13 +32,15 @@ class SideBarWithoutRouter extends Component {
                         <Feather.User/>
                     </LeftMenuPoint>
                     <LeftMenuPoint active={path==="/send_psl"} onClick={() => history.push('/send_psl')}>
-                        <Feather.Folder/>
+                        <Feather.DollarSign/>
                     </LeftMenuPoint>
+                    <LeftMenuPoint active={path==="/register"} onClick={() => history.push('/register')}>
+                        <Feather.Plus/>
+                    </LeftMenuPoint>
+
+
                     <LeftMenuPoint active={path==="/grid"} onClick={() => history.push('/grid')}>
                         <Feather.Grid/>
-                    </LeftMenuPoint>
-                    <LeftMenuPoint active={path==="/upload"} onClick={() => history.push('/upload')}>
-                        <Feather.UploadCloud/>
                     </LeftMenuPoint>
                     <LeftMenuPoint active={path==="/layers"} onClick={() => history.push('/layers')}>
                         <Feather.Layers/>
