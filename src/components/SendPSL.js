@@ -44,7 +44,7 @@ export class SendPSL extends Component {
         </div>;
 
         return <MainWrapper>
-            <div className="columns is-account-grid is-multiline">
+            <div className="columns is-multiline">
                 <div className="column">
                     <div className="flat-card profile-info-card is-auto">
 

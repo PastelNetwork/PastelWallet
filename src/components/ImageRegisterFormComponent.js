@@ -66,46 +66,88 @@ export class ImageRegisterForm extends Component {
 
     render() {
         return <MainWrapper>
-            <form>
-                <input type="text" className="image-register-input" placeholder="Art name" name="artName"
-                       value={this.state.artName} onChange={this.onChange}/>
-                <input type="number" className="image-register-input" placeholder="Number of copies"
-                       name="numCopies" value={this.state.numCopies} onChange={this.onChange}/>
-                <input type="number" className="image-register-input" placeholder="Price of the copy, PSL"
-                       name="copyPrice" value={this.state.copyPrice} onChange={this.onChange}/>
+            <div className="columns is-multiline">
+                <div className="column">
+                    <div className="flat-card profile-info-card is-auto">
 
-                <div className="image-register-input">
-                    <div className={this.state.file ? '' : 'display-none'}>
-                        <div className="flex-row flex-centered">
-                            <img src={this.state.file} className="img-preview pb-1" alt=""/>
+                        <div className="card-title">
+                            <h3>Register image</h3>
                         </div>
-                    </div>
-                    <label htmlFor="idArtFile">Art file</label>
-                    <div>
-                        <input type="file" accept="image/*" placeholder="Taksa" id="idArtFile"
-                               onChange={this.onAddFile}/>
-                    </div>
-                </div>
-                <div className={this.props.regFormFee ? 'display-none' : ''}>
-                    <div className="flex-centered">
-                        <button className="register-button" onClick={this.onFormSubmit}>Register</button>
-                    </div>
-                    <div className="flex-centered">
-                        <div className={this.props.regFormError ? '' : 'display-none'}>
-                            <div>
-                                {this.props.regFormError}
+
+                        <div className="card-body send-psl-card-body">
+                            <div className="columns">
+                                <form className="send-psl-form">
+                                    <div className="info-block">
+                                        <span className="label-text">Art name</span>
+                                        <div className="control">
+                                            <input type="text" className="input is-default" name="artName"
+                                                   value={this.state.artName} onChange={this.onChange}/>
+                                        </div>
+                                    </div>
+                                    <div className="info-block">
+                                        <span className="label-text">Number of copies</span>
+                                        <div className="control">
+                                            <input type="number"
+                                                   value={this.state.numCopies} name="numCopies"
+                                                   onChange={this.onChange}
+                                                   className="input is-default"/>
+                                        </div>
+                                    </div>
+                                    <div className="info-block">
+                                        <span className="label-text">Price of the copy, PSL</span>
+                                        <div className="control">
+                                            <input type="number" step="0.0001"
+                                                   value={this.state.copyPrice} name="copyPrice"
+                                                   onChange={this.onChange}
+                                                   className="input is-default"/>
+                                        </div>
+                                    </div>
+                                    <div className="info-block">
+                                        <div className={this.state.file ? '' : 'display-none'}>
+                                            <div className="flex-row flex-centered">
+                                                <img src={this.state.file} className="img-preview pb-1" alt=""/>
+                                            </div>
+                                        </div>
+                                        <span className="label-text">Art file</span>
+                                        <div>
+                                            <input type="file" accept="image/*" placeholder="Taksa" id="idArtFile"
+                                                   onChange={this.onAddFile}/>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex-centered">
+                                        <div className={this.props.regFormFee ? 'display-none' : ''}>
+                                            <button
+                                                className="button
+                                            cart-button secondary-button upper-button rounded is-bold raised"
+                                                onClick={this.onFormSubmit}>
+                                                Register
+                                            </button>
+                                            <div className="flex-centered">
+                                                <div className={this.props.regFormError ? '' : 'display-none'}>
+                                                    <div>
+                                                        {this.props.regFormError}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className={this.props.regFormFee ? '' : 'display-none'}>
+                                            <div className="send-psl-status-msg">Registration fee: {this.props.regFormFee} PSL</div>
+                                            <button
+                                                className="button
+                                            cart-button secondary-button upper-button rounded is-bold raised"
+                                                onClick={this.onProceedClick}>
+                                                Proceed
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className={this.props.regFormFee ? '' : 'display-none'}>
-                    <div>Registration fee: {this.props.regFormFee}</div>
-                    <div className="flex-centered">
-                        <button className="register-button" onClick={this.onProceedClick}>Proceed</button>
-                    </div>
-                </div>
-
-            </form>
+            </div>
         </MainWrapper>;
     }
 }
