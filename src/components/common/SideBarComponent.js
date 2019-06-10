@@ -28,21 +28,22 @@ class SideBarWithoutRouter extends Component {
             </div>
             <div className="sidebar-inner">
                 <ul className="icon-menu">
-                    <LeftMenuPoint active={path==="/"} onClick={() => history.push('/')}>
+                    <LeftMenuPoint active={path === "/"} onClick={() => history.push('/')}>
                         <Feather.User/>
                     </LeftMenuPoint>
-                    <LeftMenuPoint active={path==="/send_psl"} onClick={() => history.push('/send_psl')}>
+                    <LeftMenuPoint active={path === "/send_psl"} onClick={() => history.push('/send_psl')}>
                         <Feather.DollarSign/>
                     </LeftMenuPoint>
-                    <LeftMenuPoint active={path==="/register"} onClick={() => history.push('/register')}>
+                    <LeftMenuPoint active={path === "/register"} onClick={() => history.push('/register')}>
                         <Feather.Plus/>
                     </LeftMenuPoint>
 
 
-                    <LeftMenuPoint active={path==="/grid"} onClick={() => history.push('/grid')}>
+                    {/*TODO: the following menu points are just placeholders*/}
+                    <LeftMenuPoint active={path === "/grid"} onClick={() => history.push('/grid')}>
                         <Feather.Grid/>
                     </LeftMenuPoint>
-                    <LeftMenuPoint active={path==="/layers"} onClick={() => history.push('/layers')}>
+                    <LeftMenuPoint active={path === "/layers"} onClick={() => history.push('/layers')}>
                         <Feather.Layers/>
                     </LeftMenuPoint>
                 </ul>

@@ -3,6 +3,7 @@ import '../styles.scss';
 import {store} from "../app";
 import {setImageRegFormError, setImageRegFormRegFee, setRegFee} from "../actions";
 import {RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK} from "../constants";
+import {MainWrapper} from "./MainWrapperComponent";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -64,7 +65,7 @@ export class ImageRegisterForm extends Component {
     };
 
     render() {
-        return <section className="flex-col pt-3 pb-2 wrap">
+        return <MainWrapper>
             <form>
                 <input type="text" className="image-register-input" placeholder="Art name" name="artName"
                        value={this.state.artName} onChange={this.onChange}/>
@@ -105,6 +106,6 @@ export class ImageRegisterForm extends Component {
                 </div>
 
             </form>
-        </section>;
+        </MainWrapper>;
     }
 }
