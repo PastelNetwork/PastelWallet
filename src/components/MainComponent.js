@@ -6,6 +6,7 @@ import {ArtWalletContainer} from "../containers/ArtWalletContainer";
 import {ImageRegisterFormContainer} from "../containers/ImageRegisterFormContainer";
 import {SendPSLContainer} from "../containers/SendPSLContainer";
 import {SideBar} from "./common/SideBarComponent";
+import {ProfileEdit} from "./ProfileEditComponent";
 
 const Main = (props) => {
     return <React.Fragment>
@@ -16,6 +17,7 @@ const Main = (props) => {
             <Route exact path='/register' component={ImageRegisterFormContainer}/>
             <Route path='/logout' component={LogoutContainer}/>
             <Route path='/user_profile2' component={UserProfileContainer}/>
+            <Route path='/user_profile' component={ProfileEdit}/>
             <Redirect to='/'/>
         </Switch>
     </React.Fragment>;

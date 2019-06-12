@@ -44,12 +44,15 @@ export class UserProfile extends Component {
     };
 
     render() {
-        if (!this.props.userProfile) {
-            this.props.dispatch(fetchUserProfile());
-            return null;
-        }
+        // if (!this.props.userProfile) {
+        //     this.props.dispatch(fetchUserProfile());
+        //     return null;
+        // }
         let nonFieldErrors = getRenderedErrors(this.state.errors.non_field_errors);
-        const picture = this.props.userProfile[constants.USER_PROFILE_FIELD_PICTURE];
+        // const picture = this.props.userProfile[constants.USER_PROFILE_FIELD_PICTURE];
+        const picture = 'https://i.pravatar.cc/200';
+        // const shortBio = this.props.userProfile[constants.USER_PROFILE_FIELD_BIO];
+        const shortBio = 'Short bio';
         return <Form>
             <FormGroup>
                 <Avatar
@@ -62,7 +65,7 @@ export class UserProfile extends Component {
             </FormGroup>
             <FormGroup>
                 <Input type="textarea" name="shortBio" id="idShortBio" placeholder="Short Bio"
-                       value={this.props.userProfile[constants.USER_PROFILE_FIELD_BIO]} onChange={this.chaingeBio}/>
+                       value={shortBio} onChange={this.chaingeBio}/>
             </FormGroup>
             {nonFieldErrors}
             <Button color="info" onClick={this.handleSubmit} className="float-right ml-4"
