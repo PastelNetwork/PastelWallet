@@ -5,9 +5,14 @@ import '../assets/scss/custom.scss';
 import 'bulma/bulma.sass';
 import {MainWrapper} from "./MainWrapperComponent";
 import * as Feather from 'react-feather';
+import axios from 'axios';
+import {changeUserProfile} from "../actions";
+import * as constants from "../constants";
+import * as settings from '../settings';
+import {connect} from "react-redux";
+import {ImageRegisterForm} from "./ImageRegisterFormComponent";
 
-
-class EditPicCard extends Component {
+class EditPicCardComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -55,7 +60,13 @@ class EditPicCard extends Component {
     }
 }
 
-class EditInfoCard extends Component {
+export const EditPicCard = connect(state => ({
+    pastelID: state.blockchainData.pastelID
+}), dispatch => ({
+    dispatch
+}))(EditPicCardComponent);
+
+class EditInfoCardComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -68,6 +79,30 @@ class EditInfoCard extends Component {
 
     onChange = (e) => {
         this.setState({[e.target.name]: e.target.value});
+        // this.props.dispatch(changeUserProfile(e.target.name, e.target.value));
+    };
+
+    saveInfo = (e) => {
+        let data = {
+            first_name: this.state.firstName,
+            last_name: this.state.lastName,
+            phone_number: this.state.phone,
+            email: this.state.email
+        };
+        axios.post(settings.SIGN_RESOURCE_URL, data).then((resp) => {
+            data.signature = resp.data.signature;
+            data.pastel_id = resp.data.pastel_id;
+            axios.patch(settings.USER_PROFILE_URL,
+                data).then((resp) => {
+                console.log('pushed')
+            }).catch((err) => {
+                // TODO: prettify error displaying.
+                // TODO: But do not silent the error
+                alert(JSON.stringify(err.response.data));
+            });
+        }).catch((err) => {
+            console.log('Error accessing local API');
+        });
     };
 
     render() {
@@ -76,7 +111,7 @@ class EditInfoCard extends Component {
                 <h3>Contact info</h3>
                 <div className="confirm-button">
                     <a href="javascript:void(0);" role="button" className="has-simple-popover"
-                       data-content="Save Contact info" data-placement="top">
+                       data-content="Save Contact info" data-placement="top" onClick={this.saveInfo}>
                         <Feather.Check/>
                     </a>
                 </div>
@@ -124,6 +159,13 @@ class EditInfoCard extends Component {
         </div>;
     }
 }
+
+
+export const EditInfoCard = connect(state => ({
+    pastelID: state.blockchainData.pastelID
+}), dispatch => ({
+    dispatch
+}))(EditInfoCardComponent);
 
 export class ProfileEdit extends Component {
     render() {
