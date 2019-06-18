@@ -103,5 +103,9 @@ module.exports = {
     devServer: {
         port: 3000,
         historyApiFallback: true
+    },
+    target: 'electron-renderer',
+    node: {
+        fs: false
     }
 };

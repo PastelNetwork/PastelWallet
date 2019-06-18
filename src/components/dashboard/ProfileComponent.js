@@ -1,13 +1,24 @@
 import React, {Component} from "react";
 import history from '../../history';
+import {connect} from "react-redux";
+import {fetchProfile} from "../../actions";
 
 
-export class Profile extends Component {
+class ProfileComponent extends Component {
     onImageClick = () => {
         history.push('/user_profile');
     };
 
+    componentDidMount() {
+        if (!this.props.userProfile) {
+            this.props.dispatch(fetchProfile())
+        }
+    }
+
     render() {
+        const name = this.props.userProfile ? `${this.props.userProfile.first_name} 
+        ${this.props.userProfile.last_name}` : 'Elie Daniels';
+        const dateJoined = this.props.userProfile ? this.props.userProfile.date_joined_for_human : '';
         return <div className="column is-5">
             <div className="flat-card profile-card is-auto">
                 <div className="card-body">
@@ -15,8 +26,8 @@ export class Profile extends Component {
                         <img src="https://i.pravatar.cc/200" alt=""/>
                     </div>
                     <div className="username has-text-centered">
-                        <span>Elie Daniels</span>
-                        <small>Member since Sep 23 2017</small>
+                        <span>{name}</span>
+                        <small>Member since {dateJoined}</small>
                     </div>
                 </div>
             </div>
@@ -24,3 +35,10 @@ export class Profile extends Component {
 
     }
 }
+
+
+export const Profile = connect(state => ({
+    userProfile: state.userProfile
+}), dispatch => ({
+    dispatch
+}))(ProfileComponent);

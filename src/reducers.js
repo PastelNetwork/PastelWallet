@@ -16,6 +16,8 @@ const reducer  = (state = {}, action) => {
             return {...state, blockchainData: action.value};
         case actionTypes.SET_BALANCE:
             return {...state, balance: action.value};
+        case actionTypes.SET_USER_PROFILE:
+            return {...state, userProfile: action.value};
         case actionTypes.SET_SEND_PSL_SEND_STATUS_DATA:
             return {...state, sendPslStatusData: action.value};
         case actionTypes.RESET_STORE:
