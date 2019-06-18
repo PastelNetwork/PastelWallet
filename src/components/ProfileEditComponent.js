@@ -6,11 +6,8 @@ import 'bulma/bulma.sass';
 import {MainWrapper} from "./MainWrapperComponent";
 import * as Feather from 'react-feather';
 import axios from 'axios';
-import {changeUserProfile} from "../actions";
-import * as constants from "../constants";
 import * as settings from '../settings';
 import {connect} from "react-redux";
-import {ImageRegisterForm} from "./ImageRegisterFormComponent";
 
 class EditPicCardComponent extends Component {
     constructor(props) {
@@ -79,7 +76,6 @@ class EditInfoCardComponent extends Component {
 
     onChange = (e) => {
         this.setState({[e.target.name]: e.target.value});
-        // this.props.dispatch(changeUserProfile(e.target.name, e.target.value));
     };
 
     saveInfo = (e) => {
