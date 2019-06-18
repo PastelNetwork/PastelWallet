@@ -29,6 +29,33 @@ class EditPicCardComponent extends Component {
         this.fileInputRef.current.click();
     };
 
+    savePicture = (e) => {
+        let reader = new FileReader();
+        const file = this.fileInputRef.current.files[0];
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            const base64data = reader.result;
+            let data = {
+                picture: base64data
+            };
+
+            axios.post(settings.SIGN_RESOURCE_URL, data).then((resp) => {
+                data.signature = resp.data.signature;
+                data.pastel_id = resp.data.pastel_id;
+                axios.patch(settings.USER_PROFILE_URL,
+                    data).then((resp) => {
+                    console.log('pushed')
+                }).catch((err) => {
+                    // TODO: prettify error displaying.
+                    // TODO: But do not silent the error
+                    alert(JSON.stringify(err.response.data));
+                });
+            }).catch((err) => {
+                console.log('Error accessing local API');
+            });
+        };
+    };
+
     render() {
         return <div className="flat-card upload-card is-auto">
             <div className="card-body">
@@ -48,7 +75,7 @@ class EditPicCardComponent extends Component {
                 </div>
 
                 <div className="has-text-centered">
-                    <button className="button feather-button secondary-button will-upload">
+                    <button className="button feather-button secondary-button will-upload" onClick={this.savePicture}>
                         Save picture
                     </button>
                 </div>
@@ -85,6 +112,7 @@ class EditInfoCardComponent extends Component {
             phone_number: this.state.phone,
             email: this.state.email
         };
+
         axios.post(settings.SIGN_RESOURCE_URL, data).then((resp) => {
             data.signature = resp.data.signature;
             data.pastel_id = resp.data.pastel_id;
