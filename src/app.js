@@ -9,7 +9,6 @@ import * as ajaxEntities from './ajaxEntities';
 import 'font-awesome/css/font-awesome.css';
 import Main from "./components/MainComponent";
 import history from './history';
-import {RESPONSE_STATUS_OK} from "./constants";
 
 
 let defaultAjaxInProgress = Object.getOwnPropertyNames(ajaxEntities).filter(a => a !== '__esModule').reduce((acc, curr) => {
@@ -33,7 +32,6 @@ export const defaultDetailsToEdit = {
 export const defaultSendPslStatusData = {status: null, msg: ''};
 
 export const initialState = {
-    token: '',
     ajaxInProgress: defaultAjaxInProgress,
     userProfile: null,
     profileEditMode: defaultProfileEditMode,
@@ -44,12 +42,10 @@ export const initialState = {
     artworks: 16, // TODO: fetch amount of artworks from pastel network when backend is ready
     masternodes: 2 // TODO: fetch amount of masternodes from pastel network when backend is ready
 };
-const token = localStorage.getItem('token');
-const defaultStore = {...initialState, token};
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = createStore(reducer,
-    defaultStore,
+    initialState,
     composeEnhancers(applyMiddleware(thunkMiddleware))
     // applyMiddleware(thunkMiddleware)
 );
@@ -57,10 +53,6 @@ export const store = createStore(reducer,
 // const store = createStore(reducer,
 //     defaultStore,
 //     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-
-store.subscribe(() => {
-    localStorage.setItem('token', store.getState().token);
-});
 
 
 ReactDOM.render(

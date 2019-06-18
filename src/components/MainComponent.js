@@ -1,7 +1,5 @@
 import React from 'react';
 import {Switch, Route, Redirect, withRouter} from 'react-router-dom'
-import {LogoutContainer} from "../containers/LogoutContainer";
-import {UserProfileContainer} from "../containers/UserProfileContainer";
 import {ArtWalletContainer} from "../containers/ArtWalletContainer";
 import {ImageRegisterFormContainer} from "../containers/ImageRegisterFormContainer";
 import {SendPSLContainer} from "../containers/SendPSLContainer";
@@ -15,8 +13,6 @@ const Main = (props) => {
             <Route exact path='/' component={ArtWalletContainer}/>
             <Route exact path='/send_psl' component={SendPSLContainer}/>
             <Route exact path='/register' component={ImageRegisterFormContainer}/>
-            <Route path='/logout' component={LogoutContainer}/>
-            <Route path='/user_profile2' component={UserProfileContainer}/>
             <Route path='/user_profile' component={ProfileEdit}/>
             <Redirect to='/'/>
         </Switch>
