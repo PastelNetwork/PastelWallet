@@ -1,9 +1,4 @@
 import * as actionTypes from './actionTypes';
-import * as ajaxEntities from './ajaxEntities';
-import axios from 'axios';
-import * as settings from './settings';
-import history from './history';
-import {defaultDetailsToEdit} from "./app";
 
 export const startAjax = (entity) => ({
     type: actionTypes.START_AJAX,

@@ -16,26 +16,12 @@ let defaultAjaxInProgress = Object.getOwnPropertyNames(ajaxEntities).filter(a =>
     return acc;
 }, {});
 
-export const defaultProfileEditMode = {
-    picture: false,
-    details: false,
-    billingAddress: false
-};
-
-export const defaultDetailsToEdit = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: ''
-};
 
 export const defaultSendPslStatusData = {status: null, msg: ''};
 
 export const initialState = {
     ajaxInProgress: defaultAjaxInProgress,
     userProfile: null,
-    profileEditMode: defaultProfileEditMode,
-    detailsToEdit: defaultDetailsToEdit,
     blockchainData: {address: null, pastelID: null},
     balance: null,
     sendPslStatusData: defaultSendPslStatusData,

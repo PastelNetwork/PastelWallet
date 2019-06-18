@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import {defaultProfileEditMode, initialState} from "./app";
+import {initialState} from "./app";
 
 
 const reducer  = (state = {}, action) => {
