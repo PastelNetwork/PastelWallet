@@ -9,6 +9,7 @@ import axios from 'axios';
 import * as settings from '../settings';
 import {connect} from "react-redux";
 import * as md5 from 'md5';
+import {setUserProfile} from "../actions";
 
 class EditPicCardComponent extends Component {
     constructor(props) {
@@ -17,6 +18,14 @@ class EditPicCardComponent extends Component {
             file: null
         };
         this.fileInputRef = React.createRef();
+    }
+
+    componentWillMount() {
+        if (this.props.userProfile) {
+            this.setState({
+                file: this.props.userProfile.picture ? this.props.userProfile.picture: '',
+            })
+        }
     }
 
     onChangeFile = (e) => {
@@ -45,7 +54,7 @@ class EditPicCardComponent extends Component {
                 data.picture = base64data;
                 axios.patch(settings.USER_PROFILE_URL,
                     data).then((resp) => {
-                    console.log('pushed')
+                    this.props.dispatch(setUserProfile(resp.data));
                 }).catch((err) => {
                     // TODO: prettify error displaying.
                     // TODO: But do not silent the error
@@ -86,7 +95,8 @@ class EditPicCardComponent extends Component {
 }
 
 export const EditPicCard = connect(state => ({
-    pastelID: state.blockchainData.pastelID
+    pastelID: state.blockchainData.pastelID,
+    userProfile: state.userProfile
 }), dispatch => ({
     dispatch
 }))(EditPicCardComponent);
@@ -99,6 +109,17 @@ class EditInfoCardComponent extends Component {
             lastName: '',
             phone: '',
             email: ''
+        }
+    }
+
+    componentWillMount() {
+        if (this.props.userProfile) {
+            this.setState({
+                firstName: this.props.userProfile.first_name ? this.props.userProfile.first_name: '',
+                lastName: this.props.userProfile.last_name ? this.props.userProfile.last_name: '',
+                phone: this.props.userProfile.phone ? this.props.userProfile.phone: '',
+                email: this.props.userProfile.email ? this.props.userProfile.email: ''
+            })
         }
     }
 
@@ -119,7 +140,7 @@ class EditInfoCardComponent extends Component {
             data.pastel_id = resp.data.pastel_id;
             axios.patch(settings.USER_PROFILE_URL,
                 data).then((resp) => {
-                console.log('pushed')
+                this.props.dispatch(setUserProfile(resp.data));
             }).catch((err) => {
                 // TODO: prettify error displaying.
                 // TODO: But do not silent the error
@@ -187,7 +208,8 @@ class EditInfoCardComponent extends Component {
 
 
 export const EditInfoCard = connect(state => ({
-    pastelID: state.blockchainData.pastelID
+    pastelID: state.blockchainData.pastelID,
+    userProfile: state.userProfile
 }), dispatch => ({
     dispatch
 }))(EditInfoCardComponent);
