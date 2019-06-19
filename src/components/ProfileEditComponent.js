@@ -8,6 +8,7 @@ import * as Feather from 'react-feather';
 import axios from 'axios';
 import * as settings from '../settings';
 import {connect} from "react-redux";
+import * as md5 from 'md5';
 
 class EditPicCardComponent extends Component {
     constructor(props) {
@@ -36,12 +37,12 @@ class EditPicCardComponent extends Component {
         reader.onload = () => {
             const base64data = reader.result;
             let data = {
-                picture: base64data
+                picture_hash: md5(base64data)
             };
-
             axios.post(settings.SIGN_RESOURCE_URL, data).then((resp) => {
                 data.signature = resp.data.signature;
                 data.pastel_id = resp.data.pastel_id;
+                data.picture = base64data;
                 axios.patch(settings.USER_PROFILE_URL,
                     data).then((resp) => {
                     console.log('pushed')

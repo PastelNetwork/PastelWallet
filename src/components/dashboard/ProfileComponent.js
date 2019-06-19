@@ -19,11 +19,12 @@ class ProfileComponent extends Component {
         const name = this.props.userProfile ? `${this.props.userProfile.first_name} 
         ${this.props.userProfile.last_name}` : 'Elie Daniels';
         const dateJoined = this.props.userProfile ? this.props.userProfile.date_joined_for_human : '';
+        const picture = this.props.userProfile? this.props.userProfile.picture: '';
         return <div className="column is-5">
             <div className="flat-card profile-card is-auto">
                 <div className="card-body">
                     <div className="profile-image" onClick={this.onImageClick}>
-                        <img src="https://i.pravatar.cc/200" alt=""/>
+                        <img src={picture} alt=""/>
                     </div>
                     <div className="username has-text-centered">
                         <span>{name}</span>
