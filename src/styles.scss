@@ -354,3 +354,18 @@ footer {
 .main-content {
   padding-top: $header-height;
 }
+
+.full-width {
+  width: 100%;
+}
+
+.copy {
+  &:hover {
+    color: $primary;
+  }
+}
+
+.hidden-text-area {
+  position: absolute;
+  left: -9999px;
+}

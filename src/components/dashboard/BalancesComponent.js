@@ -38,9 +38,21 @@ class AddressCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            collapsed: true
-        }
+            collapsed: true,
+            showCopyIcon: false
+        };
+        this.addressRef = React.createRef();
     }
+
+    mouseOver = (e) => {
+        this.setState({showCopyIcon: true});
+    };
+    onCopyClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.addressRef.current.select();
+        document.execCommand('copy');
+    };
 
     render() {
         return <div className="flat-card profile-info-card is-auto">
@@ -48,11 +60,22 @@ class AddressCard extends Component {
             <div className="card-title expandable-header" onClick={() =>
                 this.setState({collapsed: !this.state.collapsed})
             }>
-                <Feather.ChevronsDown/>
-                <h3>{this.props.name}</h3>
-            </div>
+                <div className="flex-row space-between full-width">
+                    <div className="flex-row">
+                        <Feather.ChevronsDown/>
+                        <h3>{this.props.name}</h3>
+                    </div>
+                    <div onClick={this.onCopyClick} ref={this.copyRef}>
 
-            <div className={'card-body break-all ' + (this.state.collapsed ? 'is-hidden' : '')}>
+                        <Feather.Copy className="copy"/>
+                    </div>
+                </div>
+            </div>
+            <textarea className="hidden-text-area" value={this.props.address ? this.props.address : ''}
+                      ref={this.addressRef} readOnly={true}/>
+
+            <div className={'card-body break-all ' + (this.state.collapsed ? 'is-hidden' : '')}
+                 onMouseOver={this.mouseOver}>
                 {this.props.address}
             </div>
         </div>;

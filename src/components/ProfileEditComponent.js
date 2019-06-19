@@ -117,7 +117,7 @@ class EditInfoCardComponent extends Component {
             this.setState({
                 firstName: this.props.userProfile.first_name ? this.props.userProfile.first_name: '',
                 lastName: this.props.userProfile.last_name ? this.props.userProfile.last_name: '',
-                phone: this.props.userProfile.phone ? this.props.userProfile.phone: '',
+                phone: this.props.userProfile.phone_number ? this.props.userProfile.phone_number: '',
                 email: this.props.userProfile.email ? this.props.userProfile.email: ''
             })
         }
