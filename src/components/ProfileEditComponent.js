@@ -75,7 +75,7 @@ class EditPicCardComponent extends Component {
                     <div className="upload-button" onClick={this.fileAddClick}>
                         <Feather.Plus className="upload-icon" aria-hidden="true"/>
                     </div>
-                    <input className="file-upload" type="file" accept="image/*" onChange={this.onChangeFile}
+                    <input className="file-upload hidden" type="file" accept="image/*" onChange={this.onChangeFile}
                            ref={this.fileInputRef}/>
                 </div>
 
