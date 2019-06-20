@@ -80,8 +80,8 @@ class EditPicCardComponent extends Component {
                 </div>
 
                 <div className="username has-text-centered">
-                    <span>Elie Daniels</span>
-                    <span>eliedaniels@gmail.com</span>
+                    <span>{this.props.userProfile ? `${this.props.userProfile.first_name} ${this.props.userProfile.last_name}` : ''}</span>
+                    <span>{this.props.userProfile ? `${this.props.userProfile.email}` : ''}</span>
                 </div>
 
                 <div className="has-text-centered">
