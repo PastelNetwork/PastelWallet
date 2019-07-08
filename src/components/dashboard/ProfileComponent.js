@@ -16,15 +16,17 @@ class ProfileComponent extends Component {
     }
 
     render() {
-        const name = this.props.userProfile ? `${this.props.userProfile.first_name} 
-        ${this.props.userProfile.last_name}` : 'Elie Daniels';
+        let name = '';
+        if (this.props.userProfile && this.props.userProfile.first_name && this.props.userProfile.last_name) {
+            name = `${this.props.userProfile.first_name} ${this.props.userProfile.last_name}`;
+        }
         const dateJoined = this.props.userProfile ? this.props.userProfile.date_joined_for_human : '';
-        const picture = this.props.userProfile? this.props.userProfile.picture: '';
+        const picture = this.props.userProfile ? this.props.userProfile.picture : '';
         return <div className="column is-5">
             <div className="flat-card profile-card is-auto">
                 <div className="card-body">
                     <div className="profile-image" onClick={this.onImageClick}>
-                        <img src={picture} alt=""/>
+                        <img src={picture} alt="" className="profile-img"/>
                     </div>
                     <div className="username has-text-centered">
                         <span>{name}</span>

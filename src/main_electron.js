@@ -168,7 +168,28 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
         //     msg: `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
         // });
         const regFee = 20;
-        win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee})
+        win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee});
+
+    });
+});
+
+
+ipcMain.on('imageRegFormProceed', (event, arg) => {
+    axios.post(`${LOCAL_PY_URL}register_image`).then((response) => {
+        const publicKeyBuff = fs.readFileSync(response.data.public);
+        const pastelIdAddress = bs58.encode(publicKeyBuff);
+        log.info(`BC data result2 ${pastelIdAddress}`);
+        log.info(`BC data result2-1 ${response.data.public}`);
+        win.webContents.send('blockchainDataResponse', {
+            status: RESPONSE_STATUS_OK,
+            address: bcAddress,
+            pastelID: pastelIdAddress
+        });
+    }).catch((err) => {
+        win.webContents.send('blockchainDataResponse', {
+            status: RESPONSE_STATUS_ERROR,
+            error: 'Request errror. Try again later'
+        });
     });
 });
 

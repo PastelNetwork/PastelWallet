@@ -53,8 +53,7 @@ export class ImageRegisterForm extends Component {
         //TODO: calculate image hash
         e.preventDefault();
         let data = this.state;
-        ipcRenderer.send('imageRegFormSubmit', data);
-        // history.push('/');
+        ipcRenderer.send('imageRegFormProceed', data);
     };
     onAddFile = (e) => {
         let file = e.target.files[0];
