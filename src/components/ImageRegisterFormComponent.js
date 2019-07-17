@@ -116,22 +116,26 @@ export class ImageRegisterForm extends Component {
 
                                     <div className="flex-centered">
                                         <div className={this.props.regFormFee ? 'display-none' : ''}>
-                                            <button
-                                                className="button
+                                            <div className="flex-centered">
+                                                <button
+                                                    className="button
                                             cart-button secondary-button upper-button rounded is-bold raised"
-                                                onClick={this.onFormSubmit}>
-                                                Register
-                                            </button>
+                                                    onClick={this.onFormSubmit}>
+                                                    Register
+                                                </button>
+                                            </div>
                                             <div className="flex-centered">
                                                 <div className={this.props.regFormError ? '' : 'display-none'}>
-                                                    <div>
+                                                    <div className="reg-form-error">
                                                         {this.props.regFormError}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className={this.props.regFormFee ? '' : 'display-none'}>
-                                            <div className="send-psl-status-msg">Registration fee: {this.props.regFormFee} PSL</div>
+                                            <div className="send-psl-status-msg">Registration
+                                                fee: {this.props.regFormFee} PSL
+                                            </div>
                                             <button
                                                 className="button
                                             cart-button secondary-button upper-button rounded is-bold raised"

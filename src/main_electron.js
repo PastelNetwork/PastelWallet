@@ -145,6 +145,7 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
     const fileSizeInBytes = stats.size;
     return callRpcMethod(MASTERNODE_REGFEE_COMMAND).then((response) => {
         const regFee = response.data.result;
+        log.info(`Regfee from 'masternode regfee' is ${regFee}`);
         callRpcMethod(GETBALANCE_COMMAND).then((response) => {
             if (response.data.result >= regFee) {
                 win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee})
@@ -167,8 +168,24 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
         //     status: RESPONSE_STATUS_ERROR,
         //     msg: `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
         // });
-        const regFee = 20;
-        win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee});
+        const regFee = 10;
+        // win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee});
+        callRpcMethod(GETBALANCE_COMMAND).then((response) => {
+            if (response.data.result >= regFee) {
+                win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee})
+            } else {
+                win.webContents.send('imageRegFormSubmitResponse', {
+                    status: RESPONSE_STATUS_ERROR,
+                    msg: `Not enough funds to pay fee (need PSL${regFee})`,
+                    regFee
+                })
+            }
+        }).catch((err) => {
+            win.webContents.send('imageRegFormSubmitResponse', {
+                status: RESPONSE_STATUS_ERROR,
+                msg: `Error accessing local cNode: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
+            })
+        })
 
     });
 });
