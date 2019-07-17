@@ -23,6 +23,11 @@ export const setImageRegFormRegFee = (value) => ({
     value
 });
 
+export const setImageRegWorkerFee = (value) => ({
+    type: actionTypes.SET_IMAGE_REGISTER_WORKER_FEE,
+    value
+});
+
 export const setPSLSendStatusData = (value) => ({
     type: actionTypes.SET_SEND_PSL_SEND_STATUS_DATA,
     value

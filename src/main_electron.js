@@ -16,6 +16,9 @@ const GET_ACCOUNT_ADDRESS_COMMAND = 'getaccountaddress';
 const SEND_TO_ADDRESS_COMMAND = 'sendtoaddress';
 const LOCAL_PY_URL = 'http://127.0.0.1:5000/';
 
+
+const IMAGE_REGISTRATION_FEE_RESOURCE = `${LOCAL_PY_URL}get_image_registration_fee`;
+
 /*************************************************************
  * py process
  *************************************************************/
@@ -62,7 +65,11 @@ const createPyProc = () => {
     let script = getScriptPath();
     let port = pyPort;
     if (process.defaultApp) {
-        pyProc = require('child_process').execFile('python', [script, process.cwd()]);
+        pyProc = require('child_process').execFile('python', [script, process.cwd()], (error, stdout, stderr) => {
+            log.error(`[wallet_api.py] Error: ${error}`);
+            log.error(`[wallet_api.py] Stdout: ${stdout}`);
+            log.error(`[wallet_api.py] Stderr: ${stderr}`);
+        });
     } else {
         let appPath;
         switch (process.platform) {
@@ -80,6 +87,13 @@ const createPyProc = () => {
         });
     }
 
+    pyProc.stdout.on('data', (data) => {
+        log.info(`wallet_api stdout: ${data}`);
+    });
+
+    pyProc.stderr.on('data', (data) => {
+        log.warn(`wallet_api stderr: ${data}`);
+    });
     if (pyProc != null) {
         log.info('child process success on port ' + port)
     } else {
@@ -168,7 +182,7 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
         //     status: RESPONSE_STATUS_ERROR,
         //     msg: `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
         // });
-        const regFee = 10;
+        const regFee = 1;
         // win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee});
         callRpcMethod(GETBALANCE_COMMAND).then((response) => {
             if (response.data.result >= regFee) {
@@ -191,21 +205,16 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
 });
 
 
-ipcMain.on('imageRegFormProceed', (event, arg) => {
-    axios.post(`${LOCAL_PY_URL}register_image`).then((response) => {
-        const publicKeyBuff = fs.readFileSync(response.data.public);
-        const pastelIdAddress = bs58.encode(publicKeyBuff);
-        log.info(`BC data result2 ${pastelIdAddress}`);
-        log.info(`BC data result2-1 ${response.data.public}`);
-        win.webContents.send('blockchainDataResponse', {
+ipcMain.on('imageRegFormProceed', (event, data) => {
+    axios.post(IMAGE_REGISTRATION_FEE_RESOURCE, {image: data.filePath, title: data.name}).then((response) => {
+        win.webContents.send('imageRegFormProceedResponse', {
             status: RESPONSE_STATUS_OK,
-            address: bcAddress,
-            pastelID: pastelIdAddress
+            fee: response.data.fee
         });
     }).catch((err) => {
-        win.webContents.send('blockchainDataResponse', {
+        win.webContents.send('imageRegFormProceedResponse', {
             status: RESPONSE_STATUS_ERROR,
-            error: 'Request errror. Try again later'
+            error: 'Error obtaining worker fee'
         });
     });
 });

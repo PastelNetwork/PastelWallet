@@ -3,7 +3,7 @@
 $input-border: #BDBDBD;
 $input-font-color: #616161;
 $register-btn-bg: #0275D8;
-$error-font-color: #F00;
+$error-font-color: darkred;
 $ok-font-color: #006600;
 
 .image-register-input, .psl-send-input {
@@ -23,6 +23,14 @@ $ok-font-color: #006600;
   padding-bottom: 15px;
   width: 90%;
   margin-left: 2em;
+  font-size: small;
+  transition: opacity 1s linear;
+  height: 30px;
+  opacity: 1;
+}
+
+.regfee-msg {
+  padding-bottom: 15px;
   font-size: small;
   transition: opacity 1s linear;
   height: 30px;
@@ -54,4 +62,9 @@ $ok-font-color: #006600;
     background-color: white;
     border: 3px solid $register-btn-bg;
   }
+}
+
+.reg-form-error {
+  color: $error-font-color;
+  font-size: small;
 }

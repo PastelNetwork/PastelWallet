@@ -1,29 +1,40 @@
 import React, {Component} from 'react';
 import '../styles.scss';
 import {store} from "../app";
-import {setImageRegFormError, setImageRegFormRegFee, setRegFee} from "../actions";
+import {setImageRegFormError, setImageRegFormRegFee, setImageRegWorkerFee, setRegFee} from "../actions";
 import {RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK} from "../constants";
 import {MainWrapper} from "./MainWrapperComponent";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
 ipcRenderer.on('imageRegFormSubmitResponse', (event, data) => {
-    // TODO: parse response
-    // TODO: set appropriate values in store
     switch (data.status) {
         case RESPONSE_STATUS_ERROR:
-            console.log('error');
             store.dispatch(setImageRegFormError(data.msg));
             break;
         case RESPONSE_STATUS_OK:
-            console.log('ok');
             store.dispatch(setImageRegFormError(null));
             store.dispatch(setImageRegFormRegFee(data.regFee));
             break;
         default:
             break;
     }
-    // store.dispatch(setRegFee(value));
+});
+
+ipcRenderer.on('imageRegFormProceedResponse', (event, data) => {
+    console.log('imageRegFormProceedResponse RECEIVED');
+    console.log(data);
+    switch (data.status) {
+        case RESPONSE_STATUS_ERROR:
+            store.dispatch(setImageRegFormError(data.msg));
+            break;
+        case RESPONSE_STATUS_OK:
+            store.dispatch(setImageRegFormError(null));
+            store.dispatch(setImageRegWorkerFee(data.fee));
+            break;
+        default:
+            break;
+    }
 });
 
 export class ImageRegisterForm extends Component {
@@ -52,7 +63,10 @@ export class ImageRegisterForm extends Component {
         //TODO: create image registration ticket
         //TODO: calculate image hash
         e.preventDefault();
-        let data = this.state;
+        let data = {
+            name: this.state.artName,
+            filePath: this.state.filePath
+        };
         ipcRenderer.send('imageRegFormProceed', data);
     };
     onAddFile = (e) => {
@@ -133,7 +147,7 @@ export class ImageRegisterForm extends Component {
                                             </div>
                                         </div>
                                         <div className={this.props.regFormFee ? '' : 'display-none'}>
-                                            <div className="send-psl-status-msg">Registration
+                                            <div className="regfee-msg">Registration
                                                 fee: {this.props.regFormFee} PSL
                                             </div>
                                             <button
