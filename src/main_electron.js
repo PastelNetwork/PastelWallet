@@ -155,8 +155,8 @@ const callRpcMethod = (method, params) => {
 };
 
 ipcMain.on('imageRegFormSubmit', (event, arg) => {
-    const stats = fs.statSync(arg.filePath);
-    const fileSizeInBytes = stats.size;
+    // const stats = fs.statSync(arg.filePath);
+    // const fileSizeInBytes = stats.size;
     return callRpcMethod(MASTERNODE_REGFEE_COMMAND).then((response) => {
         const regFee = response.data.result;
         log.info(`Regfee from 'masternode regfee' is ${regFee}`);
@@ -182,7 +182,7 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
         //     status: RESPONSE_STATUS_ERROR,
         //     msg: `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
         // });
-        const regFee = 1;
+        const regFee = 10;
         // win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee});
         callRpcMethod(GETBALANCE_COMMAND).then((response) => {
             if (response.data.result >= regFee) {
@@ -289,8 +289,8 @@ function createWindow() {
     if (process.defaultApp) {
         win.loadURL('http://localhost:3000/');
         win.webContents.openDevTools();
-        // BrowserWindow.addDevToolsExtension(
-        //     '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
+        BrowserWindow.addDevToolsExtension(
+            '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
     } else {
         win.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
     }

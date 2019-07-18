@@ -9,7 +9,9 @@ const reducer  = (state = {}, action) => {
         case actionTypes.STOP_AJAX:
             return {...state, ajaxInProgress: {...state.ajaxInProgress, [action.entity]: false}};
         case actionTypes.SET_IMAGE_REGISTER_FORM_ERROR:
-            return {...state, regFormError: action.value};
+            return {...state, regFormError: {...state.regFormError, [action.key]: action.value}};
+        case actionTypes.RESET_IMAGE_REGISTER_FORM_ERRORS:
+            return {...state, regFormError: {}};
         case actionTypes.SET_IMAGE_REGISTER_FORM_FEE:
             return {...state, regFormFee: action.value};
         case actionTypes.SET_IMAGE_REGISTER_WORKER_FEE:

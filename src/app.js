@@ -26,10 +26,12 @@ export const initialState = {
     balance: null,
     sendPslStatusData: defaultSendPslStatusData,
     artworks: 16, // TODO: fetch amount of artworks from pastel network when backend is ready
-    masternodes: 2 // TODO: fetch amount of masternodes from pastel network when backend is ready
+    masternodes: 2, // TODO: fetch amount of masternodes from pastel network when backend is ready
+    regFormError: {}
 };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 export const store = createStore(reducer,
     initialState,
     composeEnhancers(applyMiddleware(thunkMiddleware))

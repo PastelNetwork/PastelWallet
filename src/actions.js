@@ -13,9 +13,14 @@ export const setBalance = (value) => ({
     value
 });
 
-export const setImageRegFormError = (value) => ({
+export const setImageRegFormError = (key, value) => ({
     type: actionTypes.SET_IMAGE_REGISTER_FORM_ERROR,
+    key,
     value
+});
+
+export const resetImageRegFormErrors = () => ({
+    type: actionTypes.RESET_IMAGE_REGISTER_FORM_ERRORS
 });
 
 export const setImageRegFormRegFee = (value) => ({

@@ -1,7 +1,13 @@
 import React, {Component} from 'react';
 import '../styles.scss';
 import {store} from "../app";
-import {setImageRegFormError, setImageRegFormRegFee, setImageRegWorkerFee, setRegFee} from "../actions";
+import {
+    resetImageRegFormErrors,
+    setImageRegFormError,
+    setImageRegFormRegFee,
+    setImageRegWorkerFee,
+    setRegFee
+} from "../actions";
 import {RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK} from "../constants";
 import {MainWrapper} from "./MainWrapperComponent";
 
@@ -10,10 +16,10 @@ const ipcRenderer = window.require('electron').ipcRenderer;
 ipcRenderer.on('imageRegFormSubmitResponse', (event, data) => {
     switch (data.status) {
         case RESPONSE_STATUS_ERROR:
-            store.dispatch(setImageRegFormError(data.msg));
+            store.dispatch(setImageRegFormError('all', data.msg));
             break;
         case RESPONSE_STATUS_OK:
-            store.dispatch(setImageRegFormError(null));
+            store.dispatch(resetImageRegFormErrors());
             store.dispatch(setImageRegFormRegFee(data.regFee));
             break;
         default:
@@ -26,10 +32,10 @@ ipcRenderer.on('imageRegFormProceedResponse', (event, data) => {
     console.log(data);
     switch (data.status) {
         case RESPONSE_STATUS_ERROR:
-            store.dispatch(setImageRegFormError(data.msg));
+            store.dispatch(setImageRegFormError('all', data.msg));
             break;
         case RESPONSE_STATUS_OK:
-            store.dispatch(setImageRegFormError(null));
+            store.dispatch(resetImageRegFormErrors());
             store.dispatch(setImageRegWorkerFee(data.fee));
             break;
         default:
@@ -53,11 +59,26 @@ export class ImageRegisterForm extends Component {
         document.title = 'Pastel wallet';
     }
 
+    validateImageRegForm = () => {
+        let isValid = true;
+        if (this.state.artName === '') {
+            this.props.dispatch(setImageRegFormError('artName', 'Art name should not be empty'))
+            isValid = false;
+        }
+        if (this.state.filePath === '') {
+            this.props.dispatch(setImageRegFormError('artFile', 'Please select art image file'))
+            isValid = false;
+        }
+        return isValid;
+    };
+
     onFormSubmit = (e) => {
+        // TODO: validate form. Name and file should not be empty
         e.preventDefault();
-        let data = this.state;
-        ipcRenderer.send('imageRegFormSubmit', data);
-        // history.push('/');
+        if (this.validateImageRegForm()) {
+            let data = this.state;
+            ipcRenderer.send('imageRegFormSubmit', data);
+        }
     };
     onProceedClick = (e) => {
         //TODO: create image registration ticket
@@ -70,10 +91,16 @@ export class ImageRegisterForm extends Component {
         ipcRenderer.send('imageRegFormProceed', data);
     };
     onAddFile = (e) => {
+        if (Object.entries(this.props.regFormError).length !== 0) {
+            store.dispatch(resetImageRegFormErrors());
+        }
         let file = e.target.files[0];
         this.setState({file: URL.createObjectURL(file), filePath: file.path});
     };
     onChange = (e) => {
+        if (Object.entries(this.props.regFormError).length !== 0) {
+            store.dispatch(resetImageRegFormErrors());
+        }
         this.setState({[e.target.name]: e.target.value});
     };
 
@@ -96,7 +123,14 @@ export class ImageRegisterForm extends Component {
                                             <input type="text" className="input is-default" name="artName"
                                                    value={this.state.artName} onChange={this.onChange}/>
                                         </div>
+                                        <div className={this.props.regFormError.artName ? '' : 'display-none'}>
+                                            <div className="reg-form-error">
+                                                {this.props.regFormError.artName}
+                                            </div>
+                                        </div>
+
                                     </div>
+
                                     <div className="info-block">
                                         <span className="label-text">Number of copies</span>
                                         <div className="control">
@@ -123,9 +157,15 @@ export class ImageRegisterForm extends Component {
                                         </div>
                                         <span className="label-text">Art file</span>
                                         <div>
-                                            <input type="file" accept="image/*" placeholder="Taksa" id="idArtFile"
+                                            <input type="file" accept="image/*" id="idArtFile"
                                                    onChange={this.onAddFile}/>
                                         </div>
+                                        <div className={this.props.regFormError.artFile ? '' : 'display-none'}>
+                                            <div className="reg-form-error">
+                                                {this.props.regFormError.artFile}
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                     <div className="flex-centered">
@@ -139,15 +179,15 @@ export class ImageRegisterForm extends Component {
                                                 </button>
                                             </div>
                                             <div className="flex-centered">
-                                                <div className={this.props.regFormError ? '' : 'display-none'}>
+                                                <div className={this.props.regFormError.all ? '' : 'display-none'}>
                                                     <div className="reg-form-error">
-                                                        {this.props.regFormError}
+                                                        {this.props.regFormError.all}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className={this.props.regFormFee ? '' : 'display-none'}>
-                                            <div className="regfee-msg">Registration
+                                            <div className="regfee-msg">Preliminary network
                                                 fee: {this.props.regFormFee} PSL
                                             </div>
                                             <button
