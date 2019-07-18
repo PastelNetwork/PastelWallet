@@ -182,7 +182,7 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
         //     status: RESPONSE_STATUS_ERROR,
         //     msg: `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
         // });
-        const regFee = 10;
+        const regFee = 0.5;
         // win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee});
         callRpcMethod(GETBALANCE_COMMAND).then((response) => {
             if (response.data.result >= regFee) {

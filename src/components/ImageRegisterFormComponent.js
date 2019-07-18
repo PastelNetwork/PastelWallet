@@ -4,23 +4,26 @@ import {store} from "../app";
 import {
     resetImageRegFormErrors,
     setImageRegFormError,
-    setImageRegFormRegFee,
+    setImageRegFormRegFee, setImageRegFormState,
     setImageRegWorkerFee,
     setRegFee
 } from "../actions";
-import {RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK} from "../constants";
+import history from '../history';
+import * as constants from '../constants';
 import {MainWrapper} from "./MainWrapperComponent";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
 ipcRenderer.on('imageRegFormSubmitResponse', (event, data) => {
     switch (data.status) {
-        case RESPONSE_STATUS_ERROR:
+        case constants.RESPONSE_STATUS_ERROR:
             store.dispatch(setImageRegFormError('all', data.msg));
+            store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_ERROR));
             break;
-        case RESPONSE_STATUS_OK:
+        case constants.RESPONSE_STATUS_OK:
             store.dispatch(resetImageRegFormErrors());
             store.dispatch(setImageRegFormRegFee(data.regFee));
+            store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_PREL_FEE_RECEIVED));
             break;
         default:
             break;
@@ -31,12 +34,14 @@ ipcRenderer.on('imageRegFormProceedResponse', (event, data) => {
     console.log('imageRegFormProceedResponse RECEIVED');
     console.log(data);
     switch (data.status) {
-        case RESPONSE_STATUS_ERROR:
+        case constants.RESPONSE_STATUS_ERROR:
             store.dispatch(setImageRegFormError('all', data.msg));
+            store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_ERROR));
             break;
-        case RESPONSE_STATUS_OK:
+        case constants.RESPONSE_STATUS_OK:
             store.dispatch(resetImageRegFormErrors());
             store.dispatch(setImageRegWorkerFee(data.fee));
+            store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_WORKER_FEE_RECEIVED));
             break;
         default:
             break;
@@ -89,6 +94,7 @@ export class ImageRegisterForm extends Component {
             filePath: this.state.filePath
         };
         ipcRenderer.send('imageRegFormProceed', data);
+        store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_REQUESTING_NETWORK));
     };
     onAddFile = (e) => {
         if (Object.entries(this.props.regFormError).length !== 0) {
@@ -103,8 +109,96 @@ export class ImageRegisterForm extends Component {
         }
         this.setState({[e.target.name]: e.target.value});
     };
-
+    onReturnClick = (e) => {
+        history.push('/');
+    };
     render() {
+        let buttonArea;
+        switch (this.props.regFormState) {
+            case constants.IMAGE_REG_FORM_STATE_ERROR:
+                buttonArea = <div>
+                    <div className="flex-centered">
+                        <button
+                            className="button cart-button secondary-button upper-button rounded is-bold raised"
+                            onClick={this.onReturnClick}>
+                            Return
+                        </button>
+                    </div>
+                    <div className="flex-centered">
+                        <div className={this.props.regFormError.all ? '' : 'display-none'}>
+                            <div className="reg-form-error">
+                                {this.props.regFormError.all}
+                            </div>
+                        </div>
+                    </div>
+                </div>;
+                break;
+            case constants.IMAGE_REG_FORM_STATE_DEFAULT:
+                buttonArea = <div>
+                    <div className="flex-centered">
+                        <button
+                            className="button cart-button secondary-button upper-button rounded is-bold raised"
+                            onClick={this.onFormSubmit}>
+                            Register
+                        </button>
+                    </div>
+                    <div className="flex-centered">
+                        <div className={this.props.regFormError.all ? '' : 'display-none'}>
+                            <div className="reg-form-error">
+                                {this.props.regFormError.all}
+                            </div>
+                        </div>
+                    </div>
+                </div>;
+                break;
+            case constants.IMAGE_REG_FORM_STATE_PREL_FEE_RECEIVED:
+                buttonArea = <div>
+                    <div className="regfee-msg">Preliminary network
+                        fee: {this.props.regFormFee} PSL
+                    </div>
+                    <div className="flex-centered">
+                        <button
+                            className="button cart-button secondary-button upper-button rounded is-bold raised"
+                            onClick={this.onProceedClick}>
+                            Proceed
+                        </button>
+                    </div>
+                </div>;
+                break;
+            case constants.IMAGE_REG_FORM_STATE_REQUESTING_NETWORK:
+                buttonArea = <div>
+                    <div className="regfee-msg">Requesting network for the worker's fee
+                    </div>
+                    <div className="flex-centered">
+                        <button
+                            className="button spinner-button"
+                            onClick={this.onProceedClick}>
+                            Proceed
+                        </button>
+                    </div>
+                </div>;
+                break;
+            case constants.IMAGE_REG_FORM_STATE_WORKER_FEE_RECEIVED:
+                buttonArea = <div>
+                    <div className="regfee-msg">Worker's fee: {this.props.workerFee} PSL
+                    </div>
+                    <div className="flex-centered">
+                        <button
+                            className="button cart-button secondary-button upper-button rounded is-bold raised"
+                            onClick={this.onProceedClick}>
+                            Accept
+                        </button>
+                        <button
+                            className="button cart-button secondary-button upper-button rounded is-bold raised"
+                            onClick={this.onProceedClick}>
+                            Decline
+                        </button>
+                    </div>
+                </div>;
+                break;
+            default:
+                break;
+        }
         return <MainWrapper>
             <div className="columns is-multiline">
                 <div className="column">
@@ -169,34 +263,7 @@ export class ImageRegisterForm extends Component {
                                     </div>
 
                                     <div className="flex-centered">
-                                        <div className={this.props.regFormFee ? 'display-none' : ''}>
-                                            <div className="flex-centered">
-                                                <button
-                                                    className="button
-                                            cart-button secondary-button upper-button rounded is-bold raised"
-                                                    onClick={this.onFormSubmit}>
-                                                    Register
-                                                </button>
-                                            </div>
-                                            <div className="flex-centered">
-                                                <div className={this.props.regFormError.all ? '' : 'display-none'}>
-                                                    <div className="reg-form-error">
-                                                        {this.props.regFormError.all}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className={this.props.regFormFee ? '' : 'display-none'}>
-                                            <div className="regfee-msg">Preliminary network
-                                                fee: {this.props.regFormFee} PSL
-                                            </div>
-                                            <button
-                                                className="button
-                                            cart-button secondary-button upper-button rounded is-bold raised"
-                                                onClick={this.onProceedClick}>
-                                                Proceed
-                                            </button>
-                                        </div>
+                                        {buttonArea}
                                     </div>
 
                                 </form>

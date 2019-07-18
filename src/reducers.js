@@ -24,6 +24,8 @@ const reducer  = (state = {}, action) => {
             return {...state, userProfile: action.value};
         case actionTypes.SET_SEND_PSL_SEND_STATUS_DATA:
             return {...state, sendPslStatusData: action.value};
+        case actionTypes.SET_IMAGE_REGISTER_FORM_STATE:
+            return {...state, regFormState: action.value};
         case actionTypes.RESET_STORE:
             return {...initialState};
         default:

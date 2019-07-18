@@ -19,6 +19,11 @@ export const setImageRegFormError = (key, value) => ({
     value
 });
 
+export const setImageRegFormState = (value) => ({
+    type: actionTypes.SET_IMAGE_REGISTER_FORM_STATE,
+    value
+});
+
 export const resetImageRegFormErrors = () => ({
     type: actionTypes.RESET_IMAGE_REGISTER_FORM_ERRORS
 });

@@ -1,7 +1,9 @@
-export const USER_PROFILE_FIELD_PICTURE = 'picture';
-export const USER_PROFILE_FIELD_FIRST_NAME = 'first_name';
-export const USER_PROFILE_FIELD_LAST_NAME = 'last_name';
-export const USER_PROFILE_FIELD_EMAIL = 'email';
-export const USER_PROFILE_FIELD_PHONE = 'phone_number';
 export const RESPONSE_STATUS_OK = 'OK';
 export const RESPONSE_STATUS_ERROR = 'ERROR';
+
+
+export const IMAGE_REG_FORM_STATE_ERROR = -1;
+export const IMAGE_REG_FORM_STATE_DEFAULT = 0;
+export const IMAGE_REG_FORM_STATE_PREL_FEE_RECEIVED = 1;
+export const IMAGE_REG_FORM_STATE_REQUESTING_NETWORK = 2;
+export const IMAGE_REG_FORM_STATE_WORKER_FEE_RECEIVED = 3;
