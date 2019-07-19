@@ -11,6 +11,7 @@ import {
 import history from '../history';
 import * as constants from '../constants';
 import {MainWrapper} from "./MainWrapperComponent";
+import {BarLoader} from 'react-spinners';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -78,7 +79,6 @@ export class ImageRegisterForm extends Component {
     };
 
     onFormSubmit = (e) => {
-        // TODO: validate form. Name and file should not be empty
         e.preventDefault();
         if (this.validateImageRegForm()) {
             let data = this.state;
@@ -86,8 +86,6 @@ export class ImageRegisterForm extends Component {
         }
     };
     onProceedClick = (e) => {
-        //TODO: create image registration ticket
-        //TODO: calculate image hash
         e.preventDefault();
         let data = {
             name: this.state.artName,
@@ -110,7 +108,12 @@ export class ImageRegisterForm extends Component {
         this.setState({[e.target.name]: e.target.value});
     };
     onReturnClick = (e) => {
+        this.props.dispatch(resetImageRegFormErrors());
+        this.props.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_DEFAULT));
         history.push('/');
+    };
+    onPayFeeClick = (e) => {
+        alert('Implement pay fee to MN address');
     };
     render() {
         let buttonArea;
@@ -170,11 +173,12 @@ export class ImageRegisterForm extends Component {
                     <div className="regfee-msg">Requesting network for the worker's fee
                     </div>
                     <div className="flex-centered">
-                        <button
-                            className="button spinner-button"
-                            onClick={this.onProceedClick}>
-                            Proceed
-                        </button>
+                        <BarLoader
+                            sizeUnit={"%"}
+                            width={90}
+                            color={'#00D1B2'}
+                            loading={true}
+                        />
                     </div>
                 </div>;
                 break;
@@ -185,12 +189,12 @@ export class ImageRegisterForm extends Component {
                     <div className="flex-centered">
                         <button
                             className="button cart-button secondary-button upper-button rounded is-bold raised"
-                            onClick={this.onProceedClick}>
+                            onClick={this.onPayFeeClick}>
                             Accept
                         </button>
                         <button
                             className="button cart-button secondary-button upper-button rounded is-bold raised"
-                            onClick={this.onProceedClick}>
+                            onClick={this.onReturnClick}>
                             Decline
                         </button>
                     </div>

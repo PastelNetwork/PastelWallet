@@ -207,10 +207,27 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
 
 ipcMain.on('imageRegFormProceed', (event, data) => {
     axios.post(IMAGE_REGISTRATION_FEE_RESOURCE, {image: data.filePath, title: data.name}).then((response) => {
-        win.webContents.send('imageRegFormProceedResponse', {
-            status: RESPONSE_STATUS_OK,
-            fee: response.data.fee
+        const fee = response.data.fee;
+        callRpcMethod(GETBALANCE_COMMAND).then((response) => {
+            if (response.data.result >= fee) {
+                win.webContents.send('imageRegFormProceedResponse', {
+                    status: RESPONSE_STATUS_OK,
+                    fee
+                });
+            } else {
+                win.webContents.send('imageRegFormProceedResponse', {
+                    status: RESPONSE_STATUS_ERROR,
+                    msg: `Not enough funds to pay fee (need PSL${fee})`,
+                    fee
+                })
+            }
+        }).catch((err) => {
+            win.webContents.send('imageRegFormProceedResponse', {
+                status: RESPONSE_STATUS_ERROR,
+                msg: `Error accessing local cNode: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
+            })
         });
+
     }).catch((err) => {
         win.webContents.send('imageRegFormProceedResponse', {
             status: RESPONSE_STATUS_ERROR,
