@@ -4,7 +4,7 @@ import {store} from "../app";
 import {
     resetImageRegFormErrors,
     setImageRegFormError,
-    setImageRegFormRegFee, setImageRegFormState,
+    setImageRegFormRegFee, setImageRegFormState, setImageRegTicketID,
     setImageRegWorkerFee,
     setRegFee
 } from "../actions";
@@ -42,6 +42,7 @@ ipcRenderer.on('imageRegFormProceedResponse', (event, data) => {
         case constants.RESPONSE_STATUS_OK:
             store.dispatch(resetImageRegFormErrors());
             store.dispatch(setImageRegWorkerFee(data.fee));
+            store.dispatch(setImageRegTicketID(data.regticket_id));
             store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_WORKER_FEE_RECEIVED));
             break;
         default:
@@ -110,10 +111,14 @@ export class ImageRegisterForm extends Component {
     onReturnClick = (e) => {
         this.props.dispatch(resetImageRegFormErrors());
         this.props.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_DEFAULT));
+        ipcRenderer.send('imageRegFormCancel', {regticketId: this.props.regticketId});
+        this.props.dispatch(setImageRegTicketID(null));
         history.push('/');
     };
     onPayFeeClick = (e) => {
         alert('Implement pay fee to MN address');
+        // TODO: add wallet address of masternode to the response
+        // TODO: no. wallet_api will fully handle masternodes and their addresses. the only thing need to provide - regticket_id
     };
     render() {
         let buttonArea;

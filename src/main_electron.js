@@ -2,7 +2,6 @@ const path = require('path');
 const {app, BrowserWindow, ipcMain} = require('electron');
 const axios = require('axios');
 const fs = require('fs');
-const exec = require('child_process').exec;
 const bs58 = require('bs58');
 const log = require('electron-log');
 
@@ -18,6 +17,7 @@ const LOCAL_PY_URL = 'http://127.0.0.1:5000/';
 
 
 const IMAGE_REGISTRATION_FEE_RESOURCE = `${LOCAL_PY_URL}get_image_registration_fee`;
+const IMAGE_REGISTRATION_CANCEL_RESOURCE = `${LOCAL_PY_URL}image_registration_cancel`;
 
 /*************************************************************
  * py process
@@ -154,6 +154,8 @@ const callRpcMethod = (method, params) => {
     });
 };
 
+
+// image registration form step 1
 ipcMain.on('imageRegFormSubmit', (event, arg) => {
     // const stats = fs.statSync(arg.filePath);
     // const fileSizeInBytes = stats.size;
@@ -204,15 +206,30 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
     });
 });
 
+ipcMain.on('imageRegFormCancel', (event, data) => {
+    axios.post(IMAGE_REGISTRATION_CANCEL_RESOURCE, {regticket_id: data.regtciketId}).then((response) => {
+        win.webContents.send('imageRegFormCancelResponse', {
+            status: RESPONSE_STATUS_OK
+        });
+    }).catch(() => {
+        win.webContents.send('imageRegFormCancelResponse', {
+            status: RESPONSE_STATUS_ERROR
+        });
+    })
+});
 
+
+// image registration form step 2
 ipcMain.on('imageRegFormProceed', (event, data) => {
     axios.post(IMAGE_REGISTRATION_FEE_RESOURCE, {image: data.filePath, title: data.name}).then((response) => {
         const fee = response.data.fee;
+        const regticket_id = response.data.regticket_id;
         callRpcMethod(GETBALANCE_COMMAND).then((response) => {
             if (response.data.result >= fee) {
                 win.webContents.send('imageRegFormProceedResponse', {
                     status: RESPONSE_STATUS_OK,
-                    fee
+                    fee,
+                    regticket_id
                 });
             } else {
                 win.webContents.send('imageRegFormProceedResponse', {
