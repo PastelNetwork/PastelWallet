@@ -7,7 +7,6 @@ const log = require('electron-log');
 
 let win = null;
 
-const MASTERNODE_REGFEE_COMMAND = "masternode regfee";
 const RESPONSE_STATUS_OK = 'OK';
 const RESPONSE_STATUS_ERROR = 'ERROR';
 const GETBALANCE_COMMAND = 'getbalance';
@@ -158,11 +157,9 @@ const callRpcMethod = (method, params) => {
 
 // image registration form step 1
 ipcMain.on('imageRegFormSubmit', (event, arg) => {
-    // const stats = fs.statSync(arg.filePath);
-    // const fileSizeInBytes = stats.size;
-    return callRpcMethod(MASTERNODE_REGFEE_COMMAND).then((response) => {
-        const regFee = response.data.result;
-        log.info(`Regfee from 'masternode regfee' is ${regFee}`);
+    return callRpcMethod('masternode', ['getnetworkfee']).then((response) => {
+        const regFee = response.data.result.networkfee;
+        log.info(`Regfee from 'masternode getnetworkfee' is ${regFee}`);
         callRpcMethod(GETBALANCE_COMMAND).then((response) => {
             if (response.data.result >= regFee) {
                 win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee})
@@ -180,30 +177,10 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
             })
         })
     }).catch((err) => {
-        // TODO: send error. OK response is here only for debugging purposes until cNode does not support regfee command
-        // win.webContents.send('imageRegFormSubmitResponse', {
-        //     status: RESPONSE_STATUS_ERROR,
-        //     msg: `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
-        // });
-        const regFee = 0.5;
-        // win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee});
-        callRpcMethod(GETBALANCE_COMMAND).then((response) => {
-            if (response.data.result >= regFee) {
-                win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee})
-            } else {
-                win.webContents.send('imageRegFormSubmitResponse', {
-                    status: RESPONSE_STATUS_ERROR,
-                    msg: `Not enough funds to pay fee (need PSL${regFee})`,
-                    regFee
-                })
-            }
-        }).catch((err) => {
-            win.webContents.send('imageRegFormSubmitResponse', {
-                status: RESPONSE_STATUS_ERROR,
-                msg: `Error accessing local cNode: ${err.response.data.error.message}, command: ${GETBALANCE_COMMAND}`
-            })
-        })
-
+        win.webContents.send('imageRegFormSubmitResponse', {
+            status: RESPONSE_STATUS_ERROR,
+            msg: `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}, command: 'masternode getnetworkfee'`
+        });
     });
 });
 
@@ -258,7 +235,8 @@ ipcMain.on('imageRegFormProceed', (event, data) => {
 ipcMain.on('imageRegFormStep3', (event, data) => {
     axios.post(IMAGE_REGISTRATION_STEP_3_RESOURCE, {regticket_id: data.regticketId}).then((response) => {
         win.webContents.send('imageRegFormStep3Response', {
-            status: RESPONSE_STATUS_OK
+            status: RESPONSE_STATUS_OK,
+            txid: response.data.txid
         });
     }).catch(() => {
         win.webContents.send('imageRegFormStep3Response', {
