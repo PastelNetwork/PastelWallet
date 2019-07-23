@@ -50,6 +50,23 @@ ipcRenderer.on('imageRegFormProceedResponse', (event, data) => {
     }
 });
 
+ipcRenderer.on('imageRegFormStep3Response', (event, data) => {
+    console.log('imageRegFormStep3Response RECEIVED');
+    console.log(data);
+    switch (data.status) {
+        case constants.RESPONSE_STATUS_ERROR:
+            store.dispatch(setImageRegFormError('all', data.msg));
+            store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_ERROR));
+            break;
+        case constants.RESPONSE_STATUS_OK:
+            store.dispatch(resetImageRegFormErrors());
+            store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_MN_2_3_RESPONSE_RECEIVED));
+            break;
+        default:
+            break;
+    }
+});
+
 export class ImageRegisterForm extends Component {
     constructor(props) {
         super(props);
@@ -116,9 +133,10 @@ export class ImageRegisterForm extends Component {
         this.props.dispatch(setImageRegTicketID(null));
         history.push('/');
     };
-    onPayFeeClick = (e) => {
+    onAcceptStep3Click = (e) => {
         e.preventDefault();
         ipcRenderer.send('imageRegFormStep3', {regticketId: this.props.regticketId});
+        this.props.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_SEND_REGTICKET_MN_2_3));
     };
     render() {
         let buttonArea;
@@ -194,7 +212,7 @@ export class ImageRegisterForm extends Component {
                     <div className="flex-centered">
                         <button
                             className="button cart-button secondary-button upper-button rounded is-bold raised"
-                            onClick={this.onPayFeeClick}>
+                            onClick={this.onAcceptStep3Click}>
                             Accept
                         </button>
                         <button
@@ -205,6 +223,27 @@ export class ImageRegisterForm extends Component {
                     </div>
                 </div>;
                 break;
+            case constants.IMAGE_REG_FORM_STATE_SEND_REGTICKET_MN_2_3:
+                buttonArea = <div>
+                    <div className="regfee-msg">Sending registration ticket to masternodes 2 and 3
+                    </div>
+                    <div className="flex-centered">
+                        <BarLoader
+                            sizeUnit={"%"}
+                            width={90}
+                            color={'#00D1B2'}
+                            loading={true}
+                        />
+                    </div>
+                </div>;
+                break;
+            case constants.IMAGE_REG_FORM_STATE_MN_2_3_RESPONSE_RECEIVED:
+                buttonArea = <div>
+                    <div className="regfee-msg">Masternodes 2 and 3 accepted image registration
+                    </div>
+                </div>;
+                break;
+
             default:
                 break;
         }
