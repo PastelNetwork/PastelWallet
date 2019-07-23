@@ -16,7 +16,8 @@ const SEND_TO_ADDRESS_COMMAND = 'sendtoaddress';
 const LOCAL_PY_URL = 'http://127.0.0.1:5000/';
 
 
-const IMAGE_REGISTRATION_FEE_RESOURCE = `${LOCAL_PY_URL}get_image_registration_fee`;
+const IMAGE_REGISTRATION_STEP_2_RESOURCE = `${LOCAL_PY_URL}image_registration_step_2`;
+const IMAGE_REGISTRATION_STEP_3_RESOURCE = `${LOCAL_PY_URL}image_registration_step_3`;
 const IMAGE_REGISTRATION_CANCEL_RESOURCE = `${LOCAL_PY_URL}image_registration_cancel`;
 
 /*************************************************************
@@ -207,7 +208,7 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
 });
 
 ipcMain.on('imageRegFormCancel', (event, data) => {
-    axios.post(IMAGE_REGISTRATION_CANCEL_RESOURCE, {regticket_id: data.regtciketId}).then((response) => {
+    axios.post(IMAGE_REGISTRATION_CANCEL_RESOURCE, {regticket_id: data.regticketId}).then((response) => {
         win.webContents.send('imageRegFormCancelResponse', {
             status: RESPONSE_STATUS_OK
         });
@@ -221,7 +222,7 @@ ipcMain.on('imageRegFormCancel', (event, data) => {
 
 // image registration form step 2
 ipcMain.on('imageRegFormProceed', (event, data) => {
-    axios.post(IMAGE_REGISTRATION_FEE_RESOURCE, {image: data.filePath, title: data.name}).then((response) => {
+    axios.post(IMAGE_REGISTRATION_STEP_2_RESOURCE, {image: data.filePath, title: data.name}).then((response) => {
         const fee = response.data.fee;
         const regticket_id = response.data.regticket_id;
         callRpcMethod(GETBALANCE_COMMAND).then((response) => {
@@ -251,6 +252,20 @@ ipcMain.on('imageRegFormProceed', (event, data) => {
             error: 'Error obtaining worker fee'
         });
     });
+});
+
+// image registration form step 3
+ipcMain.on('imageRegFormStep3', (event, data) => {
+    axios.post(IMAGE_REGISTRATION_STEP_3_RESOURCE, {regticket_id: data.regticketId}).then((response) => {
+        win.webContents.send('imageRegFormStep3Response', {
+            status: RESPONSE_STATUS_OK
+        });
+    }).catch(() => {
+        win.webContents.send('imageRegFormStep3Response', {
+            status: RESPONSE_STATUS_ERROR
+        });
+    })
+
 });
 
 ipcMain.on('getBalanceRequest', (event, arg) => {

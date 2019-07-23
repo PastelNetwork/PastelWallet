@@ -109,6 +109,7 @@ export class ImageRegisterForm extends Component {
         this.setState({[e.target.name]: e.target.value});
     };
     onReturnClick = (e) => {
+        e.preventDefault();
         this.props.dispatch(resetImageRegFormErrors());
         this.props.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_DEFAULT));
         ipcRenderer.send('imageRegFormCancel', {regticketId: this.props.regticketId});
@@ -116,9 +117,8 @@ export class ImageRegisterForm extends Component {
         history.push('/');
     };
     onPayFeeClick = (e) => {
-        alert('Implement pay fee to MN address');
-        // TODO: add wallet address of masternode to the response
-        // TODO: no. wallet_api will fully handle masternodes and their addresses. the only thing need to provide - regticket_id
+        e.preventDefault();
+        ipcRenderer.send('imageRegFormStep3', {regticketId: this.props.regticketId});
     };
     render() {
         let buttonArea;
