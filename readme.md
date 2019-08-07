@@ -12,13 +12,18 @@
 
 ## How to make a build
 
- - install python requirements:
- - - `cd src/StoVaCore`
- - - `pip install -r requirements.txt`
+### Prepare enviroment (Ubuntu example)
+ - `apt install python3-pip`
+ - `pip3 install -r requirements.txt` for StoVaCore repo
+ - `apt-get install curl software-properties-common`
+ - `curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -` (to install nodejs v11)
+ - `sudo apt-get install -y nodejs`
+ - `npm install`
+ - `npm rebuild node-sass` (as it's platform-dependent)
+
  - - make python build: `pyinstaller -F wallet_api.py` (result will appear in `src/StoVaCore/dist`)
- - on the top level of the repository: `npm install`
- - `npm run electron-build`
- - builded application will appear in `dist` folder (for OS X it is *.dmg file)
+ - `npm run electron-build:linux`
+ - builded application will appear in `dist` folder
 
 ## Logging
  - For development run all logs will appear in the terminal
