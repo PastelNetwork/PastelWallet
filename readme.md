@@ -30,7 +30,7 @@
  - `sudo dpkg -i paste-wallet_1.0.0_amd64.deb`
  - if there are any uninstalled dependencies - run `sudo apt -f install`
  - Run `pastel-wallet` from command line
- 
+
 ## Logging
  - For development run all logs will appear in the terminal
  - For packaged run logs path depends on the operation system. For OS X it is `/Users/<currentUser>/Library/Logs/pastel-wallet/log.log`
