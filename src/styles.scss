@@ -369,3 +369,22 @@ footer {
   position: absolute;
   left: -9999px;
 }
+
+.conn-status-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 8pt;
+}
+
+.conn-status-cnode.connected, .conn-status-pynode.connected {
+  color: #1e801e;
+}
+
+.conn-status-cnode.pending, .conn-status-pynode.pending {
+  color: #ffc754;
+}
+
+.conn-status-cnode.disconnected, .conn-status-pynode.disconnected {
+  color: #ff2038;
+}

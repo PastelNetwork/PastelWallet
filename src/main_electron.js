@@ -313,6 +313,8 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
                 pastelID: pastelIdAddress
             });
         }).catch((err) => {
+            log.warn('Error from wallet_api on /get_keys:');
+            log.warn(err);
             win.webContents.send('blockchainDataResponse', {
                 status: RESPONSE_STATUS_ERROR,
                 error: 'Request errror. Try again later'

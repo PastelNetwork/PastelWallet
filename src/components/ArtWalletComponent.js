@@ -14,9 +14,11 @@ const ipcRenderer = window.require('electron').ipcRenderer;
 
 ipcRenderer.on('blockchainDataResponse', (event, data) => {
     if (data.status === RESPONSE_STATUS_OK) {
+        console.log(data);
         store.dispatch(setBlockchainData(data));
     } else {
         // if error - try until service will start
+
         setTimeout(() => {
             ipcRenderer.send('blockchainDataRequest', {})
         }, 500);
