@@ -4,12 +4,14 @@ const axios = require('axios');
 const fs = require('fs');
 const bs58 = require('bs58');
 const log = require('electron-log');
+const constants = require('./constants');
 
 let win = null;
 
 const RESPONSE_STATUS_OK = 'OK';
 const RESPONSE_STATUS_ERROR = 'ERROR';
 const GETBALANCE_COMMAND = 'getbalance';
+const GETINFO_COMMAND = 'getinfo';
 const GET_ACCOUNT_ADDRESS_COMMAND = 'getaccountaddress';
 const SEND_TO_ADDRESS_COMMAND = 'sendtoaddress';
 const LOCAL_PY_URL = 'http://127.0.0.1:5000/';
@@ -18,6 +20,7 @@ const LOCAL_PY_URL = 'http://127.0.0.1:5000/';
 const IMAGE_REGISTRATION_STEP_2_RESOURCE = `${LOCAL_PY_URL}image_registration_step_2`;
 const IMAGE_REGISTRATION_STEP_3_RESOURCE = `${LOCAL_PY_URL}image_registration_step_3`;
 const IMAGE_REGISTRATION_CANCEL_RESOURCE = `${LOCAL_PY_URL}image_registration_cancel`;
+const PING_RESOURCE = `${LOCAL_PY_URL}ping`;
 
 /*************************************************************
  * py process
@@ -138,12 +141,15 @@ app.on('will-quit', cleanUp);
 
 const callRpcMethod = (method, params) => {
     // return Promise
-    return axios.post('http://localhost:19932', {
+    let data = {
         "jsonrpc": "1.0",
         "id": "curltest",
-        "method": method,
-        "params": params ? params : [""]
-    }, {
+        "method": method
+    };
+    if (params) {
+        data.params = params;
+    }
+    return axios.post('http://localhost:19932', data, {
         headers: {
             'Content-Type': 'text/plain'
         },
@@ -299,7 +305,7 @@ ipcMain.on('sendPSLRequest', (event, arg) => {
 });
 
 ipcMain.on('blockchainDataRequest', (event, arg) => {
-    return callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND).then((response) => {
+    return callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND, [""]).then((response) => {
         const bcAddress = response.data.result;
         log.info(`BC data result ${bcAddress}`);
         axios.get(`${LOCAL_PY_URL}get_keys`).then((response) => {
@@ -325,6 +331,39 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
     });
 });
 
+const updateCnodeStatus = () => {
+    callRpcMethod(GETINFO_COMMAND).then((response) => {
+        const data = response.data;
+        win.webContents.send('updateCNodeStatus', {
+            status: constants.CNODE_STATUS_CONNECTED
+        });
+
+    }).catch((err) => {
+        win.webContents.send('updateCNodeStatus', {
+            status: constants.CNODE_STATUS_DISCONNECTED
+        });
+    })
+
+};
+
+const updatePynodeStatus = () => {
+    axios.post(PING_RESOURCE, {}).then(() => {
+        win.webContents.send('updatePynodeStatus', {
+            status: constants.PYNODE_STATUS_CONNECTED
+        });
+    }).catch(()=>{
+        win.webContents.send('updatePynodeStatus', {
+            status: constants.PYNODE_STATUS_DISCONNECTED
+        });
+    });
+};
+
+const updateNodeStatusesProccess = () => {
+    setInterval(updateCnodeStatus, 3000);
+    setInterval(updatePynodeStatus, 3000);
+};
+
+
 function createWindow() {
     log.silly('Starting main proccess....');
     // Create the browser window.
@@ -346,3 +385,4 @@ function createWindow() {
 }
 
 app.on('ready', createWindow);
+app.on('ready', updateNodeStatusesProccess);

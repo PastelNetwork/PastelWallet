@@ -29,8 +29,8 @@ export const initialState = {
     masternodes: 2, // TODO: fetch amount of masternodes from pastel network when backend is ready
     regFormError: {},
     regFormState: constants.IMAGE_REG_FORM_STATE_DEFAULT,
-    cNodeStatus: constants.CNODE_STATUS_DISCONNECTED,
-    pyNodeStatus: constants.PYNODE_STATUS_DISCONNECTED
+    cNodeStatus: constants.CNODE_STATUS_PENDING,
+    pyNodeStatus: constants.PYNODE_STATUS_PENDING
 };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

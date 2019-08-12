@@ -3,13 +3,13 @@ import * as PastelLogo from "../assets2/image/pastel_logo.png";
 import {ConnectionStatusContainer} from "../containers/dashboard/ConnectionStatusContainer";
 
 export const MainWrapper = (props) => {
-    const logo = props.noLogo ? null: <div className="account-title">
+    const logo = props.noLogo ? null : <div className="account-title">
         <img className="brand-filigrane" src={PastelLogo} alt=""/>
     </div>;
 
     return <div className="section main-wrapper">
+        <ConnectionStatusContainer/>
         <div className="container">
-            <ConnectionStatusContainer/>
             <div className="columns account-header">
                 <div className="column is-10 is-offset-1 is-tablet-landscape-padded">
                     {logo}

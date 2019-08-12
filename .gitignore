@@ -34,3 +34,4 @@ pasteld_binary/pasteld
 pasteld_binary/main.cpp
 
 *.db
+src/main_electron_built.js

@@ -30,14 +30,15 @@
     "dev-server": "webpack-dev-server --open --mode development",
     "start": "webpack-dashboard npm run dev-server",
     "sass:watch": "node-sass -w --source-map true src/artist.scss src/artist.css",
-    "start-electron": "electron --inspect .",
     "electron-pack:mac": "build --mac -c.extraMetadata.main=build/main_electron.js",
     "electron-pack:win": "build --win -c.extraMetadata.main=build/main_electron.js",
     "electron-pack:linux": "build --linux -c.extraMetadata.main=build/main_electron.js",
     "electron-build:mac": "rm -rf build/* dist/*; npm run electron-bundle; npm run build; npm run electron-pack:mac",
     "electron-build:win": "rm -rf build/* dist/*; npm run electron-bundle; npm run build; npm run electron-pack:win",
     "electron-build:linux": "rm -rf build/* dist/*; npm run electron-bundle; npm run build; npm run electron-pack:linux",
-    "electron-bundle": "webpack --config webpack.config.electron.js --mode production"
+    "electron-bundle": "webpack --config webpack.config.electron.js --mode production",
+    "electron-bundle-dev": "webpack --config webpack.config.electron.dev.js --mode production",
+    "start-electron": "npm run electron-bundle-dev; electron --inspect ./src/main_electron_built.js"
   },
   "keywords": [],
   "author": "Pastel INC <pastel@pastel.network>",

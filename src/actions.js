@@ -73,3 +73,13 @@ export const fetchProfile = () => {
         }).catch(() => console.log('Error getting base64 pastelID'));
     }
 };
+
+export const setCNodeStatus = (value) => ({
+    type: actionTypes.SET_CNODE_STATUS,
+    value
+});
+
+export const setPynodeStatus = (value) => ({
+    type: actionTypes.SET_PYNODE_STATUS,
+    value
+});

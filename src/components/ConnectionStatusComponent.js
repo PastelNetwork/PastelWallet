@@ -5,6 +5,21 @@ import {
     CNODE_STATUS_PENDING,
     PYNODE_STATUS_CONNECTED, PYNODE_STATUS_DISCONNECTED, PYNODE_STATUS_PENDING
 } from "../constants";
+import {store} from "../app";
+import {
+    setCNodeStatus,
+    setPynodeStatus
+} from "../actions";
+
+const ipcRenderer = window.require('electron').ipcRenderer;
+
+ipcRenderer.on('updateCNodeStatus', (event, data) => {
+    store.dispatch(setCNodeStatus(data.status));
+});
+
+ipcRenderer.on('updatePynodeStatus', (event, data) => {
+    store.dispatch(setPynodeStatus(data.status));
+});
 
 export class ConnectionStatus extends Component {
     render() {

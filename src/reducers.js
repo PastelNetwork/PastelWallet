@@ -28,6 +28,10 @@ const reducer  = (state = {}, action) => {
             return {...state, sendPslStatusData: action.value};
         case actionTypes.SET_IMAGE_REGISTER_FORM_STATE:
             return {...state, regFormState: action.value};
+        case actionTypes.SET_CNODE_STATUS:
+            return {...state, cNodeStatus: action.value};
+        case actionTypes.SET_PYNODE_STATUS:
+            return {...state, pyNodeStatus: action.value};
         case actionTypes.RESET_STORE:
             return {...initialState};
         default:
