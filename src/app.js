@@ -30,7 +30,8 @@ export const initialState = {
     regFormError: {},
     regFormState: constants.IMAGE_REG_FORM_STATE_DEFAULT,
     cNodeStatus: constants.CNODE_STATUS_PENDING,
-    pyNodeStatus: constants.PYNODE_STATUS_PENDING
+    pyNodeStatus: constants.PYNODE_STATUS_PENDING,
+    userDisplayMessages: ['System has started', 'something else important happened']
 };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

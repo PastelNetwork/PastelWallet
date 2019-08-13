@@ -388,3 +388,27 @@ footer {
 .conn-status-cnode.disconnected, .conn-status-pynode.disconnected {
   color: #ff2038;
 }
+
+.message-box-wrapper {
+  position: absolute;
+  right: 0;
+  border: 1px double black;
+  border-radius: 3px;
+  z-index: 1;
+}
+
+.message-box-body {
+  border: 1px double black;
+  border-radius: 3px;
+  margin: 5px;
+  height: 80px;
+  overflow-y: auto;
+  cursor: pointer;
+  transition-property: width;
+  transition-duration: 1s;
+  width: 275px;
+}
+
+.message-box-body.collapsed {
+  width: 10px;
+}

@@ -351,7 +351,7 @@ const updatePynodeStatus = () => {
         win.webContents.send('updatePynodeStatus', {
             status: constants.PYNODE_STATUS_CONNECTED
         });
-    }).catch(()=>{
+    }).catch((err)=>{
         win.webContents.send('updatePynodeStatus', {
             status: constants.PYNODE_STATUS_DISCONNECTED
         });
