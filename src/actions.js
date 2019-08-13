@@ -87,3 +87,8 @@ export const setPynodeStatus = (value) => ({
 export const toggleMessageBox = () => ({
     type: actionTypes.TOGGLE_MESSAGE_BOX
 });
+
+export const addMessage = (msg) => ({
+    type: actionTypes.ADD_MESSAGE,
+    value: msg
+});

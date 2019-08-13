@@ -31,7 +31,7 @@ export const initialState = {
     regFormState: constants.IMAGE_REG_FORM_STATE_DEFAULT,
     cNodeStatus: constants.CNODE_STATUS_PENDING,
     pyNodeStatus: constants.PYNODE_STATUS_PENDING,
-    userDisplayMessages: ['System has started', 'something else important happened'],
+    userDisplayMessages: [],
     messageBoxCollaped: false
 };
 

@@ -69,9 +69,6 @@ const createPyProc = () => {
     let port = pyPort;
     if (process.defaultApp) {
         pyProc = require('child_process').execFile('python', [script, process.cwd()], (error, stdout, stderr) => {
-            log.error(`[wallet_api.py] Error: ${error}`);
-            log.error(`[wallet_api.py] Stdout: ${stdout}`);
-            log.error(`[wallet_api.py] Stderr: ${stderr}`);
         });
     } else {
         let appPath;
@@ -84,23 +81,28 @@ const createPyProc = () => {
                 break;
         }
         pyProc = require('child_process').execFile(script, [appPath], (error, stdout, stderr) => {
-            log.error(`[wallet_api.py] Error: ${error}`);
-            log.info(`[wallet_api.py] Stdout: ${stdout}`);
-            log.warn(`[wallet_api.py] Stderr: ${stderr}`);
         });
     }
 
     pyProc.stdout.on('data', (data) => {
-        log.info(`wallet_api stdout: ${data}`);
+        const msg = `wallet_api stdout: ${data}`;
+        log.info(msg);
+        addMessageToBox(msg)
     });
 
     pyProc.stderr.on('data', (data) => {
-        log.warn(`wallet_api stderr: ${data}`);
+        const msg = `wallet_api stderr: ${data}`;
+        log.warn(msg);
+        addMessageToBox(msg);
     });
     if (pyProc != null) {
-        log.info('child process success on port ' + port)
+        const msg = 'child process success on port ' + port;
+        log.info(msg);
+        addMessageToBox(msg);
     } else {
-        log.warn('Wallet api proccess failed to start')
+        const msg = 'Wallet api proccess failed to start';
+        log.warn(msg);
+        addMessageToBox(msg);
     }
 };
 
@@ -126,6 +128,7 @@ const checkAndRunPastelD = () => {
 
 
 const cleanUp = () => {
+    addMessageToBox = (msg) => {};
     pyProc.kill();
     if (pastelProc) {
         pastelProc.kill();
@@ -134,10 +137,13 @@ const cleanUp = () => {
     pyProc = null;
 };
 
-app.on('ready', createPyProc);
-app.on('ready', checkAndRunPastelD);
-app.on('will-quit', cleanUp);
-
+let addMessageToBox = (msg) => {
+    if (win) {
+        win.webContents.send('addMessageToBox', {
+            msg
+        });
+    }
+};
 
 const callRpcMethod = (method, params) => {
     // return Promise
@@ -166,6 +172,8 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
     return callRpcMethod('masternode', ['getnetworkfee']).then((response) => {
         const regFee = response.data.result.networkfee;
         log.info(`Regfee from 'masternode getnetworkfee' is ${regFee}`);
+        addMessageToBox(`Regfee from 'masternode getnetworkfee' is ${regFee}`);
+        addMessageToBox('Image reg form submitted');
         callRpcMethod(GETBALANCE_COMMAND).then((response) => {
             if (response.data.result >= regFee) {
                 win.webContents.send('imageRegFormSubmitResponse', {status: RESPONSE_STATUS_OK, msg: 'OK', regFee})
@@ -351,7 +359,7 @@ const updatePynodeStatus = () => {
         win.webContents.send('updatePynodeStatus', {
             status: constants.PYNODE_STATUS_CONNECTED
         });
-    }).catch((err)=>{
+    }).catch((err) => {
         win.webContents.send('updatePynodeStatus', {
             status: constants.PYNODE_STATUS_DISCONNECTED
         });
@@ -386,3 +394,6 @@ function createWindow() {
 
 app.on('ready', createWindow);
 app.on('ready', updateNodeStatusesProccess);
+app.on('ready', createPyProc);
+app.on('ready', checkAndRunPastelD);
+app.on('will-quit', cleanUp);
