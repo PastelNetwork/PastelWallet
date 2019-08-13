@@ -391,7 +391,7 @@ footer {
 
 .message-box-wrapper {
   position: absolute;
-  right: 0;
+  right: 10px;
   border: 1px double black;
   border-radius: 3px;
   z-index: 1;
@@ -411,4 +411,8 @@ footer {
 
 .message-box-body.collapsed {
   width: 10px;
+}
+
+.message-box-item {
+  font-size: 6pt;
 }

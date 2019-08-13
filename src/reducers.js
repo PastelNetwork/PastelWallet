@@ -32,6 +32,8 @@ const reducer  = (state = {}, action) => {
             return {...state, cNodeStatus: action.value};
         case actionTypes.SET_PYNODE_STATUS:
             return {...state, pyNodeStatus: action.value};
+        case actionTypes.TOGGLE_MESSAGE_BOX:
+            return {...state, messageBoxCollaped: !state.messageBoxCollaped};
         case actionTypes.RESET_STORE:
             return {...initialState};
         default:

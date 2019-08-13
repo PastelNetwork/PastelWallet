@@ -4,6 +4,7 @@ import {MessageBox} from "../../components/dashboard/MessageBoxComponent";
 
 const mapStateToProps = state => ({
     messages: state.userDisplayMessages,
+    collapsed: state.messageBoxCollaped
 });
 
 const mapDispatchToProps = dispatch => ({
