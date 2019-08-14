@@ -109,7 +109,6 @@ const createPyProc = () => {
 const checkAndRunPastelD = () => {
     //TODO: stqart pastelD proccess
     //TODO: stop it on exit
-    //TODO: as this is no mac build for pastelD available -
     const pastelPath = getPasteldPath();
     if (!process.defaultApp) {
         pastelProc = require('child_process').execFile(pastelPath, [], (error, stdout, stderr) => {

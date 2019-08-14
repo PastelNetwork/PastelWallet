@@ -186,6 +186,11 @@ export class ImageRegisterForm extends Component {
                             onClick={this.onProceedClick}>
                             Proceed
                         </button>
+                        <button
+                            className="button cart-button secondary-button upper-button rounded is-bold raised"
+                            onClick={this.onReturnClick}>
+                            Decline
+                        </button>
                     </div>
                 </div>;
                 break;
