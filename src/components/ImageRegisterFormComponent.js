@@ -53,6 +53,7 @@ ipcRenderer.on('imageRegFormProceedResponse', (event, data) => {
 ipcRenderer.on('imageRegFormStep3Response', (event, data) => {
     switch (data.status) {
         case constants.RESPONSE_STATUS_ERROR:
+            console.log(data);
             store.dispatch(setImageRegFormError('all', data.msg));
             store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_ERROR));
             break;
