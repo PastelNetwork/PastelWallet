@@ -28,7 +28,7 @@ class SideBarWithoutRouter extends Component {
             </div>
             <div className="sidebar-inner">
                 <ul className="icon-menu">
-                    <LeftMenuPoint active={path === "/"} onClick={() => history.push('/')}>
+                    <LeftMenuPoint active={path === "/wallet"} onClick={() => history.push('/wallet')}>
                         <Feather.User/>
                     </LeftMenuPoint>
                     <LeftMenuPoint active={path === "/send_psl"} onClick={() => history.push('/send_psl')}>

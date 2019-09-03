@@ -35,6 +35,9 @@ let pastelProc = null;
 let pyPort = 5000;
 
 
+// suppress security warning in dev mode - cause we local from webpack dev server on localhost:3000
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+
 const getScriptPath = () => {
     if (process.defaultApp) {
         return path.join(__dirname, PY_FOLDER, PY_MODULE + '.py');
@@ -332,6 +335,13 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
     }).catch((err) => {
         win.webContents.send('walletAddress', `Cannot connect to local pasteld!, command: ${GET_ACCOUNT_ADDRESS_COMMAND}`);
     });
+});
+
+
+// IPC pastel ID related events
+ipcMain.on('pastelIdList', (event, arg) => {
+    // TODO: ask cNode for pastel ID list, return it
+    win.webContents.send('pastelIdListResponse', 'pastel ID list command');
 });
 
 const updateCnodeStatus = () => {

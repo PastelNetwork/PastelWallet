@@ -5,6 +5,12 @@
 //* {
 //  outline: 1px solid red !important;
 //}
+html {
+  min-height: 100%;
+}
+body {
+  min-height: 100%;
+}
 .flex-row {
   @extend %flex-row;
 }
