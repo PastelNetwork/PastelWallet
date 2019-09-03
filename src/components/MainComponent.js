@@ -11,12 +11,12 @@ const Main = (props) => {
     return <React.Fragment>
         <SideBar/>
         <Switch>
-            <Route exact path='/' component={PastelIdHomeContainer}/>
+            <Route path='/pastel_id' component={PastelIdHomeContainer}/>
             <Route exact path='/wallet' component={ArtWalletContainer}/>
             <Route exact path='/send_psl' component={SendPSLContainer}/>
             <Route exact path='/register' component={ImageRegisterFormContainer}/>
             <Route path='/user_profile' component={ProfileEdit}/>
-            <Redirect to='/'/>
+            <Redirect to='/pastel_id'/>
         </Switch>
     </React.Fragment>;
 };
