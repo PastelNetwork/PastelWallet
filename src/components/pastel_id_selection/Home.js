@@ -85,34 +85,40 @@ class NoActiveKeysCard extends Component {
 
     render() {
         return <PastelIdCard>
-            <div className="columns">
-                <div className="column balance-col">
-                    You have no registered Pastel ID keys. Which one would you like to register?
+            <div className="column balance-col">
+                You have no registered Pastel ID keys. Which one would you like to register?
+            </div>
+            <div className="flex-row">
+                <select>
+                    <option value="pastel_id_1">pastel_id_1</option>
+                    <option value="pastel_id_2">pastel_id_2</option>
+                    <option value="pastel_id_2">pastel_id_2</option>
+                </select>
+            </div>
+            <div className="flex-row wrap">
+                <div className="pastel-id-btn-wrapper">
+                    <button
+                        className="button feather-button is-bold primary-button raised"
+                        onClick={this.createNewClick}>
+                        Register selected
+                    </button>
+                    ..or..
                 </div>
-                <div className="flex-row">
-                    <select>
-                        <option value="pastel_id_1">pastel_id_1</option>
-                        <option value="pastel_id_2">pastel_id_2</option>
-                        <option value="pastel_id_2">pastel_id_2</option>
-                    </select>
+                <div className="pastel-id-btn-wrapper">
+                    <button
+                        className="button feather-button is-bold primary-button raised"
+                        onClick={this.createNewClick}>
+                        Create new
+                    </button>
+                    ..or..
                 </div>
-                        <button
-                            className="button feather-button is-bold primary-button raised"
-                            onClick={this.createNewClick}>
-                            Register selected
-                        </button>
-                        ..or..
-                        <button
-                            className="button feather-button is-bold primary-button raised"
-                            onClick={this.createNewClick}>
-                            Create new
-                        </button>
-                        ..or..
-                        <button
-                            className="button feather-button is-bold primary-button raised"
-                            onClick={this.importClick}>
-                            Import existing
-                        </button>
+                <div className="pastel-id-btn-wrapper">
+                    <button
+                        className="button feather-button is-bold primary-button raised"
+                        onClick={this.importClick}>
+                        Import existing
+                    </button>
+                </div>
             </div>
 
         </PastelIdCard>;
