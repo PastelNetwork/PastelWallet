@@ -2,11 +2,7 @@ import React, {Component} from "react";
 import {MainWrapper} from "../MainWrapperComponent";
 import {BarLoader} from "react-spinners";
 import {Redirect, Route, Switch} from "react-router-dom";
-import {PastelIdHomeContainer} from "../../containers/pastel_id_selection/HomeContainer";
-import {ArtWalletContainer} from "../../containers/ArtWalletContainer";
-import {SendPSLContainer} from "../../containers/SendPSLContainer";
-import {ImageRegisterFormContainer} from "../../containers/ImageRegisterFormContainer";
-import {ProfileEdit} from "../ProfileEditComponent";
+import '../../assets/scss/core.scss';
 import history from '../../history';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
@@ -22,25 +18,16 @@ ipcRenderer.on('pastelIdListResponse', (event, data) => {
 });
 
 const PastelIdCard = (props) => {
-    return <div className="flat-card profile-info-card is-auto">
-
+    const title = props.header ?
         <div className="card-title">
             <h3>{props.header}</h3>
-        </div>
+        </div> : null;
 
+    return <div className="flat-card profile-info-card is-auto">
+
+        {title}
         <div className="card-body">
             {props.children}
-            {/*<div className="columns">*/}
-            {/*<div className="column balance-col">*/}
-            {/*{props.balance} PSL*/}
-            {/*</div>*/}
-            {/*<div className="column balance-col">*/}
-            {/*{props.artworks} Artworks*/}
-            {/*</div>*/}
-            {/*<div className="column balance-col">*/}
-            {/*{props.masternodes} Masternodes*/}
-            {/*</div>*/}
-            {/*</div>*/}
         </div>
     </div>;
 };
@@ -88,6 +75,7 @@ class NoKeysCard extends Component {
 }
 
 class NoActiveKeysCard extends Component {
+    // TODO: Styled dropdown
     createNewClick = () => {
         console.log('Create new click');
     };
@@ -96,38 +84,37 @@ class NoActiveKeysCard extends Component {
     };
 
     render() {
-        return <PastelIdCard header={'No PastelID keys found'}>
-            <div className="flex-centered">
-                You have no registered Pastel ID keys. Which one would you like to register?
-            </div>
-            <div className="flex-centered">
+        return <PastelIdCard>
+            <div className="columns">
+                <div className="column balance-col">
+                    You have no registered Pastel ID keys. Which one would you like to register?
+                </div>
                 <div className="flex-row">
-                    <select name="taksa" id="123">
+                    <select>
                         <option value="pastel_id_1">pastel_id_1</option>
                         <option value="pastel_id_2">pastel_id_2</option>
                         <option value="pastel_id_2">pastel_id_2</option>
                     </select>
                 </div>
-                <div className="flex-row">
-                    <button
-                        className="button cart-button secondary-button upper-button rounded is-bold raised"
-                        onClick={this.createNewClick}>
-                        Register selected
-                    </button>
-                    ..or..
-                    <button
-                        className="button cart-button secondary-button upper-button rounded is-bold raised"
-                        onClick={this.createNewClick}>
-                        Create new
-                    </button>
-                    ..or..
-                    <button
-                        className="button cart-button secondary-button upper-button rounded is-bold raised"
-                        onClick={this.importClick}>
-                        Import existing
-                    </button>
-                </div>
+                        <button
+                            className="button feather-button is-bold primary-button raised"
+                            onClick={this.createNewClick}>
+                            Register selected
+                        </button>
+                        ..or..
+                        <button
+                            className="button feather-button is-bold primary-button raised"
+                            onClick={this.createNewClick}>
+                            Create new
+                        </button>
+                        ..or..
+                        <button
+                            className="button feather-button is-bold primary-button raised"
+                            onClick={this.importClick}>
+                            Import existing
+                        </button>
             </div>
+
         </PastelIdCard>;
     }
 }

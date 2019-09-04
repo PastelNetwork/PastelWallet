@@ -390,8 +390,8 @@ function createWindow() {
     if (process.defaultApp) {
         win.loadURL('http://localhost:3000/');
         win.webContents.openDevTools();
-        BrowserWindow.addDevToolsExtension(
-            '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
+        // BrowserWindow.addDevToolsExtension(
+        //     '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
     } else {
         win.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
     }
