@@ -45,9 +45,10 @@ const PastelIdFetchingCard = () => <PastelIdCard header={'Fetching pastel IDs...
 
 class NoKeysCard extends Component {
     createNewClick = () => {
-        console.log('Create new click');
+        ipcRenderer.send('pastelIdCreate', {});
     };
     importClick = () => {
+        // TODO: invoke import dialog
         console.log('Import click');
     };
 
@@ -76,11 +77,16 @@ class NoKeysCard extends Component {
 
 class NoActiveKeysCard extends Component {
     // TODO: Styled dropdown
+    // TODO: pass list of pastel IDs to the UI
     createNewClick = () => {
-        console.log('Create new click');
+        ipcRenderer.send('pastelIdCreate', {});
     };
     importClick = () => {
+        // TODO: invoke import dialog
         console.log('Import click');
+    };
+    registerPastelID = () => {
+
     };
 
     render() {
