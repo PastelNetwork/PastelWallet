@@ -14,6 +14,9 @@ const GETBALANCE_COMMAND = 'getbalance';
 const GETINFO_COMMAND = 'getinfo';
 const GET_ACCOUNT_ADDRESS_COMMAND = 'getaccountaddress';
 const SEND_TO_ADDRESS_COMMAND = 'sendtoaddress';
+
+const PASTEL_ID_COMMAND = 'pastelid';
+
 const LOCAL_PY_URL = 'http://127.0.0.1:5000/';
 
 
@@ -130,7 +133,8 @@ const checkAndRunPastelD = () => {
 
 
 const cleanUp = () => {
-    addMessageToBox = (msg) => {};
+    addMessageToBox = (msg) => {
+    };
     pyProc.kill();
     if (pastelProc) {
         pastelProc.kill();
@@ -259,10 +263,10 @@ ipcMain.on('imageRegFormStep3', (event, data) => {
                      mn1: ${response.data.mn_data.mn1.status}: ${response.data.mn_data.mn1.msg};
                      mn2: ${response.data.mn_data.mn2.status}: ${response.data.mn_data.mn2.msg}`;
         if (response.data.status === 'SUCCESS') {
-                win.webContents.send('imageRegFormStep3Response', {
-                    status: RESPONSE_STATUS_OK,
-                    msg
-                });
+            win.webContents.send('imageRegFormStep3Response', {
+                status: RESPONSE_STATUS_OK,
+                msg
+            });
         } else {
             win.webContents.send('imageRegFormStep3Response', {
                 status: RESPONSE_STATUS_ERROR,
@@ -337,11 +341,57 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
     });
 });
 
-
+// TODO: extract to another file
 // IPC pastel ID related events
 ipcMain.on('pastelIdList', (event, arg) => {
-    // TODO: ask cNode for pastel ID list, return it
-    win.webContents.send('pastelIdListResponse', 'pastel ID list command');
+    callRpcMethod(PASTEL_ID_COMMAND, ['list']).then((response) => {
+        // FIXME: remove. For testing purposes when cNode API is not 100% implemented
+        // non-empty, all are not registered
+        // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: false}));
+        // empty
+        const data = [];
+
+        // FIXME: uncomment the following line after cNode API will work.
+        // const data = response.data.result;
+        log.warn(data);
+        win.webContents.send('pastelIdListResponse', {
+            status: constants.RESPONSE_STATUS_OK,
+            data
+        });
+
+    }).catch((err) => {
+        win.webContents.send('pastelIdListResponse', {
+            status: constants.RESPONSE_STATUS_ERROR,
+            err
+        });
+    });
+
+});
+
+ipcMain.on('pastelIdCreate', (event, arg) => {
+    const passprase = arg.passphrase;
+    callRpcMethod(PASTEL_ID_COMMAND, ['list', passprase]).then((response) => {
+        // FIXME: remove. For testing purposes when cNode API is not 100% implemented
+        // non-empty, all are not registered
+        // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: false}));
+        // empty
+        const data = [];
+
+        // FIXME: uncomment the following line after cNode API will work.
+        // const data = response.data.result;
+        log.warn(data);
+        win.webContents.send('pastelIdListResponse', {
+            status: constants.RESPONSE_STATUS_OK,
+            data
+        });
+
+    }).catch((err) => {
+        win.webContents.send('pastelIdListResponse', {
+            status: constants.RESPONSE_STATUS_ERROR,
+            err
+        });
+    });
+
 });
 
 const updateCnodeStatus = () => {
@@ -389,9 +439,9 @@ function createWindow() {
     });
     if (process.defaultApp) {
         win.loadURL('http://localhost:3000/');
-        // win.webContents.openDevTools();
-        // BrowserWindow.addDevToolsExtension(
-        //     '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
+        win.webContents.openDevTools();
+        BrowserWindow.addDevToolsExtension(
+            '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
     } else {
         win.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
     }

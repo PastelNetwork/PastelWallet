@@ -92,3 +92,8 @@ export const addMessage = (msg) => ({
     type: actionTypes.ADD_MESSAGE,
     value: msg
 });
+
+export const setPasteIDList = (value) => ({
+    type: actionTypes.SET_PASTEL_ID_LIST,
+    value
+});

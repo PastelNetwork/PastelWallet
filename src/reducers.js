@@ -36,6 +36,8 @@ const reducer  = (state = {}, action) => {
             return {...state, messageBoxCollaped: !state.messageBoxCollaped};
         case actionTypes.ADD_MESSAGE:
             return {...state, userDisplayMessages: [...state.userDisplayMessages, action.value]};
+        case actionTypes.SET_PASTEL_ID_LIST:
+            return {...state, pastelIDs: action.value};
         case actionTypes.RESET_STORE:
             return {...initialState};
         default:
