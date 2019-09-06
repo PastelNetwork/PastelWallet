@@ -362,15 +362,15 @@ ipcMain.on('pastelIdList', (event, arg) => {
     }).catch((err) => {
         win.webContents.send('pastelIdListResponse', {
             status: constants.RESPONSE_STATUS_ERROR,
-            err
+            err: err.response.data.error
         });
     });
 
 });
 
 ipcMain.on('pastelIdCreate', (event, arg) => {
-    const passprase = arg.passphrase;
-    callRpcMethod(PASTEL_ID_COMMAND, ['newkey', passprase]).then((response) => {
+    const passphrase = arg.passphrase;
+    callRpcMethod(PASTEL_ID_COMMAND, ['newkey', passphrase]).then((response) => {
         win.webContents.send('pastelIdCreateResponse', {
             status: constants.RESPONSE_STATUS_OK,
             data: response.data.result
@@ -378,15 +378,56 @@ ipcMain.on('pastelIdCreate', (event, arg) => {
     }).catch((err) => {
         win.webContents.send('pastelIdCreateResponse', {
             status: constants.RESPONSE_STATUS_ERROR,
-            err
+            err: err.response.data.error
         });
     });
 
 });
 
 ipcMain.on('pastelIdCreateAndRegister', (event, arg) => {
-    const passprase = arg.passphrase;
-    callRpcMethod(PASTEL_ID_COMMAND, ['newkey', passprase]).then((response) => {
+    const passphrase = arg.passphrase;
+    callRpcMethod(PASTEL_ID_COMMAND, ['newkey', passphrase]).then((response) => {
+        const pastelId = response.data.result.pastelid;
+        callRpcMethod(PASTEL_ID_COMMAND, ['register', pastelId]).then((resp) => {
+            win.webContents.send('pastelIdCreateResponse', {
+                status: constants.RESPONSE_STATUS_OK
+            });
+        }).catch((err) => {
+            win.webContents.send('pastelIdCreateResponse', {
+                status: constants.RESPONSE_STATUS_ERROR,
+                err: err.response.data.error
+            });
+        });
+    }).catch((err) => {
+        win.webContents.send('pastelIdCreateResponse', {
+            status: constants.RESPONSE_STATUS_ERROR,
+            err: err.response.data.error
+        });
+    });
+
+});
+
+ipcMain.on('pastelIdImport', (event, arg) => {
+    const passphrase = arg.passphrase;
+    const key = arg.key;
+    callRpcMethod(PASTEL_ID_COMMAND, ['importkey', key, passphrase]).then((response) => {
+        win.webContents.send('pastelIdImportResponse', {
+            status: constants.RESPONSE_STATUS_OK,
+            data: response.data.result
+        });
+    }).catch((err) => {
+        win.webContents.send('pastelIdImportResponse', {
+            status: constants.RESPONSE_STATUS_ERROR,
+            err: err.response.data.error
+        });
+    });
+
+});
+
+ipcMain.on('pastelIdImportAndRegister', (event, arg) => {
+    const passphrase = arg.passphrase;
+    const key = arg.key;
+    callRpcMethod(PASTEL_ID_COMMAND, ['importkey', key, passphrase]).then((response) => {
         const pastelId = response.data.result.pastelid;
         callRpcMethod(PASTEL_ID_COMMAND, ['register', pastelId]).then((resp) => {
             win.webContents.send('pastelIdCreateResponse', {
