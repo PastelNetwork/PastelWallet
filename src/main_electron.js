@@ -370,29 +370,22 @@ ipcMain.on('pastelIdList', (event, arg) => {
 
 ipcMain.on('pastelIdCreate', (event, arg) => {
     const passprase = arg.passphrase;
-    callRpcMethod(PASTEL_ID_COMMAND, ['list', passprase]).then((response) => {
-        // FIXME: remove. For testing purposes when cNode API is not 100% implemented
-        // non-empty, all are not registered
-        // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: false}));
-        // empty
-        const data = [];
-
-        // FIXME: uncomment the following line after cNode API will work.
-        // const data = response.data.result;
-        log.warn(data);
-        win.webContents.send('pastelIdListResponse', {
+    callRpcMethod(PASTEL_ID_COMMAND, ['newkey', passprase]).then((response) => {
+        setTimeout(() => win.webContents.send('pastelIdCreateResponse', {
             status: constants.RESPONSE_STATUS_OK,
-            data
-        });
-
+            data: response.data.result
+        }), 3000);
     }).catch((err) => {
-        win.webContents.send('pastelIdListResponse', {
+        win.webContents.send('pastelIdCreateResponse', {
             status: constants.RESPONSE_STATUS_ERROR,
             err
         });
     });
 
 });
+
+// END of IPC pastel ID related events
+
 
 const updateCnodeStatus = () => {
     callRpcMethod(GETINFO_COMMAND).then((response) => {

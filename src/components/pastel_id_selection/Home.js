@@ -37,6 +37,22 @@ ipcRenderer.on('pastelIdListResponse', (event, data) => {
 
 });
 
+ipcRenderer.on('pastelIdCreateResponse', (event, data) => {
+    console.log('Create response received');
+    console.log(data);
+    switch (data.status) {
+        case constants.RESPONSE_STATUS_ERROR:
+            alert('Error connection cNode when creating new pastel ID');
+            break;
+        case constants.RESPONSE_STATUS_OK:
+            history.push('/pastel_id/fetching');
+            break;
+        default:
+            break;
+    }
+
+});
+
 const PastelIdCard = (props) => {
     const title = props.header ?
         <div className="card-title">
@@ -52,16 +68,25 @@ const PastelIdCard = (props) => {
     </div>;
 };
 
-const PastelIdFetchingCard = () => <PastelIdCard header={'Fetching pastel IDs...'}>
-    <div className="flex-centered">
-        <BarLoader
-            sizeUnit={"%"}
-            width={90}
-            color={'#00D1B2'}
-            loading={true}
-        />
-    </div>
-</PastelIdCard>;
+class PastelIdFetchingCard extends Component {
+    componentDidMount() {
+        ipcRenderer.send('pastelIdList', {});
+    }
+
+
+    render() {
+        return <PastelIdCard header={'Fetching pastel IDs...'}>
+            <div className="flex-centered">
+                <BarLoader
+                    sizeUnit={"%"}
+                    width={90}
+                    color={'#00D1B2'}
+                    loading={true}
+                />
+            </div>
+        </PastelIdCard>;
+    }
+}
 
 class NoKeysCard extends Component {
     createNewClick = () => {
@@ -104,7 +129,8 @@ class CreateNewKeyCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            passphrase: ''
+            passphrase: '',
+            createInProgress: false
         }
     }
 
@@ -114,31 +140,51 @@ class CreateNewKeyCard extends Component {
 
 
     createClick = () => {
-        // No. just redirect to 'create new page'
+        this.setState({createInProgress: true});
         ipcRenderer.send('pastelIdCreate', {passphrase: this.state.passphrase});
     };
 
     render() {
-        return <PastelIdCard header={'Create new PastelID'}>
-            <div className="flex-centered">
-                <div className="flex-row">
+        let inner_part;
+        if (this.state.createInProgress) {
+            inner_part = <React.Fragment>
+                <div className="flex-centered">
+                    Creating pastel ID...
+                </div>
+                <div className="flex-centered">
+                    <BarLoader
+                        sizeUnit={"%"}
+                        width={90}
+                        color={'#00D1B2'}
+                        loading={true}
+                    />
+                </div>
+            </React.Fragment>;
+        } else {
+            inner_part = <React.Fragment>
+                <div className="flex-centered">
+                    <div className="flex-row">
                     <textarea className="textarea is-button" placeholder="Enter passphrase"
                               value={this.state.passphrase}
                               onChange={this.onPassphraseChange}/>
-                </div>
-
-            </div>
-            <div className="flex-centered">
-                <div className="flex-row">
-                    <div className="pastel-id-btn-wrapper">
-                        <button
-                            className="button feather-button is-bold primary-button raised"
-                            onClick={this.createClick}>
-                            Create
-                        </button>
                     </div>
                 </div>
-            </div>
+                <div className="flex-centered">
+                    <div className="flex-row">
+                        <div className="pastel-id-btn-wrapper">
+                            <button
+                                className="button feather-button is-bold primary-button raised"
+                                onClick={this.createClick}>
+                                Create
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </React.Fragment>;
+
+        }
+        return <PastelIdCard header={'Create new PastelID'}>
+            {inner_part}
         </PastelIdCard>;
     }
 }
@@ -146,9 +192,8 @@ class CreateNewKeyCard extends Component {
 
 class NoActiveKeysCard extends Component {
     // TODO: Styled dropdown
-    // TODO: pass list of pastel IDs to the UI
     createNewClick = () => {
-        ipcRenderer.send('pastelIdCreate', {});
+        history.push('/pastel_id/create_new_key');
     };
     importClick = () => {
         // TODO: invoke import dialog
@@ -201,10 +246,6 @@ class NoActiveKeysCard extends Component {
 }
 
 export class PastelIdHome extends Component {
-    componentDidMount() {
-        ipcRenderer.send('pastelIdList', {});
-    }
-
     render() {
         return <MainWrapper>
             <Switch>
