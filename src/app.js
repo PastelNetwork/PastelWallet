@@ -33,7 +33,8 @@ export const initialState = {
     pyNodeStatus: constants.PYNODE_STATUS_PENDING,
     userDisplayMessages: [],
     messageBoxCollaped: true,
-    pastelIDs: []
+    pastelIDs: [],
+    pastelIDError: null
 };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

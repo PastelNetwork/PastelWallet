@@ -6,7 +6,8 @@ import '../../assets/scss/core.scss';
 import history from '../../history';
 import * as constants from "../../constants";
 import {store} from "../../app";
-import {setPasteIDList} from "../../actions";
+import {setPasteIDError, setPasteIDList} from "../../actions";
+import {connect} from "react-redux";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -14,7 +15,8 @@ ipcRenderer.on('pastelIdListResponse', (event, data) => {
     console.log('Response received');
     switch (data.status) {
         case constants.RESPONSE_STATUS_ERROR:
-            alert('Error connection cNode');
+            store.dispatch(setPasteIDError(data.err));
+            history.push('/pastel_id/error');
             break;
         case constants.RESPONSE_STATUS_OK:
             const pastelIdList = data.data;
@@ -42,7 +44,8 @@ ipcRenderer.on('pastelIdCreateResponse', (event, data) => {
     console.log(data);
     switch (data.status) {
         case constants.RESPONSE_STATUS_ERROR:
-            alert('Error connection cNode when creating new pastel ID');
+            store.dispatch(setPasteIDError(data.err));
+            history.push('/pastel_id/error');
             break;
         case constants.RESPONSE_STATUS_OK:
             history.push('/pastel_id/fetching');
@@ -88,6 +91,18 @@ class PastelIdFetchingCard extends Component {
     }
 }
 
+const PastelIdErrorCardComponent = (props) => {
+    return <PastelIdCard header={'Error'}>
+        <div className="flex-centered error">
+            {props.error}
+        </div>
+    </PastelIdCard>;
+};
+
+const PastelIdErrorCard = connect(state => ({
+    error: state.pastelIDError
+}), null)(PastelIdErrorCardComponent);
+
 class NoKeysCard extends Component {
     createNewClick = () => {
         // invoke create dialog
@@ -125,12 +140,30 @@ class NoKeysCard extends Component {
     }
 }
 
+
+class CreateInProgressCard extends Component {
+    render() {
+        return <PastelIdCard header={'Create new PastelID'}>
+            <div className="flex-centered">
+                Creating pastel ID...
+            </div>
+            <div className="flex-centered">
+                <BarLoader
+                    sizeUnit={"%"}
+                    width={90}
+                    color={'#00D1B2'}
+                    loading={true}
+                />
+            </div>
+        </PastelIdCard>;
+    }
+}
+
 class CreateNewKeyCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            passphrase: '',
-            createInProgress: false
+            passphrase: ''
         }
     }
 
@@ -139,52 +172,38 @@ class CreateNewKeyCard extends Component {
     };
 
 
-    createClick = () => {
-        this.setState({createInProgress: true});
+    createNoRegisterClick = () => {
         ipcRenderer.send('pastelIdCreate', {passphrase: this.state.passphrase});
     };
 
+    createAndRegisterClick = () => {
+        ipcRenderer.send('pastelIdCreateAndRegister', {passphrase: this.state.passphrase});
+    };
+
     render() {
-        let inner_part;
-        if (this.state.createInProgress) {
-            inner_part = <React.Fragment>
-                <div className="flex-centered">
-                    Creating pastel ID...
-                </div>
-                <div className="flex-centered">
-                    <BarLoader
-                        sizeUnit={"%"}
-                        width={90}
-                        color={'#00D1B2'}
-                        loading={true}
-                    />
-                </div>
-            </React.Fragment>;
-        } else {
-            inner_part = <React.Fragment>
-                <div className="flex-centered">
-                    <div className="flex-row">
+
+        return <PastelIdCard header={'Create new PastelID'}>
+            <div className="flex-row">
                     <textarea className="textarea is-button" placeholder="Enter passphrase"
                               value={this.state.passphrase}
                               onChange={this.onPassphraseChange}/>
-                    </div>
+            </div>
+            <div className="flex-row wrap">
+                <div className="pastel-id-btn-wrapper">
+                    <button
+                        className="button feather-button is-bold primary-button raised"
+                        onClick={this.createAndRegisterClick}>
+                        Create and register
+                    </button>
                 </div>
-                <div className="flex-centered">
-                    <div className="flex-row">
-                        <div className="pastel-id-btn-wrapper">
-                            <button
-                                className="button feather-button is-bold primary-button raised"
-                                onClick={this.createClick}>
-                                Create
-                            </button>
-                        </div>
-                    </div>
+                <div className="pastel-id-btn-wrapper">
+                    <button
+                        className="button feather-button is-bold primary-button raised"
+                        onClick={this.createNoRegisterClick}>
+                        Create without registration
+                    </button>
                 </div>
-            </React.Fragment>;
-
-        }
-        return <PastelIdCard header={'Create new PastelID'}>
-            {inner_part}
+            </div>
         </PastelIdCard>;
     }
 }
@@ -253,6 +272,8 @@ export class PastelIdHome extends Component {
                 <Route path='/pastel_id/no_keys' component={NoKeysCard}/>
                 <Route path='/pastel_id/no_active_keys' component={NoActiveKeysCard}/>
                 <Route path='/pastel_id/create_new_key' component={CreateNewKeyCard}/>
+                <Route path='/pastel_id/create_in_progress' component={CreateInProgressCard}/>
+                <Route path='/pastel_id/error' component={PastelIdErrorCard}/>
                 <Redirect to='/pastel_id/fetching'/>
             </Switch>
         </MainWrapper>;

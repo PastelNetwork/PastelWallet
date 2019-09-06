@@ -371,14 +371,37 @@ ipcMain.on('pastelIdList', (event, arg) => {
 ipcMain.on('pastelIdCreate', (event, arg) => {
     const passprase = arg.passphrase;
     callRpcMethod(PASTEL_ID_COMMAND, ['newkey', passprase]).then((response) => {
-        setTimeout(() => win.webContents.send('pastelIdCreateResponse', {
+        win.webContents.send('pastelIdCreateResponse', {
             status: constants.RESPONSE_STATUS_OK,
             data: response.data.result
-        }), 3000);
+        });
     }).catch((err) => {
         win.webContents.send('pastelIdCreateResponse', {
             status: constants.RESPONSE_STATUS_ERROR,
             err
+        });
+    });
+
+});
+
+ipcMain.on('pastelIdCreateAndRegister', (event, arg) => {
+    const passprase = arg.passphrase;
+    callRpcMethod(PASTEL_ID_COMMAND, ['newkey', passprase]).then((response) => {
+        const pastelId = response.data.result.pastelid;
+        callRpcMethod(PASTEL_ID_COMMAND, ['register', pastelId]).then((resp) => {
+            win.webContents.send('pastelIdCreateResponse', {
+                status: constants.RESPONSE_STATUS_OK
+            });
+        }).catch((err) => {
+            win.webContents.send('pastelIdCreateResponse', {
+                status: constants.RESPONSE_STATUS_ERROR,
+                err: err.response.data.error
+            });
+        });
+    }).catch((err) => {
+        win.webContents.send('pastelIdCreateResponse', {
+            status: constants.RESPONSE_STATUS_ERROR,
+            err: err.response.data.error
         });
     });
 

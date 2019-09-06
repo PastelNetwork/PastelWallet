@@ -97,3 +97,8 @@ export const setPasteIDList = (value) => ({
     type: actionTypes.SET_PASTEL_ID_LIST,
     value
 });
+
+export const setPasteIDError = (value) => ({
+    type: actionTypes.SET_PASTEL_ID_ERROR,
+    value
+});
