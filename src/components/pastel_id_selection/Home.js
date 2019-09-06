@@ -285,7 +285,14 @@ class PastelIdImportCard extends Component {
 }
 
 
-class NoActiveKeysCard extends Component {
+class NoActiveKeysCardComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedPastelId: null
+        }
+    }
+
     // TODO: Styled dropdown
     createNewClick = () => {
         history.push('/pastel_id/create_new_key');
@@ -294,26 +301,31 @@ class NoActiveKeysCard extends Component {
         history.push('/pastel_id/import');
     };
     registerPastelID = () => {
+        console.log(this.state);
+    };
 
+    onChange = (e) => {
+        this.setState({selectedPastelId: e.target.value});
     };
 
     render() {
+        console.log(this.props.pastelIDs);
+        const pastelIDsOptions = this.props.pastelIDs.map((x, index) => <option value={x.PastelID}
+                                                                                key={index}>{x.PastelID.substr(0, 10)}</option>);
         return <PastelIdCard>
             <div className="flex-row pastel-id-btn-wrapper">
                 You have no registered Pastel ID keys. Which one would you like to register?
             </div>
             <div className="flex-row">
-                <select>
-                    <option value="pastel_id_1">pastel_id_1</option>
-                    <option value="pastel_id_2">pastel_id_2</option>
-                    <option value="pastel_id_2">pastel_id_2</option>
+                <select onChange={this.onChange}>
+                    {pastelIDsOptions}
                 </select>
             </div>
             <div className="flex-row wrap">
                 <div className="pastel-id-btn-wrapper">
                     <button
                         className="button feather-button is-bold primary-button raised"
-                        onClick={this.createNewClick}>
+                        onClick={this.registerPastelID}>
                         Register selected
                     </button>
                     ..or..
@@ -338,6 +350,10 @@ class NoActiveKeysCard extends Component {
         </PastelIdCard>;
     }
 }
+
+const NoActiveKeysCard = connect(state => ({
+    pastelIDs: state.pastelIDs
+}), null)(NoActiveKeysCardComponent);
 
 export class PastelIdHome extends Component {
     render() {
