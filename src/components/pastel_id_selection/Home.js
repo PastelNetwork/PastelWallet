@@ -8,6 +8,7 @@ import * as constants from "../../constants";
 import {store} from "../../app";
 import {setPasteIDError, setPasteIDList} from "../../actions";
 import {connect} from "react-redux";
+import Select from 'react-select';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -30,12 +31,16 @@ ipcRenderer.on('pastelIdListResponse', (event, data) => {
                 history.push('/pastel_id/no_active_keys');
             }
 
+            // if at least some keys are registered
+            if (pastelIdList.filter(pastelId => pastelId.isRegistered).length > 0) {
+                history.push('/pastel_id/no_active_keys');
+            }
+
 
             break;
         default:
             break;
     }
-
 });
 
 ipcRenderer.on('pastelIdCreateResponse', (event, data) => {
@@ -50,7 +55,6 @@ ipcRenderer.on('pastelIdCreateResponse', (event, data) => {
         default:
             break;
     }
-
 });
 
 ipcRenderer.on('pastelIdImportResponse', (event, data) => {
@@ -319,22 +323,38 @@ class NoActiveKeysCardComponent extends Component {
         ipcRenderer.send('pastelIdRegister', {pastelID: this.state.selectedPastelId});
     };
 
-    onChange = (e) => {
-        this.setState({selectedPastelId: e.target.value});
+    onChange = (selectedOption) => {
+        this.setState({selectedPastelId: selectedOption});
     };
 
     render() {
         console.log(this.props.pastelIDs);
-        const pastelIDsOptions = this.props.pastelIDs.map((x, index) => <option value={x.PastelID}
-                                                                                key={index}>{x.PastelID.substr(0, 10)}</option>);
+        const pastelIDsOptions = this.props.pastelIDs.map(x => ({
+            value: x.PastelID,
+            label: x.PastelID.substr(0, 10),
+            isRegistered: x.isRegistered
+        }));
+        const customStyles = {
+            container: (provided) => ({
+                ...provided,
+                width: '100%'
+            }),
+            option: (provided, state) => ({
+                ...provided,
+                color: state.data.isRegistered ? 'green' : 'red'
+            })
+        };
+
         return <PastelIdCard>
             <div className="flex-row pastel-id-btn-wrapper">
                 You have no registered Pastel ID keys. Which one would you like to register?
             </div>
-            <div className="flex-row">
-                <select onChange={this.onChange}>
-                    {pastelIDsOptions}
-                </select>
+            <div className="flex-row pt-1 pb-2">
+                <Select onChange={this.onChange}
+                        value={this.state.selectedPastelId}
+                        options={pastelIDsOptions}
+                        styles={customStyles}
+                />
             </div>
             <div className="flex-row wrap">
                 <div className="pastel-id-btn-wrapper">

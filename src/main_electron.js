@@ -347,7 +347,12 @@ ipcMain.on('pastelIdList', (event, arg) => {
     callRpcMethod(PASTEL_ID_COMMAND, ['list']).then((response) => {
         // FIXME: remove. For testing purposes when cNode API is not 100% implemented
         // non-empty, all are not registered
-        const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: false}));
+        // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
+        const data = response.data.result.map((key,index) => ({
+            PastelID: key.PastelID,
+            isRegistered: index % 2 === 1
+        }));
+        //
         // non-empty, all are registered
         // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
         // empty
