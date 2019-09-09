@@ -70,6 +70,21 @@ ipcRenderer.on('pastelIdImportResponse', (event, data) => {
 
 });
 
+ipcRenderer.on('pastelIdRegisterResponse', (event, data) => {
+    switch (data.status) {
+        case constants.RESPONSE_STATUS_ERROR:
+            store.dispatch(setPasteIDError(data.err));
+            history.push('/pastel_id/error');
+            break;
+        case constants.RESPONSE_STATUS_OK:
+            history.push('/pastel_id/fetching');
+            break;
+        default:
+            break;
+    }
+
+});
+
 const PastelIdCard = (props) => {
     const title = props.header ?
         <div className="card-title">
@@ -301,7 +316,7 @@ class NoActiveKeysCardComponent extends Component {
         history.push('/pastel_id/import');
     };
     registerPastelID = () => {
-        console.log(this.state);
+        ipcRenderer.send('pastelIdRegister', {pastelID: this.state.selectedPastelId});
     };
 
     onChange = (e) => {

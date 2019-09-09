@@ -408,6 +408,21 @@ ipcMain.on('pastelIdCreateAndRegister', (event, arg) => {
 
 });
 
+ipcMain.on('pastelIdRegister', (event, arg) => {
+    const pastelID = arg.pastelID;
+    callRpcMethod(PASTEL_ID_COMMAND, ['register', pastelID]).then((resp) => {
+        win.webContents.send('pastelIdRegisterResponse', {
+            status: constants.RESPONSE_STATUS_OK
+        });
+    }).catch((err) => {
+        win.webContents.send('pastelIdRegisterResponse', {
+            status: constants.RESPONSE_STATUS_ERROR,
+            err: err.response.data.error
+        });
+    });
+
+});
+
 ipcMain.on('pastelIdImport', (event, arg) => {
     const passphrase = arg.passphrase;
     const key = arg.key;
