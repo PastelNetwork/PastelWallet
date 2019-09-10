@@ -414,13 +414,14 @@ class HasActiveKeysCardComponent extends Component {
     };
 
     onChange = (selectedOption) => {
+        console.log(this.state);
         this.setState({selectedPastelId: selectedOption});
     };
 
     render() {
         const pastelIDsOptions = this.props.pastelIDs.map(x => ({
             value: x.PastelID,
-            label: x.PastelID.substr(0, 10),
+            label: x.PastelID.substr(0, 10) + (x.isRegistered ? ' (registered)' : ' (not registered)'),
             isRegistered: x.isRegistered
         }));
         const customStyles = {
@@ -433,7 +434,31 @@ class HasActiveKeysCardComponent extends Component {
                 color: state.data.isRegistered ? 'green' : 'red'
             })
         };
-        // TODO: disable 'Proceed' btn if non-registered selected, else disable 'Register selected' button
+        let registerProceedButton = <div className="pastel-id-btn-wrapper">
+            ..OR
+        </div>;
+        if (this.state.selectedPastelId !== null) {
+            if (this.state.selectedPastelId.isRegistered) {
+                registerProceedButton = <div className="pastel-id-btn-wrapper">
+                    <button
+                        className="button feather-button is-bold primary-button raised"
+                        onClick={this.registerPastelID}>
+                        Proceed
+                    </button>
+                    ..or..
+                </div>;
+            } else {
+                registerProceedButton = <div className="pastel-id-btn-wrapper">
+                    <button
+                        className="button feather-button is-bold primary-button raised"
+                        onClick={this.registerPastelID}>
+                        Register selected
+                    </button>
+                    ..or..
+                </div>;
+            }
+        }
+
         return <PastelIdCard>
             <div className="flex-row pastel-id-btn-wrapper">
                 Please choose which PastelID to use
@@ -446,22 +471,7 @@ class HasActiveKeysCardComponent extends Component {
                 />
             </div>
             <div className="flex-row wrap">
-                <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.registerPastelID}>
-                        Proceed
-                    </button>
-                    ..or..
-                </div>
-                <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.registerPastelID}>
-                        Register selected
-                    </button>
-                    ..or..
-                </div>
+                {registerProceedButton}
                 <div className="pastel-id-btn-wrapper">
                     <button
                         className="button feather-button is-bold primary-button raised"
