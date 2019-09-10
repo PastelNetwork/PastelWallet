@@ -33,7 +33,7 @@ ipcRenderer.on('pastelIdListResponse', (event, data) => {
 
             // if at least some keys are registered
             if (pastelIdList.filter(pastelId => pastelId.isRegistered).length > 0) {
-                history.push('/pastel_id/no_active_keys');
+                history.push('/pastel_id/has_active_keys');
             }
 
 
@@ -58,8 +58,6 @@ ipcRenderer.on('pastelIdCreateResponse', (event, data) => {
 });
 
 ipcRenderer.on('pastelIdImportResponse', (event, data) => {
-    console.log('Import response received');
-    console.log(data);
     switch (data.status) {
         case constants.RESPONSE_STATUS_ERROR:
             store.dispatch(setPasteIDError(data.err));
@@ -312,7 +310,6 @@ class NoActiveKeysCardComponent extends Component {
         }
     }
 
-    // TODO: Styled dropdown
     createNewClick = () => {
         history.push('/pastel_id/create_new_key');
     };
@@ -328,7 +325,6 @@ class NoActiveKeysCardComponent extends Component {
     };
 
     render() {
-        console.log(this.props.pastelIDs);
         const pastelIDsOptions = this.props.pastelIDs.map(x => ({
             value: x.PastelID,
             label: x.PastelID.substr(0, 10),
@@ -388,7 +384,108 @@ class NoActiveKeysCardComponent extends Component {
 
 const NoActiveKeysCard = connect(state => ({
     pastelIDs: state.pastelIDs
-}), null)(NoActiveKeysCardComponent);
+}), dispatch => ({
+    dispatch
+}))(NoActiveKeysCardComponent);
+
+class HasActiveKeysCardComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedPastelId: null
+        }
+    }
+
+    createNewClick = () => {
+        history.push('/pastel_id/create_new_key');
+    };
+    importClick = () => {
+        history.push('/pastel_id/import');
+    };
+    registerPastelID = () => {
+        ipcRenderer.send('pastelIdRegister', {pastelID: this.state.selectedPastelId});
+    };
+
+    usePastelID = () => {
+        // TODO: set active PastelID in storage.
+        // TODO: find and replace alloccurances of old pastelid from wallet_api
+        // TODO: wallet-api: use selected pastel ID as active pastel ID. As wallet-api is stateless - need to add active pastel ID to every request for wallet_api.
+        ipcRenderer.send('pastelIdRegister', {pastelID: this.state.selectedPastelId});
+    };
+
+    onChange = (selectedOption) => {
+        this.setState({selectedPastelId: selectedOption});
+    };
+
+    render() {
+        const pastelIDsOptions = this.props.pastelIDs.map(x => ({
+            value: x.PastelID,
+            label: x.PastelID.substr(0, 10),
+            isRegistered: x.isRegistered
+        }));
+        const customStyles = {
+            container: (provided) => ({
+                ...provided,
+                width: '100%'
+            }),
+            option: (provided, state) => ({
+                ...provided,
+                color: state.data.isRegistered ? 'green' : 'red'
+            })
+        };
+        // TODO: disable 'Proceed' btn if non-registered selected, else disable 'Register selected' button
+        return <PastelIdCard>
+            <div className="flex-row pastel-id-btn-wrapper">
+                Please choose which PastelID to use
+            </div>
+            <div className="flex-row pt-1 pb-2">
+                <Select onChange={this.onChange}
+                        value={this.state.selectedPastelId}
+                        options={pastelIDsOptions}
+                        styles={customStyles}
+                />
+            </div>
+            <div className="flex-row wrap">
+                <div className="pastel-id-btn-wrapper">
+                    <button
+                        className="button feather-button is-bold primary-button raised"
+                        onClick={this.registerPastelID}>
+                        Proceed
+                    </button>
+                    ..or..
+                </div>
+                <div className="pastel-id-btn-wrapper">
+                    <button
+                        className="button feather-button is-bold primary-button raised"
+                        onClick={this.registerPastelID}>
+                        Register selected
+                    </button>
+                    ..or..
+                </div>
+                <div className="pastel-id-btn-wrapper">
+                    <button
+                        className="button feather-button is-bold primary-button raised"
+                        onClick={this.createNewClick}>
+                        Create new
+                    </button>
+                    ..or..
+                </div>
+                <div className="pastel-id-btn-wrapper">
+                    <button
+                        className="button feather-button is-bold primary-button raised"
+                        onClick={this.importClick}>
+                        Import existing
+                    </button>
+                </div>
+            </div>
+
+        </PastelIdCard>;
+    }
+}
+
+const HasActiveKeysCard = connect(state => ({
+    pastelIDs: state.pastelIDs
+}), null)(HasActiveKeysCardComponent);
 
 export class PastelIdHome extends Component {
     render() {
@@ -397,6 +494,7 @@ export class PastelIdHome extends Component {
                 <Route path='/pastel_id/fetching' component={PastelIdFetchingCard}/>
                 <Route path='/pastel_id/no_keys' component={NoKeysCard}/>
                 <Route path='/pastel_id/no_active_keys' component={NoActiveKeysCard}/>
+                <Route path='/pastel_id/has_active_keys' component={HasActiveKeysCard}/>
                 <Route path='/pastel_id/create_new_key' component={CreateNewKeyCard}/>
                 <Route path='/pastel_id/create_in_progress' component={CreateInProgressCard}/>
                 <Route path='/pastel_id/error' component={PastelIdErrorCard}/>
