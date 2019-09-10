@@ -6,7 +6,7 @@ import '../../assets/scss/core.scss';
 import history from '../../history';
 import * as constants from "../../constants";
 import {store} from "../../app";
-import {setPasteIDError, setPasteIDList} from "../../actions";
+import {setCurrentPasteID, setPasteIDError, setPasteIDList} from "../../actions";
 import {connect} from "react-redux";
 import Select from 'react-select';
 
@@ -87,6 +87,22 @@ ipcRenderer.on('pastelIdRegisterResponse', (event, data) => {
 
 });
 
+const OrRecord = (props) => <div className="flex-row">
+    <div className="or-record">
+        or
+    </div>
+</div>;
+
+const PastelIDButton = (props) => {
+    return <div className="pastel-id-btn-wrapper flex-row">
+        <button
+            className="button feather-button is-bold primary-button raised"
+            onClick={props.onClick}>
+            {props.text}
+        </button>
+    </div>;
+};
+
 const PastelIdCard = (props) => {
     const title = props.header ?
         <div className="card-title">
@@ -127,17 +143,9 @@ const PastelIdErrorCardComponent = (props) => {
         <div className="flex-centered error">
             {props.error}
         </div>
-        <div className="flex-row wrap">
-            <div className="pastel-id-btn-wrapper">
-                <button
-                    className="button feather-button is-bold primary-button raised"
-                    onClick={() => history.push('/pastel_id/fetching')}>
-                    Return
-                </button>
-            </div>
-        </div>
-    </PastelIdCard>
-        ;
+        <div className="pt-1"/>
+        <PastelIDButton onClick={() => history.push('/pastel_id/fetching')} text="Return"/>
+    </PastelIdCard>;
 };
 
 const PastelIdErrorCard = connect(state => ({
@@ -158,24 +166,10 @@ class NoKeysCard extends Component {
             <div className="flex-centered">
                 You have no Pastel ID keys. Would you like to create or import a new one?
             </div>
-            <div className="flex-centered">
-                <div className="flex-row wrap">
-                    <div className="pastel-id-btn-wrapper">
-                        <button
-                            className="button feather-button is-bold primary-button raised"
-                            onClick={this.createNewClick}>
-                            Create new
-                        </button>
-                    </div>
-                    <div className="pastel-id-btn-wrapper">
-                        <button
-                            className="button feather-button is-bold primary-button raised"
-                            onClick={this.importClick}>
-                            Import existing
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <div className="pt-1"/>
+            <PastelIDButton onClick={this.createNewClick} text="Create new"/>
+            <OrRecord/>
+            <PastelIDButton onClick={this.importClick} text="Import existing"/>
         </PastelIdCard>;
     }
 }
@@ -228,22 +222,10 @@ class CreateNewKeyCard extends Component {
               value={this.state.passphrase}
               onChange={this.onPassphraseChange}/>
             </div>
-            <div className="flex-row wrap">
-                <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.createAndRegisterClick}>
-                        Create and register
-                    </button>
-                </div>
-                <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.createNoRegisterClick}>
-                        Create without registration
-                    </button>
-                </div>
-            </div>
+            <div className="pt-1"/>
+            <PastelIDButton onClick={this.createAndRegisterClick} text="Create and register"/>
+            <OrRecord/>
+            <PastelIDButton onClick={this.createNoRegisterClick} text="Create without registration"/>
         </PastelIdCard>;
     }
 }
@@ -281,22 +263,10 @@ class PastelIdImportCard extends Component {
               value={this.state.passphrase}
               onChange={this.onChange} name="passphrase"/>
             </div>
-            <div className="flex-row wrap">
-                <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.importAndRegisterClick}>
-                        Import and register
-                    </button>
-                </div>
-                <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.importNoRegisterClick}>
-                        Import without registration
-                    </button>
-                </div>
-            </div>
+            <div className="pt-1"/>
+            <PastelIDButton onClick={this.importAndRegisterClick} text="Import and register"/>
+            <OrRecord/>
+            <PastelIDButton onClick={this.importNoRegisterClick} text="Import without registration"/>
         </PastelIdCard>;
     }
 }
@@ -340,44 +310,31 @@ class NoActiveKeysCardComponent extends Component {
                 color: state.data.isRegistered ? 'green' : 'red'
             })
         };
+        let registerSelected = <OrRecord/>;
+        if (this.state.selectedPastelId !== null) {
+            registerSelected = <React.Fragment>
+                <div className="flex-row pt-1"/>
+                <PastelIDButton onClick={this.registerPastelID} text="Register selected"/>
+                <OrRecord/>
+            </React.Fragment>;
+        }
+
 
         return <PastelIdCard>
             <div className="flex-row pastel-id-btn-wrapper">
                 You have no registered Pastel ID keys. Which one would you like to register?
             </div>
-            <div className="flex-row pt-1 pb-2">
+            <div className="flex-row pt-1">
                 <Select onChange={this.onChange}
                         value={this.state.selectedPastelId}
                         options={pastelIDsOptions}
                         styles={customStyles}
                 />
             </div>
-            <div className="flex-row wrap">
-                <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.registerPastelID}>
-                        Register selected
-                    </button>
-                    ..or..
-                </div>
-                <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.createNewClick}>
-                        Create new
-                    </button>
-                    ..or..
-                </div>
-                <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.importClick}>
-                        Import existing
-                    </button>
-                </div>
-            </div>
-
+            {registerSelected}
+            <PastelIDButton onClick={this.createNewClick} text="Create new"/>
+            <OrRecord/>
+            <PastelIDButton onClick={this.importClick} text="Import existing"/>
         </PastelIdCard>;
     }
 }
@@ -407,14 +364,14 @@ class HasActiveKeysCardComponent extends Component {
     };
 
     usePastelID = () => {
-        // TODO: set active PastelID in storage.
-        // TODO: find and replace alloccurances of old pastelid from wallet_api
+        this.props.dispatch(setCurrentPasteID(this.state.selectedPastelId.value));
+        history.push('/wallet');
+
+        // TODO: find and replace all occurances of old pastelid from wallet_api
         // TODO: wallet-api: use selected pastel ID as active pastel ID. As wallet-api is stateless - need to add active pastel ID to every request for wallet_api.
-        ipcRenderer.send('pastelIdRegister', {pastelID: this.state.selectedPastelId});
     };
 
     onChange = (selectedOption) => {
-        console.log(this.state);
         this.setState({selectedPastelId: selectedOption});
     };
 
@@ -434,28 +391,20 @@ class HasActiveKeysCardComponent extends Component {
                 color: state.data.isRegistered ? 'green' : 'red'
             })
         };
-        let registerProceedButton = <div className="pastel-id-btn-wrapper">
-            ..OR
-        </div>;
+        let registerProceedButton = <OrRecord/>;
         if (this.state.selectedPastelId !== null) {
             if (this.state.selectedPastelId.isRegistered) {
-                registerProceedButton = <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.registerPastelID}>
-                        Proceed
-                    </button>
-                    ..or..
-                </div>;
+                registerProceedButton = <React.Fragment>
+                    <div className="pt-1"/>
+                    <PastelIDButton onClick={this.usePastelID} text="Proceed"/>
+                    <OrRecord/>
+                </React.Fragment>;
             } else {
-                registerProceedButton = <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.registerPastelID}>
-                        Register selected
-                    </button>
-                    ..or..
-                </div>;
+                registerProceedButton = <React.Fragment>
+                    <div className="pt-1"/>
+                    <PastelIDButton onClick={this.registerPastelID} text="Register selected"/>
+                    <OrRecord/>
+                </React.Fragment>;
             }
         }
 
@@ -463,32 +412,17 @@ class HasActiveKeysCardComponent extends Component {
             <div className="flex-row pastel-id-btn-wrapper">
                 Please choose which PastelID to use
             </div>
-            <div className="flex-row pt-1 pb-2">
+            <div className="flex-row pt-1">
                 <Select onChange={this.onChange}
                         value={this.state.selectedPastelId}
                         options={pastelIDsOptions}
                         styles={customStyles}
                 />
             </div>
-            <div className="flex-row wrap">
-                {registerProceedButton}
-                <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.createNewClick}>
-                        Create new
-                    </button>
-                    ..or..
-                </div>
-                <div className="pastel-id-btn-wrapper">
-                    <button
-                        className="button feather-button is-bold primary-button raised"
-                        onClick={this.importClick}>
-                        Import existing
-                    </button>
-                </div>
-            </div>
-
+            {registerProceedButton}
+            <PastelIDButton onClick={this.createNewClick} text="Create new"/>
+            <OrRecord/>
+            <PastelIDButton onClick={this.importClick} text="Import existing"/>
         </PastelIdCard>;
     }
 }

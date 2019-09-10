@@ -318,23 +318,9 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
     return callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND, [""]).then((response) => {
         const bcAddress = response.data.result;
         log.info(`BC data result ${bcAddress}`);
-        axios.get(`${LOCAL_PY_URL}get_keys`).then((response) => {
-            const publicKeyBuff = fs.readFileSync(response.data.public);
-            const pastelIdAddress = bs58.encode(publicKeyBuff);
-            log.info(`BC data result2 ${pastelIdAddress}`);
-            log.info(`BC data result2-1 ${response.data.public}`);
-            win.webContents.send('blockchainDataResponse', {
-                status: RESPONSE_STATUS_OK,
-                address: bcAddress,
-                pastelID: pastelIdAddress
-            });
-        }).catch((err) => {
-            log.warn('Error from wallet_api on /get_keys:');
-            log.warn(err);
-            win.webContents.send('blockchainDataResponse', {
-                status: RESPONSE_STATUS_ERROR,
-                error: 'Request errror. Try again later'
-            });
+        win.webContents.send('blockchainDataResponse', {
+            status: RESPONSE_STATUS_OK,
+            address: bcAddress,
         });
     }).catch((err) => {
         win.webContents.send('walletAddress', `Cannot connect to local pasteld!, command: ${GET_ACCOUNT_ADDRESS_COMMAND}`);
@@ -347,16 +333,16 @@ ipcMain.on('pastelIdList', (event, arg) => {
     callRpcMethod(PASTEL_ID_COMMAND, ['list']).then((response) => {
         // FIXME: remove. For testing purposes when cNode API is not 100% implemented
         // non-empty, all are not registered
-        // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
-        const data = response.data.result.map((key,index) => ({
-            PastelID: key.PastelID,
-            isRegistered: index % 2 === 1
-        }));
+        // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: false}));
+        // const data = response.data.result.map((key, index) => ({
+        //     PastelID: key.PastelID,
+        //     isRegistered: index % 2 === 1
+        // }));
         //
         // non-empty, all are registered
         // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
         // empty
-        // const data = [];
+        const data = [];
 
         // FIXME: uncomment the following line after cNode API will work.
         // const data = response.data.result;

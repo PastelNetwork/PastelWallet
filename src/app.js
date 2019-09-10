@@ -22,7 +22,7 @@ export const defaultSendPslStatusData = {status: null, msg: ''};
 export const initialState = {
     ajaxInProgress: defaultAjaxInProgress,
     userProfile: null,
-    blockchainData: {address: null, pastelID: null},
+    blockchainAddress: null,
     balance: null,
     sendPslStatusData: defaultSendPslStatusData,
     artworks: 16, // TODO: fetch amount of artworks from pastel network when backend is ready
@@ -34,7 +34,8 @@ export const initialState = {
     userDisplayMessages: [],
     messageBoxCollaped: true,
     pastelIDs: [],
-    pastelIDError: null
+    pastelIDError: null,
+    currentPastelID: null
 };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

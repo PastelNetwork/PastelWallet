@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../styles.scss';
 import {store} from '../app';
-import {setBalance, setBlockchainData} from "../actions";
+import {setBalance, setBlockchainAddress} from "../actions";
 import {RESPONSE_STATUS_OK} from "../constants";
 import '../assets/scss/core.scss';
 import '../assets/scss/custom.scss';
@@ -15,7 +15,7 @@ const ipcRenderer = window.require('electron').ipcRenderer;
 ipcRenderer.on('blockchainDataResponse', (event, data) => {
     if (data.status === RESPONSE_STATUS_OK) {
         console.log(data);
-        store.dispatch(setBlockchainData(data));
+        store.dispatch(setBlockchainAddress(data.address));
     } else {
         // if error - try until service will start
 

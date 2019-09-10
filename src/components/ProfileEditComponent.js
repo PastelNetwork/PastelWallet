@@ -95,7 +95,7 @@ class EditPicCardComponent extends Component {
 }
 
 export const EditPicCard = connect(state => ({
-    pastelID: state.blockchainData.pastelID,
+    pastelID: state.currentPastelID,
     userProfile: state.userProfile
 }), dispatch => ({
     dispatch
@@ -208,7 +208,7 @@ class EditInfoCardComponent extends Component {
 
 
 export const EditInfoCard = connect(state => ({
-    pastelID: state.blockchainData.pastelID,
+    pastelID: state.currentPastelID,
     userProfile: state.userProfile
 }), dispatch => ({
     dispatch

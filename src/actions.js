@@ -3,8 +3,8 @@ import axios from 'axios';
 import * as settings from './settings';
 
 
-export const setBlockchainData = (value) => ({
-    type: actionTypes.SET_BLOCKCHAIN_DATA,
+export const setBlockchainAddress = (value) => ({
+    type: actionTypes.SET_BLOCKCHAIN_ADDRESS,
     value
 });
 
@@ -100,5 +100,10 @@ export const setPasteIDList = (value) => ({
 
 export const setPasteIDError = (value) => ({
     type: actionTypes.SET_PASTEL_ID_ERROR,
+    value
+});
+
+export const setCurrentPasteID = (value) => ({
+    type: actionTypes.SET_CURRENT_PASTEL_ID,
     value
 });

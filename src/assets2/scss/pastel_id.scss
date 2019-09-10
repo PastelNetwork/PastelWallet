@@ -1,5 +1,8 @@
 .pastel-id-btn-wrapper {
-  padding: 10px 10px 10px 0;
+  padding: 2px 2px 2px 0;
+}
+.pastel-id-btn-wrapper.pt-1 {
+  padding-top: 1rem;
 }
 
 .passphrase {
@@ -9,4 +12,10 @@
 .error {
   font-size: smaller;
   color: red;
+}
+
+.or-record {
+  color: #707090;
+  font-size: smaller;
+  padding: 3px;
 }

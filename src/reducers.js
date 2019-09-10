@@ -18,8 +18,8 @@ const reducer  = (state = {}, action) => {
             return {...state, workerFee: action.value};
         case actionTypes.SET_IMAGE_REGTICKET_ID:
             return {...state, regticketId: action.value};
-        case actionTypes.SET_BLOCKCHAIN_DATA:
-            return {...state, blockchainData: action.value};
+        case actionTypes.SET_BLOCKCHAIN_ADDRESS:
+            return {...state, blockchainAddress: action.value};
         case actionTypes.SET_BALANCE:
             return {...state, balance: action.value};
         case actionTypes.SET_USER_PROFILE:
@@ -40,6 +40,8 @@ const reducer  = (state = {}, action) => {
             return {...state, pastelIDs: action.value};
         case actionTypes.SET_PASTEL_ID_ERROR:
             return {...state, pastelIDError: JSON.stringify(action.value)};
+        case actionTypes.SET_CURRENT_PASTEL_ID:
+            return {...state, currentPastelID: action.value};
         case actionTypes.RESET_STORE:
             return {...initialState};
         default:

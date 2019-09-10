@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import {ArtWallet} from "../components/ArtWalletComponent";
 
 const mapStateToProps = state => ({
-    address: state.blockchainData.address,
-    pastelID: state.blockchainData.pastelID,
+    address: state.blockchainAddress,
+    pastelID: state.currentPastelID,
     balance: state.balance,
     artworks: state.artworks,
     masternodes: state.masternodes
