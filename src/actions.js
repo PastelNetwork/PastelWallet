@@ -61,16 +61,15 @@ export const setUserProfile = (value) => ({
 // phone_number: null
 // picture: null
 export const fetchProfile = () => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         // TODO: get base64 pastel ID from python api
-        return axios.get(settings.GET_BASE64_PASTEL_ID_URL).then((resp) => {
-            const pastelID = resp.data.pastel_id;
-            return axios.post(settings.USER_PROFILE_URL, {pastel_id: pastelID}).then((resp) => {
-                dispatch(setUserProfile(resp.data));
-            }).catch((err) => {
-                console.log('Error getting user profile from cloud');
-            })
-        }).catch(() => console.log('Error getting base64 pastelID'));
+        const {currentPastelID} = getState();
+        console.log(currentPastelID);
+        return axios.post(settings.USER_PROFILE_URL, {pastel_id: currentPastelID}).then((resp) => {
+            dispatch(setUserProfile(resp.data));
+        }).catch((err) => {
+            console.log('Error getting user profile from cloud');
+        });
     }
 };
 

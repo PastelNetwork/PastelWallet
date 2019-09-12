@@ -334,15 +334,15 @@ ipcMain.on('pastelIdList', (event, arg) => {
         // FIXME: remove. For testing purposes when cNode API is not 100% implemented
         // non-empty, all are not registered
         // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: false}));
-        // const data = response.data.result.map((key, index) => ({
-        //     PastelID: key.PastelID,
-        //     isRegistered: index % 2 === 1
-        // }));
+        const data = response.data.result.map((key, index) => ({
+            PastelID: key.PastelID,
+            isRegistered: index % 2 === 1
+        }));
         //
         // non-empty, all are registered
         // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
         // empty
-        const data = [];
+        // const data = [];
 
         // FIXME: uncomment the following line after cNode API will work.
         // const data = response.data.result;
