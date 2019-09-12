@@ -333,11 +333,11 @@ ipcMain.on('pastelIdList', (event, arg) => {
     callRpcMethod(PASTEL_ID_COMMAND, ['list']).then((response) => {
         // FIXME: remove. For testing purposes when cNode API is not 100% implemented
         // non-empty, all are not registered
-        // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: false}));
-        const data = response.data.result.map((key, index) => ({
-            PastelID: key.PastelID,
-            isRegistered: index % 2 === 1
-        }));
+        const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
+        // const data = response.data.result.map((key, index) => ({
+        //     PastelID: key.PastelID,
+        //     isRegistered: index % 2 === 1
+        // }));
         //
         // non-empty, all are registered
         // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
@@ -448,6 +448,25 @@ ipcMain.on('pastelIdImportAndRegister', (event, arg) => {
         });
     }).catch((err) => {
         win.webContents.send('pastelIdCreateResponse', {
+            status: constants.RESPONSE_STATUS_ERROR,
+            err: err.response.data.error
+        });
+    });
+
+});
+
+ipcMain.on('pastelIdCheckPassphrase', (event, arg) => {
+    const passphrase = arg.passphrase;
+    const pastelID = arg.pastelID;
+    log.warn(pastelID);
+    log.warn(passphrase);
+    log.warn(arg);
+    callRpcMethod(PASTEL_ID_COMMAND, ['sign', 'sample_text', pastelID, passphrase]).then((response) => {
+        win.webContents.send('pastelIdCheckPassphraseResponse', {
+            status: constants.RESPONSE_STATUS_OK
+        });
+    }).catch((err) => {
+        win.webContents.send('pastelIdCheckPassphraseResponse', {
             status: constants.RESPONSE_STATUS_ERROR,
             err: err.response.data.error
         });

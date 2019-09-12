@@ -48,6 +48,7 @@ class EditPicCardComponent extends Component {
             let data = {
                 picture_hash: md5(base64data)
             };
+            // TODO: sign data with cNode instead.. ask main_proccess about that.
             axios.post(settings.SIGN_RESOURCE_URL, data).then((resp) => {
                 data.signature = resp.data.signature;
                 data.pastel_id = resp.data.pastel_id;

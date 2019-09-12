@@ -62,7 +62,6 @@ export const setUserProfile = (value) => ({
 // picture: null
 export const fetchProfile = () => {
     return (dispatch, getState) => {
-        // TODO: get base64 pastel ID from python api
         const {currentPastelID} = getState();
         console.log(currentPastelID);
         return axios.post(settings.USER_PROFILE_URL, {pastel_id: currentPastelID}).then((resp) => {

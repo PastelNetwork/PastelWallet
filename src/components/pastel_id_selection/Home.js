@@ -87,6 +87,22 @@ ipcRenderer.on('pastelIdRegisterResponse', (event, data) => {
 
 });
 
+ipcRenderer.on('pastelIdCheckPassphraseResponse', (event, data) => {
+    switch (data.status) {
+        case constants.RESPONSE_STATUS_ERROR:
+            store.dispatch(setCurrentPasteID(null));
+            store.dispatch(setPasteIDError(data.err));
+            history.push('/pastel_id/error');
+            break;
+        case constants.RESPONSE_STATUS_OK:
+            history.push('/wallet');
+            break;
+        default:
+            break;
+    }
+
+});
+
 const OrRecord = (props) => <div className="flex-row">
     <div className="or-record">
         or
@@ -94,9 +110,10 @@ const OrRecord = (props) => <div className="flex-row">
 </div>;
 
 const PastelIDButton = (props) => {
+    const btnClass = props.disabled ? 'button feather-button is-bold primary-button raised is-disabled' : 'button feather-button is-bold primary-button raised';
     return <div className="pastel-id-btn-wrapper flex-row">
         <button
-            className="button feather-button is-bold primary-button raised"
+            className={btnClass}
             onClick={props.onClick}>
             {props.text}
         </button>
@@ -140,7 +157,7 @@ class PastelIdFetchingCard extends Component {
 
 const PastelIdErrorCardComponent = (props) => {
     return <PastelIdCard header={'Error'}>
-        <div className="flex-centered error">
+        <div className="error">
             {props.error}
         </div>
         <div className="pt-1"/>
@@ -349,7 +366,8 @@ class HasActiveKeysCardComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedPastelId: null
+            selectedPastelId: null,
+            passphrase: ''
         }
     }
 
@@ -364,15 +382,22 @@ class HasActiveKeysCardComponent extends Component {
     };
 
     usePastelID = () => {
+        ipcRenderer.send('pastelIdCheckPassphrase', {
+            pastelID: this.state.selectedPastelId.value,
+            passphrase: this.state.passphrase
+        });
         this.props.dispatch(setCurrentPasteID(this.state.selectedPastelId.value));
-        history.push('/wallet');
-
+        this.setState({passphrase: ''});
         // TODO: find and replace all occurances of old pastelid from wallet_api
         // TODO: wallet-api: use selected pastel ID as active pastel ID. As wallet-api is stateless - need to add active pastel ID to every request for wallet_api.
     };
 
     onChange = (selectedOption) => {
         this.setState({selectedPastelId: selectedOption});
+    };
+
+    onPassphraseChange = (e) => {
+        this.setState({passphrase: e.target.value});
     };
 
     render() {
@@ -396,7 +421,12 @@ class HasActiveKeysCardComponent extends Component {
             if (this.state.selectedPastelId.isRegistered) {
                 registerProceedButton = <React.Fragment>
                     <div className="pt-1"/>
-                    <PastelIDButton onClick={this.usePastelID} text="Proceed"/>
+                    <div className="control flex-row">
+                        <input type="text" className="input is-default" value={this.state.passphrase}
+                               onChange={this.onPassphraseChange} name="firstName" placeholder="Passphrase"/>
+                    </div>
+                    <div className="pt-1"/>
+                    <PastelIDButton onClick={this.usePastelID} text="Proceed" disabled={!this.state.passphrase}/>
                     <OrRecord/>
                 </React.Fragment>;
             } else {
