@@ -9,7 +9,55 @@ import axios from 'axios';
 import * as settings from '../settings';
 import {connect} from "react-redux";
 import * as md5 from 'md5';
-import {setUserProfile} from "../actions";
+import {setPasteIDError, setPasteIDList, setUserProfile} from "../actions";
+import * as constants from "../constants";
+import {store} from "../app";
+import history from "../history";
+
+const ipcRenderer = window.require('electron').ipcRenderer;
+
+// IPC handlers
+ipcRenderer.on('signMessageResponse', (event, data) => {
+    switch (data.status) {
+        case constants.RESPONSE_STATUS_ERROR:
+            // TODO: display in correct place in UI
+            alert(data.err);
+            break;
+        case constants.RESPONSE_STATUS_OK:
+            switch (data.dataType) {
+                case constants.DATA_TYPE_USER_INFO:
+                    console.log('right place');
+                    console.log(store);
+                    let cloudData = {
+                        first_name: data.data.first_name,
+                        last_name: data.data.last_name,
+                        phone_number: data.data.phone_number,
+                        email: data.data.email,
+                        signature: data.signature,
+                        pastel_id: store.getState().currentPastelID
+                    };
+                    console.log(cloudData);
+                    axios.patch(settings.USER_PROFILE_URL,
+                        data=cloudData).then((resp) => {
+                        this.props.dispatch(setUserProfile(resp.data));
+                    }).catch((err) => {
+                        // TODO: prettify error displaying.
+                        // TODO: But do not silent the error
+                        alert(JSON.stringify(err.response.data));
+                    });
+                    break;
+                case constants.DATA_TYPE_USER_PICTURE:
+                    // TODO: implement sign/send flow for user picture
+                    break;
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+});
+
 
 class EditPicCardComponent extends Component {
     constructor(props) {
@@ -23,7 +71,7 @@ class EditPicCardComponent extends Component {
     componentWillMount() {
         if (this.props.userProfile) {
             this.setState({
-                file: this.props.userProfile.picture ? this.props.userProfile.picture: '',
+                file: this.props.userProfile.picture ? this.props.userProfile.picture : '',
             })
         }
     }
@@ -116,10 +164,10 @@ class EditInfoCardComponent extends Component {
     componentWillMount() {
         if (this.props.userProfile) {
             this.setState({
-                firstName: this.props.userProfile.first_name ? this.props.userProfile.first_name: '',
-                lastName: this.props.userProfile.last_name ? this.props.userProfile.last_name: '',
-                phone: this.props.userProfile.phone_number ? this.props.userProfile.phone_number: '',
-                email: this.props.userProfile.email ? this.props.userProfile.email: ''
+                firstName: this.props.userProfile.first_name ? this.props.userProfile.first_name : '',
+                lastName: this.props.userProfile.last_name ? this.props.userProfile.last_name : '',
+                phone: this.props.userProfile.phone_number ? this.props.userProfile.phone_number : '',
+                email: this.props.userProfile.email ? this.props.userProfile.email : ''
             })
         }
     }
@@ -136,19 +184,12 @@ class EditInfoCardComponent extends Component {
             email: this.state.email
         };
 
-        axios.post(settings.SIGN_RESOURCE_URL, data).then((resp) => {
-            data.signature = resp.data.signature;
-            data.pastel_id = resp.data.pastel_id;
-            axios.patch(settings.USER_PROFILE_URL,
-                data).then((resp) => {
-                this.props.dispatch(setUserProfile(resp.data));
-            }).catch((err) => {
-                // TODO: prettify error displaying.
-                // TODO: But do not silent the error
-                alert(JSON.stringify(err.response.data));
-            });
-        }).catch((err) => {
-            console.log('Error accessing local API');
+        // TODO: send message to main_proccess to sign data.
+        ipcRenderer.send('signMessage', {
+            data,
+            pastelID: this.props.pastelID,
+            passphrase: this.props.passphrase,
+            dataType: constants.DATA_TYPE_USER_INFO
         });
     };
 
@@ -210,7 +251,8 @@ class EditInfoCardComponent extends Component {
 
 export const EditInfoCard = connect(state => ({
     pastelID: state.currentPastelID,
-    userProfile: state.userProfile
+    userProfile: state.userProfile,
+    passphrase: state.currentPassphrase
 }), dispatch => ({
     dispatch
 }))(EditInfoCardComponent);

@@ -17,3 +17,6 @@ export const CNODE_STATUS_DISCONNECTED = 2;
 export const PYNODE_STATUS_CONNECTED = 0;
 export const PYNODE_STATUS_PENDING = 1;
 export const PYNODE_STATUS_DISCONNECTED = 2;
+
+export const DATA_TYPE_USER_INFO = 0;
+export const DATA_TYPE_USER_PICTURE = 1;

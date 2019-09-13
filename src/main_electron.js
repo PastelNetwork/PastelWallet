@@ -5,6 +5,7 @@ const fs = require('fs');
 const bs58 = require('bs58');
 const log = require('electron-log');
 const constants = require('./constants');
+let stringify = require('json-stable-stringify');
 
 let win = null;
 
@@ -471,6 +472,25 @@ ipcMain.on('pastelIdCheckPassphrase', (event, arg) => {
         });
     });
 
+});
+
+ipcMain.on('signMessage', (event, arg) => {
+    const {data, pastelID, passphrase, dataType} = arg;
+    const text = stringify(data);
+    callRpcMethod(PASTEL_ID_COMMAND, ['sign', text, pastelID, passphrase]).then((response) => {
+        const signature = response.data.result.signature;
+        win.webContents.send('signMessageResponse', {
+            status: constants.RESPONSE_STATUS_OK,
+            signature,
+            dataType,
+            data
+        });
+    }).catch((err) => {
+        win.webContents.send('signMessageResponse', {
+            status: constants.RESPONSE_STATUS_ERROR,
+            err: err.response.data.error
+        });
+    });
 });
 
 // END of IPC pastel ID related events
