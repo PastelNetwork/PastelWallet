@@ -105,3 +105,8 @@ export const setCurrentPasteID = (value) => ({
     type: actionTypes.SET_CURRENT_PASTEL_ID,
     value
 });
+
+export const setCurrentPassphrase = (value) => ({
+    type: actionTypes.SET_CURRENT_PASSPHRASE,
+    value
+});

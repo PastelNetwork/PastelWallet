@@ -6,7 +6,7 @@ import '../../assets/scss/core.scss';
 import history from '../../history';
 import * as constants from "../../constants";
 import {store} from "../../app";
-import {setCurrentPasteID, setPasteIDError, setPasteIDList} from "../../actions";
+import {setCurrentPassphrase, setCurrentPasteID, setPasteIDError, setPasteIDList} from "../../actions";
 import {connect} from "react-redux";
 import Select from 'react-select';
 
@@ -90,17 +90,17 @@ ipcRenderer.on('pastelIdRegisterResponse', (event, data) => {
 ipcRenderer.on('pastelIdCheckPassphraseResponse', (event, data) => {
     switch (data.status) {
         case constants.RESPONSE_STATUS_ERROR:
-            store.dispatch(setCurrentPasteID(null));
             store.dispatch(setPasteIDError(data.err));
             history.push('/pastel_id/error');
             break;
         case constants.RESPONSE_STATUS_OK:
+            store.dispatch(setCurrentPasteID(data.pastelID));
+            store.dispatch(setCurrentPassphrase(data.passphrase));
             history.push('/wallet');
             break;
         default:
             break;
     }
-
 });
 
 const OrRecord = (props) => <div className="flex-row">
@@ -386,7 +386,6 @@ class HasActiveKeysCardComponent extends Component {
             pastelID: this.state.selectedPastelId.value,
             passphrase: this.state.passphrase
         });
-        this.props.dispatch(setCurrentPasteID(this.state.selectedPastelId.value));
         this.setState({passphrase: ''});
         // TODO: find and replace all occurances of old pastelid from wallet_api
         // TODO: wallet-api: use selected pastel ID as active pastel ID. As wallet-api is stateless - need to add active pastel ID to every request for wallet_api.

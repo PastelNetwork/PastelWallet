@@ -35,7 +35,8 @@ export const initialState = {
     messageBoxCollaped: true,
     pastelIDs: [],
     pastelIDError: null,
-    currentPastelID: null
+    currentPastelID: null,
+    currentPassphrase: ''
 };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

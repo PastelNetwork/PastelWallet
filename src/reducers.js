@@ -42,6 +42,8 @@ const reducer  = (state = {}, action) => {
             return {...state, pastelIDError: JSON.stringify(action.value)};
         case actionTypes.SET_CURRENT_PASTEL_ID:
             return {...state, currentPastelID: action.value};
+        case actionTypes.SET_CURRENT_PASSPHRASE:
+            return {...state, currentPassphrase: action.value};
         case actionTypes.RESET_STORE:
             return {...initialState};
         default:

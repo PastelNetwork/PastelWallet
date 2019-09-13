@@ -458,12 +458,11 @@ ipcMain.on('pastelIdImportAndRegister', (event, arg) => {
 ipcMain.on('pastelIdCheckPassphrase', (event, arg) => {
     const passphrase = arg.passphrase;
     const pastelID = arg.pastelID;
-    log.warn(pastelID);
-    log.warn(passphrase);
-    log.warn(arg);
     callRpcMethod(PASTEL_ID_COMMAND, ['sign', 'sample_text', pastelID, passphrase]).then((response) => {
         win.webContents.send('pastelIdCheckPassphraseResponse', {
-            status: constants.RESPONSE_STATUS_OK
+            status: constants.RESPONSE_STATUS_OK,
+            pastelID,
+            passphrase
         });
     }).catch((err) => {
         win.webContents.send('pastelIdCheckPassphraseResponse', {
