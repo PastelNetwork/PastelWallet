@@ -476,9 +476,17 @@ ipcMain.on('pastelIdCheckPassphrase', (event, arg) => {
 
 ipcMain.on('signMessage', (event, arg) => {
     const {data, pastelID, passphrase, dataType} = arg;
+    let picture_data = null;
+    if (data.picture_data) {
+        picture_data = data.picture_data;
+        delete data.picture_data
+    }
     const text = stringify(data);
     callRpcMethod(PASTEL_ID_COMMAND, ['sign', text, pastelID, passphrase]).then((response) => {
         const signature = response.data.result.signature;
+        if (picture_data) {
+            data.picture_data = picture_data;
+        }
         win.webContents.send('signMessageResponse', {
             status: constants.RESPONSE_STATUS_OK,
             signature,

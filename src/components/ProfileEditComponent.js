@@ -9,10 +9,9 @@ import axios from 'axios';
 import * as settings from '../settings';
 import {connect} from "react-redux";
 import * as md5 from 'md5';
-import {setPasteIDError, setPasteIDList, setUserProfile} from "../actions";
+import {setUserProfile} from "../actions";
 import * as constants from "../constants";
 import {store} from "../app";
-import history from "../history";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -26,8 +25,6 @@ ipcRenderer.on('signMessageResponse', (event, data) => {
         case constants.RESPONSE_STATUS_OK:
             switch (data.dataType) {
                 case constants.DATA_TYPE_USER_INFO:
-                    console.log('right place');
-                    console.log(store);
                     let cloudData = {
                         first_name: data.data.first_name,
                         last_name: data.data.last_name,
@@ -36,10 +33,9 @@ ipcRenderer.on('signMessageResponse', (event, data) => {
                         signature: data.signature,
                         pastel_id: store.getState().currentPastelID
                     };
-                    console.log(cloudData);
                     axios.patch(settings.USER_PROFILE_URL,
-                        data=cloudData).then((resp) => {
-                        this.props.dispatch(setUserProfile(resp.data));
+                        data = cloudData).then((resp) => {
+                        store.dispatch(setUserProfile(resp.data));
                     }).catch((err) => {
                         // TODO: prettify error displaying.
                         // TODO: But do not silent the error
@@ -48,6 +44,22 @@ ipcRenderer.on('signMessageResponse', (event, data) => {
                     break;
                 case constants.DATA_TYPE_USER_PICTURE:
                     // TODO: implement sign/send flow for user picture
+                    let cloudPicData = {
+                        picture: data.data.picture_data,
+                        picture_hash: data.data.picture_hash,
+                        signature: data.signature,
+                        pastel_id: store.getState().currentPastelID
+                    };
+
+                    axios.patch(settings.USER_PROFILE_URL,
+                        cloudPicData).then((resp) => {
+                        store.dispatch(setUserProfile(resp.data));
+                    }).catch((err) => {
+                        // TODO: prettify error displaying.
+                        // TODO: But do not silent the error
+                        alert(JSON.stringify(err.response.data));
+                    });
+
                     break;
                 default:
                     break;
@@ -94,23 +106,14 @@ class EditPicCardComponent extends Component {
         reader.onload = () => {
             const base64data = reader.result;
             let data = {
-                picture_hash: md5(base64data)
+                picture_hash: md5(base64data),
+                picture_data: base64data
             };
-            // TODO: sign data with cNode instead.. ask main_proccess about that.
-            axios.post(settings.SIGN_RESOURCE_URL, data).then((resp) => {
-                data.signature = resp.data.signature;
-                data.pastel_id = resp.data.pastel_id;
-                data.picture = base64data;
-                axios.patch(settings.USER_PROFILE_URL,
-                    data).then((resp) => {
-                    this.props.dispatch(setUserProfile(resp.data));
-                }).catch((err) => {
-                    // TODO: prettify error displaying.
-                    // TODO: But do not silent the error
-                    alert(JSON.stringify(err.response.data));
-                });
-            }).catch((err) => {
-                console.log('Error accessing local API');
+            ipcRenderer.send('signMessage', {
+                data,
+                pastelID: this.props.pastelID,
+                passphrase: this.props.passphrase,
+                dataType: constants.DATA_TYPE_USER_PICTURE
             });
         };
     };
@@ -145,7 +148,8 @@ class EditPicCardComponent extends Component {
 
 export const EditPicCard = connect(state => ({
     pastelID: state.currentPastelID,
-    userProfile: state.userProfile
+    userProfile: state.userProfile,
+    passphrase: state.currentPassphrase
 }), dispatch => ({
     dispatch
 }))(EditPicCardComponent);
