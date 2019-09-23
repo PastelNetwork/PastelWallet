@@ -1,3 +1,17 @@
+## Instaling pre-build wallet on Mac OS
+
+#### Running PastelD inside docker
+
+As currently `PastelD` binary is not available for Mac - it can be run with Docker image.
+ - Install Docker https://docs.docker.com/docker-for-mac/install/
+ - Open Terminal
+ - Run `docker run -d -p 19932:19932 -p 19933:19933 alexdobrushskiy/pasteld:0.1`
+
+### Install wallet
+ - In Terminal: `wget https://dobrushskiy.name/static/pastel-wallet-1.0.0.dmg`
+ - Install downloaded `*.dmg`
+ - Run `pastel-wallet` app 
+
 ## How to run locally
  
  - `npm install`
