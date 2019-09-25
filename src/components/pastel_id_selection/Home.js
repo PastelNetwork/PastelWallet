@@ -94,6 +94,7 @@ ipcRenderer.on('pastelIdCheckPassphraseResponse', (event, data) => {
             history.push('/pastel_id/error');
             break;
         case constants.RESPONSE_STATUS_OK:
+            // At this point we start wallet_api python proccess from main_electron with given pastelID and passphrase
             store.dispatch(setCurrentPasteID(data.pastelID));
             store.dispatch(setCurrentPassphrase(data.passphrase));
             history.push('/wallet');

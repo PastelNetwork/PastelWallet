@@ -38,6 +38,8 @@ let pyProc = null;
 let pastelProc = null;
 let pyPort = 5000;
 
+let pyStatusTaskID;
+let cNodeStatusTaskID;
 
 // suppress security warning in dev mode - cause we local from webpack dev server on localhost:3000
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
@@ -71,11 +73,11 @@ const getPasteldPath = () => {
 };
 
 
-const createPyProc = () => {
+const createPyProc = (pastelid, passphrase) => {
     let script = getScriptPath();
     let port = pyPort;
     if (process.defaultApp) {
-        pyProc = require('child_process').execFile('python', [script, process.cwd()], (error, stdout, stderr) => {
+        pyProc = require('child_process').execFile('python', [script, process.cwd(), pastelid, passphrase], (error, stdout, stderr) => {
         });
     } else {
         let appPath;
@@ -87,7 +89,7 @@ const createPyProc = () => {
                 appPath = path.join(process.resourcesPath, '..', '..');
                 break;
         }
-        pyProc = require('child_process').execFile(script, [appPath], (error, stdout, stderr) => {
+        pyProc = require('child_process').execFile(script, [appPath, pastelid, passphrase], (error, stdout, stderr) => {
         });
     }
 
@@ -114,8 +116,6 @@ const createPyProc = () => {
 };
 
 const checkAndRunPastelD = () => {
-    //TODO: stqart pastelD proccess
-    //TODO: stop it on exit
     const pastelPath = getPasteldPath();
     if (!process.defaultApp) {
         pastelProc = require('child_process').execFile(pastelPath, [], (error, stdout, stderr) => {
@@ -465,6 +465,8 @@ ipcMain.on('pastelIdCheckPassphrase', (event, arg) => {
             pastelID,
             passphrase
         });
+        // TODO: start python proccess
+        createPyProc(pastelID, passphrase);
     }).catch((err) => {
         win.webContents.send('pastelIdCheckPassphraseResponse', {
             status: constants.RESPONSE_STATUS_ERROR,
@@ -524,16 +526,18 @@ const updatePynodeStatus = () => {
         win.webContents.send('updatePynodeStatus', {
             status: constants.PYNODE_STATUS_CONNECTED
         });
+        clearInterval(pyStatusTaskID);
     }).catch((err) => {
         win.webContents.send('updatePynodeStatus', {
             status: constants.PYNODE_STATUS_DISCONNECTED
         });
+        clearInterval(cNodeStatusTaskID);
     });
 };
 
 const updateNodeStatusesProccess = () => {
-    setInterval(updateCnodeStatus, 3000);
-    setInterval(updatePynodeStatus, 3000);
+    cNodeStatusTaskID = setInterval(updateCnodeStatus, 3000);
+    pyStatusTaskID = setInterval(updatePynodeStatus, 3000);
 };
 
 
@@ -559,6 +563,5 @@ function createWindow() {
 
 app.on('ready', createWindow);
 app.on('ready', updateNodeStatusesProccess);
-app.on('ready', createPyProc);
 app.on('ready', checkAndRunPastelD);
 app.on('will-quit', cleanUp);

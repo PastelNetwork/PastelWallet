@@ -10,7 +10,7 @@ As currently `PastelD` binary is not available for Mac - it can be run with Dock
 ### Install wallet
  - In Terminal: `wget https://dobrushskiy.name/static/pastel-wallet-1.0.0.dmg`
  - Install downloaded `*.dmg`
- - Run `pastel-wallet` app 
+ - Run `pastel-wallet` app
 
 ## How to run locally
  
