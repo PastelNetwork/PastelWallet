@@ -25,20 +25,7 @@ As currently `PastelD` binary is not available for Mac - it can be run with Dock
 
 
 ## How to make a build
-
-### Prepare enviroment (Ubuntu example)
- - `apt install python3-pip`
- - `pip3 install -r requirements.txt` for StoVaCore repo
- - `apt-get install curl software-properties-common`
- - `curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -` (to install nodejs v11)
- - `sudo apt-get install -y nodejs`
- - `npm install`
- - `npm rebuild node-sass` (as it's platform-dependent)
-
-### Make a build
- - - make python build: `pyinstaller -F wallet_api.py` (result will appear in `src/StoVaCore/dist`)
- - `npm run electron-build:linux`
- - builded application will appear in `dist` folder
+ - (On Ubuntu 18.04 instance) Run `linux_build.sh`
 
 ### Install Linux build
  - `sudo dpkg -i paste-wallet_1.0.0_amd64.deb`
