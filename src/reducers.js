@@ -14,6 +14,8 @@ const reducer  = (state = {}, action) => {
             return {...state, regFormError: {}};
         case actionTypes.SET_IMAGE_REGISTER_FORM_FEE:
             return {...state, regFormFee: action.value};
+        case actionTypes.SET_IMAGE_REGISTER_FORM_TXID:
+            return {...state, regFormTxid: action.value};
         case actionTypes.SET_IMAGE_REGISTER_WORKER_FEE:
             return {...state, workerFee: action.value};
         case actionTypes.SET_IMAGE_REGTICKET_ID:

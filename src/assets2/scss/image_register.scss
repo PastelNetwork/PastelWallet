@@ -35,6 +35,7 @@ $ok-font-color: #006600;
   transition: opacity 1s linear;
   height: 30px;
   opacity: 1;
+  word-break: break-all;
 }
 
 .send-psl-error, .send-psl-ok {

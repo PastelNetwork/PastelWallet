@@ -7,7 +7,8 @@ const mapStateToProps = state => ({
     regFormFee: state.regFormFee,
     workerFee: state.workerFee,
     regFormState: state.regFormState,
-    regticketId: state.regticketId
+    regticketId: state.regticketId,
+    txid: state.regFormTxid
 });
 
 const mapDispatchToProps = dispatch => ({

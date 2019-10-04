@@ -266,7 +266,7 @@ ipcMain.on('imageRegFormStep3', (event, data) => {
         if (response.data.status === 'SUCCESS') {
             win.webContents.send('imageRegFormStep3Response', {
                 status: RESPONSE_STATUS_OK,
-                msg: data.msg
+                txid: response.data.txid
             });
             // TODO: create activation ticket with cNode api when cNode will be ready
 

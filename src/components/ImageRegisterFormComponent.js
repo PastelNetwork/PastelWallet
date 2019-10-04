@@ -4,7 +4,7 @@ import {store} from "../app";
 import {
     resetImageRegFormErrors,
     setImageRegFormError,
-    setImageRegFormRegFee, setImageRegFormState, setImageRegTicketID,
+    setImageRegFormRegFee, setImageRegFormState, setImageRegFormTxid, setImageRegTicketID,
     setImageRegWorkerFee,
     setRegFee
 } from "../actions";
@@ -60,6 +60,8 @@ ipcRenderer.on('imageRegFormStep3Response', (event, data) => {
         case constants.RESPONSE_STATUS_OK:
             store.dispatch(resetImageRegFormErrors());
             store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_MN_2_3_RESPONSE_RECEIVED));
+            console.log(`TXID received: ${data.txid}`);
+            store.dispatch(setImageRegFormTxid(data.txid));
             break;
         default:
             break;
@@ -243,7 +245,9 @@ export class ImageRegisterForm extends Component {
                 break;
             case constants.IMAGE_REG_FORM_STATE_MN_2_3_RESPONSE_RECEIVED:
                 buttonArea = <div>
-                    <div className="regfee-msg">Masternodes 2 and 3 accepted image registration
+                    <div className="regfee-msg">
+                        Registration ticket has been written to the blockchain.
+                        TXID: {this.props.txid}
                     </div>
                 </div>;
                 break;
