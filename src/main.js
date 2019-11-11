@@ -1,12 +1,9 @@
 const path = require('path');
 const {app, BrowserWindow, ipcMain} = require('electron');
 const axios = require('axios');
-const fs = require('fs');
-const bs58 = require('bs58');
 const log = require('electron-log');
 const constants = require('./constants');
-let stringify = require('json-stable-stringify');
-
+const callRpcMethod = require('./main-process/utils');
 let win = null;
 
 const RESPONSE_STATUS_OK = 'OK';
@@ -16,7 +13,6 @@ const GETINFO_COMMAND = 'getinfo';
 const GET_ACCOUNT_ADDRESS_COMMAND = 'getaccountaddress';
 const SEND_TO_ADDRESS_COMMAND = 'sendtoaddress';
 
-const PASTEL_ID_COMMAND = 'pastelid';
 
 const LOCAL_PY_URL = 'http://127.0.0.1:5000/';
 
@@ -150,27 +146,6 @@ let addMessageToBox = (msg) => {
             msg
         });
     }
-};
-
-const callRpcMethod = (method, params) => {
-    // return Promise
-    let data = {
-        "jsonrpc": "1.0",
-        "id": "curltest",
-        "method": method
-    };
-    if (params) {
-        data.params = params;
-    }
-    return axios.post('http://localhost:19932', data, {
-        headers: {
-            'Content-Type': 'text/plain'
-        },
-        auth: {
-            username: 'rt',
-            password: 'rt'
-        }
-    });
 };
 
 
@@ -332,178 +307,6 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
 
 // TODO: extract to another file
 // IPC pastel ID related events
-ipcMain.on('pastelIdList', (event, arg) => {
-    callRpcMethod(PASTEL_ID_COMMAND, ['list']).then((response) => {
-        // FIXME: remove. For testing purposes when cNode API is not 100% implemented
-        // non-empty, all are not registered
-        const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
-        // const data = response.data.result.map((key, index) => ({
-        //     PastelID: key.PastelID,
-        //     isRegistered: index % 2 === 1
-        // }));
-        //
-        // non-empty, all are registered
-        // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
-        // empty
-        // const data = [];
-
-        // FIXME: uncomment the following line after cNode API will work.
-        // const data = response.data.result;
-        win.webContents.send('pastelIdListResponse', {
-            status: constants.RESPONSE_STATUS_OK,
-            data
-        });
-
-    }).catch((err) => {
-        win.webContents.send('pastelIdListResponse', {
-            status: constants.RESPONSE_STATUS_ERROR,
-            err: err.response.data.error
-        });
-    });
-
-});
-
-ipcMain.on('pastelIdCreate', (event, arg) => {
-    const passphrase = arg.passphrase;
-    callRpcMethod(PASTEL_ID_COMMAND, ['newkey', passphrase]).then((response) => {
-        win.webContents.send('pastelIdCreateResponse', {
-            status: constants.RESPONSE_STATUS_OK,
-            data: response.data.result
-        });
-    }).catch((err) => {
-        win.webContents.send('pastelIdCreateResponse', {
-            status: constants.RESPONSE_STATUS_ERROR,
-            err: err.response.data.error
-        });
-    });
-
-});
-
-ipcMain.on('pastelIdCreateAndRegister', (event, arg) => {
-    const passphrase = arg.passphrase;
-    callRpcMethod(PASTEL_ID_COMMAND, ['newkey', passphrase]).then((response) => {
-        const pastelId = response.data.result.pastelid;
-        callRpcMethod(PASTEL_ID_COMMAND, ['register', pastelId]).then((resp) => {
-            win.webContents.send('pastelIdCreateResponse', {
-                status: constants.RESPONSE_STATUS_OK
-            });
-        }).catch((err) => {
-            win.webContents.send('pastelIdCreateResponse', {
-                status: constants.RESPONSE_STATUS_ERROR,
-                err: err.response.data.error
-            });
-        });
-    }).catch((err) => {
-        win.webContents.send('pastelIdCreateResponse', {
-            status: constants.RESPONSE_STATUS_ERROR,
-            err: err.response.data.error
-        });
-    });
-
-});
-
-ipcMain.on('pastelIdRegister', (event, arg) => {
-    const pastelID = arg.pastelID;
-    callRpcMethod(PASTEL_ID_COMMAND, ['register', pastelID]).then((resp) => {
-        win.webContents.send('pastelIdRegisterResponse', {
-            status: constants.RESPONSE_STATUS_OK
-        });
-    }).catch((err) => {
-        win.webContents.send('pastelIdRegisterResponse', {
-            status: constants.RESPONSE_STATUS_ERROR,
-            err: err.response.data.error
-        });
-    });
-
-});
-
-ipcMain.on('pastelIdImport', (event, arg) => {
-    const passphrase = arg.passphrase;
-    const key = arg.key;
-    callRpcMethod(PASTEL_ID_COMMAND, ['importkey', key, passphrase]).then((response) => {
-        win.webContents.send('pastelIdImportResponse', {
-            status: constants.RESPONSE_STATUS_OK,
-            data: response.data.result
-        });
-    }).catch((err) => {
-        win.webContents.send('pastelIdImportResponse', {
-            status: constants.RESPONSE_STATUS_ERROR,
-            err: err.response.data.error
-        });
-    });
-
-});
-
-ipcMain.on('pastelIdImportAndRegister', (event, arg) => {
-    const passphrase = arg.passphrase;
-    const key = arg.key;
-    callRpcMethod(PASTEL_ID_COMMAND, ['importkey', key, passphrase]).then((response) => {
-        const pastelId = response.data.result.pastelid;
-        callRpcMethod(PASTEL_ID_COMMAND, ['register', pastelId]).then((resp) => {
-            win.webContents.send('pastelIdCreateResponse', {
-                status: constants.RESPONSE_STATUS_OK
-            });
-        }).catch((err) => {
-            win.webContents.send('pastelIdCreateResponse', {
-                status: constants.RESPONSE_STATUS_ERROR,
-                err: err.response.data.error
-            });
-        });
-    }).catch((err) => {
-        win.webContents.send('pastelIdCreateResponse', {
-            status: constants.RESPONSE_STATUS_ERROR,
-            err: err.response.data.error
-        });
-    });
-
-});
-
-ipcMain.on('pastelIdCheckPassphrase', (event, arg) => {
-    const passphrase = arg.passphrase;
-    const pastelID = arg.pastelID;
-    callRpcMethod(PASTEL_ID_COMMAND, ['sign', 'sample_text', pastelID, passphrase]).then((response) => {
-        win.webContents.send('pastelIdCheckPassphraseResponse', {
-            status: constants.RESPONSE_STATUS_OK,
-            pastelID,
-            passphrase
-        });
-        // TODO: start python proccess
-        createPyProc(pastelID, passphrase);
-    }).catch((err) => {
-        win.webContents.send('pastelIdCheckPassphraseResponse', {
-            status: constants.RESPONSE_STATUS_ERROR,
-            err: err.response.data.error
-        });
-    });
-
-});
-
-ipcMain.on('signMessage', (event, arg) => {
-    const {data, pastelID, passphrase, dataType} = arg;
-    let picture_data = null;
-    if (data.picture_data) {
-        picture_data = data.picture_data;
-        delete data.picture_data
-    }
-    const text = stringify(data);
-    callRpcMethod(PASTEL_ID_COMMAND, ['sign', text, pastelID, passphrase]).then((response) => {
-        const signature = response.data.result.signature;
-        if (picture_data) {
-            data.picture_data = picture_data;
-        }
-        win.webContents.send('signMessageResponse', {
-            status: constants.RESPONSE_STATUS_OK,
-            signature,
-            dataType,
-            data
-        });
-    }).catch((err) => {
-        win.webContents.send('signMessageResponse', {
-            status: constants.RESPONSE_STATUS_ERROR,
-            err: err.response.data.error
-        });
-    });
-});
 
 // END of IPC pastel ID related events
 
@@ -553,6 +356,7 @@ function createWindow() {
         minHeight: 400,
         webPreferences: {nodeIntegration: true, webSecurity: false}
     });
+
     if (process.defaultApp) {
         win.loadURL('http://localhost:3000/');
         win.webContents.openDevTools();
@@ -562,6 +366,8 @@ function createWindow() {
         win.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
     }
 }
+
+require('./main-process/pastelid');
 
 app.on('ready', createWindow);
 app.on('ready', updateNodeStatusesProccess);

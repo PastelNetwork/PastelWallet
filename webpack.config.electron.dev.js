@@ -1,10 +1,10 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/main_electron.js',
+    entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, 'src'),
-        filename: 'main_electron_built.js'
+        filename: 'main_built.js'
     },
     target: 'electron-main',
     node: {
