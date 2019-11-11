@@ -176,10 +176,10 @@ const callRpcMethod = (method, params) => {
 
 // image registration form step 1
 ipcMain.on('imageRegFormSubmit', (event, arg) => {
-    return callRpcMethod('masternode', ['getnetworkfee']).then((response) => {
+    return callRpcMethod('storagefee', ['getnetworkfee']).then((response) => {
         const regFee = response.data.result.networkfee;
-        log.info(`Regfee from 'masternode getnetworkfee' is ${regFee}`);
-        addMessageToBox(`Regfee from 'masternode getnetworkfee' is ${regFee}`);
+        log.info(`Regfee from 'storagefee getnetworkfee' is ${regFee}`);
+        addMessageToBox(`Regfee from 'storagefee getnetworkfee' is ${regFee}`);
         addMessageToBox('Image reg form submitted');
         callRpcMethod(GETBALANCE_COMMAND).then((response) => {
             if (response.data.result >= regFee) {
@@ -200,7 +200,7 @@ ipcMain.on('imageRegFormSubmit', (event, arg) => {
     }).catch((err) => {
         win.webContents.send('imageRegFormSubmitResponse', {
             status: RESPONSE_STATUS_ERROR,
-            msg: `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}, command: 'masternode getnetworkfee'`
+            msg: `Error accessing local cNode: Status code: ${err.response.status}, message: ${err.response.data.error.message}, command: 'storagefee getnetworkfee'`
         });
     });
 });
