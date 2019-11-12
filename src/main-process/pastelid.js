@@ -1,5 +1,4 @@
 const {ipcMain} = require('electron');
-const ipc = require('electron').ipcRenderer;
 let stringify = require('json-stable-stringify');
 const callRpcMethod = require('./utils');
 const log = require('electron-log');
@@ -11,8 +10,7 @@ ipcMain.on('pastelIdList', (event, arg) => {
     callRpcMethod(PASTEL_ID_COMMAND, ['list']).then((response) => {
         // FIXME: remove. For testing purposes when cNode API is not 100% implemented
         // non-empty, all are not registered
-        debugger;
-        log.error('Pastel id list response');
+        // eval('debugger;');
         const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
         // const data = response.data.result.map((key, index) => ({
         //     PastelID: key.PastelID,
@@ -26,7 +24,7 @@ ipcMain.on('pastelIdList', (event, arg) => {
 
         // FIXME: uncomment the following line after cNode API will work.
         // const data = response.data.result;
-        ipc.send('pastelIdListResponse', {
+        event.reply('pastelIdListResponse', {
             status: constants.RESPONSE_STATUS_OK,
             data
         });

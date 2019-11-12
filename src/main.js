@@ -1,9 +1,11 @@
-const path = require('path');
-const {app, BrowserWindow, ipcMain} = require('electron');
-const axios = require('axios');
-const log = require('electron-log');
-const constants = require('./constants');
-const callRpcMethod = require('./main-process/utils');
+import * as path from 'path';
+import {app, BrowserWindow, ipcMain} from 'electron';
+import * as axios from 'axios';
+import * as log from 'electron-log';
+import * as constants from './constants';
+import callRpcMethod from './main-process/utils';
+import './main-process/pastelid';
+
 let win = null;
 
 const RESPONSE_STATUS_OK = 'OK';
@@ -367,7 +369,6 @@ function createWindow() {
     }
 }
 
-require('./main-process/pastelid');
 
 app.on('ready', createWindow);
 app.on('ready', updateNodeStatusesProccess);
