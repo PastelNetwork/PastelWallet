@@ -1,7 +1,6 @@
-const {ipcMain} = require('electron');
-let stringify = require('json-stable-stringify');
+import {ipcMain} from 'electron';
+import stringify from 'json-stable-stringify';
 const callRpcMethod = require('./utils');
-const log = require('electron-log');
 const constants = require('../constants');
 
 const PASTEL_ID_COMMAND = 'pastelid';
