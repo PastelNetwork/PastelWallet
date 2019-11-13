@@ -1,23 +1,25 @@
 import {ipcMain} from 'electron';
 import stringify from 'json-stable-stringify';
+
 const callRpcMethod = require('./utils');
 const constants = require('../constants');
 
 const PASTEL_ID_COMMAND = 'pastelid';
+const TICKETS_COMMAND = 'tickets';
 
 ipcMain.on('pastelIdList', (event, arg) => {
     callRpcMethod(PASTEL_ID_COMMAND, ['list']).then((response) => {
         // FIXME: remove. For testing purposes when cNode API is not 100% implemented
         // non-empty, all are not registered
         // eval('debugger;');
-        const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
+        // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
         // const data = response.data.result.map((key, index) => ({
         //     PastelID: key.PastelID,
         //     isRegistered: index % 2 === 1
         // }));
         //
         // non-empty, all are registered
-        // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
+        const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
         // empty
         // const data = [];
 
@@ -55,9 +57,11 @@ ipcMain.on('pastelIdCreate', (event, arg) => {
 
 ipcMain.on('pastelIdCreateAndRegister', (event, arg) => {
     const passphrase = arg.passphrase;
+    const blockchainAddress = arg.blockchainAddress;
+
     callRpcMethod(PASTEL_ID_COMMAND, ['newkey', passphrase]).then((response) => {
         const pastelId = response.data.result.pastelid;
-        callRpcMethod(PASTEL_ID_COMMAND, ['register', pastelId]).then((resp) => {
+        callRpcMethod(TICKETS_COMMAND, ['register', 'id', pastelId, passphrase, blockchainAddress]).then((resp) => {
             event.sender.send('pastelIdCreateResponse', {
                 status: constants.RESPONSE_STATUS_OK
             });
@@ -77,8 +81,10 @@ ipcMain.on('pastelIdCreateAndRegister', (event, arg) => {
 });
 
 ipcMain.on('pastelIdRegister', (event, arg) => {
-    const pastelID = arg.pastelID;
-    callRpcMethod(PASTEL_ID_COMMAND, ['register', pastelID]).then((resp) => {
+    callRpcMethod(TICKETS_COMMAND,
+        [
+            'register', 'id', arg.pastelID, arg.passphrase, arg.blockchainAddress
+        ]).then((resp) => {
         event.sender.send('pastelIdRegisterResponse', {
             status: constants.RESPONSE_STATUS_OK
         });
@@ -111,9 +117,10 @@ ipcMain.on('pastelIdImport', (event, arg) => {
 ipcMain.on('pastelIdImportAndRegister', (event, arg) => {
     const passphrase = arg.passphrase;
     const key = arg.key;
+    const blockchainAddress = arg.blockchainAddress;
     callRpcMethod(PASTEL_ID_COMMAND, ['importkey', key, passphrase]).then((response) => {
         const pastelId = response.data.result.pastelid;
-        callRpcMethod(PASTEL_ID_COMMAND, ['register', pastelId]).then((resp) => {
+        callRpcMethod(TICKETS_COMMAND, ['register', 'id', pastelId, passphrase, blockchainAddress]).then((resp) => {
             event.sender.send('pastelIdCreateResponse', {
                 status: constants.RESPONSE_STATUS_OK
             });

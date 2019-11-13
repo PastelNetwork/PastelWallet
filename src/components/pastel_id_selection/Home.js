@@ -211,7 +211,7 @@ class CreateInProgressCard extends Component {
     }
 }
 
-class CreateNewKeyCard extends Component {
+class CreateNewKeyCardComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -229,7 +229,10 @@ class CreateNewKeyCard extends Component {
     };
 
     createAndRegisterClick = () => {
-        ipcRenderer.send('pastelIdCreateAndRegister', {passphrase: this.state.passphrase});
+        ipcRenderer.send('pastelIdCreateAndRegister', {
+            passphrase: this.state.passphrase,
+            blockchainAddress: this.props.blockchainAddress
+        });
     };
 
     render() {
@@ -248,7 +251,9 @@ class CreateNewKeyCard extends Component {
     }
 }
 
-class PastelIdImportCard extends Component {
+const CreateNewKeyCard = connect(state => ({blockchainAddress: state.blockchainAddress}), null)(CreateNewKeyCardComponent);
+
+class PastelIdImportCardComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -266,7 +271,11 @@ class PastelIdImportCard extends Component {
     };
 
     importAndRegisterClick = () => {
-        ipcRenderer.send('pastelIdImportAndRegister', {passphrase: this.state.passphrase, key: this.state.key});
+        ipcRenderer.send('pastelIdImportAndRegister', {
+            passphrase: this.state.passphrase,
+            key: this.state.key,
+            blockchainAddress: this.props.blockchainAddress
+        });
     };
 
     render() {
@@ -289,12 +298,14 @@ class PastelIdImportCard extends Component {
     }
 }
 
+const PastelIdImportCard = connect(state => ({blockchainAddress: state.blockchainAddress}), null)(PastelIdImportCardComponent);
 
 class NoActiveKeysCardComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedPastelId: null
+            selectedPastelId: null,
+            passphrase: ''
         }
     }
 
@@ -305,11 +316,20 @@ class NoActiveKeysCardComponent extends Component {
         history.push('/pastel_id/import');
     };
     registerPastelID = () => {
-        ipcRenderer.send('pastelIdRegister', {pastelID: this.state.selectedPastelId});
+        // at this point we expect to have blockchain address already in store.
+        ipcRenderer.send('pastelIdRegister', {
+            pastelID: this.state.selectedPastelId.value,
+            passphrase: this.state.passphrase,
+            blockchainAddress: this.props.blockchainAddress
+        });
     };
 
     onChange = (selectedOption) => {
         this.setState({selectedPastelId: selectedOption});
+    };
+
+    onPassphraseChange = (e) => {
+        this.setState({passphrase: e.target.value});
     };
 
     render() {
@@ -331,7 +351,12 @@ class NoActiveKeysCardComponent extends Component {
         let registerSelected = <OrRecord/>;
         if (this.state.selectedPastelId !== null) {
             registerSelected = <React.Fragment>
-                <div className="flex-row pt-1"/>
+                <div className="pt-1"/>
+                <div className="control flex-row">
+                    <input type="text" className="input is-default" value={this.state.passphrase}
+                           onChange={this.onPassphraseChange} name="firstName" placeholder="Passphrase"/>
+                </div>
+                <div className="pt-1"/>
                 <PastelIDButton onClick={this.registerPastelID} text="Register selected"/>
                 <OrRecord/>
             </React.Fragment>;
@@ -358,7 +383,8 @@ class NoActiveKeysCardComponent extends Component {
 }
 
 const NoActiveKeysCard = connect(state => ({
-    pastelIDs: state.pastelIDs
+    pastelIDs: state.pastelIDs,
+    blockchainAddress: state.blockchainAddress
 }), dispatch => ({
     dispatch
 }))(NoActiveKeysCardComponent);
