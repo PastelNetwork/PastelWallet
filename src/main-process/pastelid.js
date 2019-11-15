@@ -9,25 +9,22 @@ const TICKETS_COMMAND = 'tickets';
 
 ipcMain.on('pastelIdList', (event, arg) => {
     callRpcMethod(PASTEL_ID_COMMAND, ['list']).then((response) => {
-        // FIXME: remove. For testing purposes when cNode API is not 100% implemented
-        // non-empty, all are not registered
-        // eval('debugger;');
-        // const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
-        // const data = response.data.result.map((key, index) => ({
-        //     PastelID: key.PastelID,
-        //     isRegistered: index % 2 === 1
-        // }));
-        //
-        // non-empty, all are registered
-        const data = response.data.result.map(key => ({PastelID: key.PastelID, isRegistered: true}));
-        // empty
-        // const data = [];
-
-        // FIXME: uncomment the following line after cNode API will work.
-        // const data = response.data.result;
-        event.reply('pastelIdListResponse', {
-            status: constants.RESPONSE_STATUS_OK,
-            data
+        const pastelIdList = response.data.result;
+        callRpcMethod(TICKETS_COMMAND, ['list', 'id']).then(response => {
+            const registeredPastelIDs = response.data.result;
+            const data = pastelIdList.map(key => ({
+                PastelID: key.PastelID,
+                isRegistered: registeredPastelIDs.includes(key.PastelID)
+            }));
+            event.reply('pastelIdListResponse', {
+                status: constants.RESPONSE_STATUS_OK,
+                data
+            });
+        }).catch(err => {
+            event.sender.send('pastelIdListResponse', {
+                status: constants.RESPONSE_STATUS_ERROR,
+                err: err.response.data.error
+            });
         });
 
     }).catch((err) => {
