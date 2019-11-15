@@ -405,7 +405,11 @@ class HasActiveKeysCardComponent extends Component {
         history.push('/pastel_id/import');
     };
     registerPastelID = () => {
-        ipcRenderer.send('pastelIdRegister', {pastelID: this.state.selectedPastelId});
+        ipcRenderer.send('pastelIdRegister', {
+            pastelID: this.state.selectedPastelId.value,
+            passphrase: this.state.passphrase,
+            blockchainAddress: this.props.blockchainAddress
+        });
     };
 
     usePastelID = () => {
@@ -458,6 +462,11 @@ class HasActiveKeysCardComponent extends Component {
             } else {
                 registerProceedButton = <React.Fragment>
                     <div className="pt-1"/>
+                    <div className="control flex-row">
+                        <input type="text" className="input is-default" value={this.state.passphrase}
+                               onChange={this.onPassphraseChange} name="firstName" placeholder="Passphrase"/>
+                    </div>
+                    <div className="pt-1"/>
                     <PastelIDButton onClick={this.registerPastelID} text="Register selected"/>
                     <OrRecord/>
                 </React.Fragment>;
@@ -484,7 +493,8 @@ class HasActiveKeysCardComponent extends Component {
 }
 
 const HasActiveKeysCard = connect(state => ({
-    pastelIDs: state.pastelIDs
+    pastelIDs: state.pastelIDs,
+    blockchainAddress: state.blockchainAddress
 }), null)(HasActiveKeysCardComponent);
 
 export class PastelIdHome extends Component {
