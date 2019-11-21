@@ -11,7 +11,6 @@ const IMAGE_REGISTRATION_STEP_3_RESOURCE = `${LOCAL_PY_URL}image_registration_st
 const IMAGE_REGISTRATION_CANCEL_RESOURCE = `${LOCAL_PY_URL}image_registration_cancel`;
 
 
-
 // image registration form step 1
 ipcMain.on('imageRegFormSubmit', (event, arg) => {
     return callRpcMethod('storagefee', ['getnetworkfee']).then((response) => {
@@ -105,7 +104,16 @@ ipcMain.on('imageRegFormStep3', (event, data) => {
                 status: RESPONSE_STATUS_OK,
                 txid: response.data.txid
             });
-            // TODO: create activation ticket with cNode api when cNode will be ready
+            const regticketTXID = response.data.txid;
+            callRpcMethod('getblockcount', resp => {
+                const currentHeight = resp.data.result;
+                const fee = 100;
+                // TODO: get height from regticket, get fee from regticket as well.
+                callRpcMethod('tickets', ['register', 'conf', fee, regticketTXID, currentHeight]).then(response => {
+                    log.error(response.data);
+                })
+            });
+
 
         } else {
             event.reply('imageRegFormStep3Response', {
