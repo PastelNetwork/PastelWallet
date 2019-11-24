@@ -1,0 +1,1 @@
+This folder contains documents regarding the systems and related artifacts (schemas, images).
