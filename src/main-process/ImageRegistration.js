@@ -93,28 +93,41 @@ ipcMain.on('imageRegFormProceed', (event, data) => {
     });
 });
 
-// image registration form step 3
-ipcMain.on('imageRegFormStep3', (event, data) => {
+const imageRegistrationStep3Handler = (event, data) => {
+    log.error('TAKSA');
     axios.post(IMAGE_REGISTRATION_STEP_3_RESOURCE, {regticket_id: data.regticketId}).then((response) => {
         // const msg = `mn0: ${response.data.mn_data.mn0.status}: ${response.data.mn_data.mn0.msg};
         //              mn1: ${response.data.mn_data.mn1.status}: ${response.data.mn_data.mn1.msg};
         //              mn2: ${response.data.mn_data.mn2.status}: ${response.data.mn_data.mn2.msg}`;
+        log.error('TAKSA1');
+
+        // 'txid': txid,
+        // 'fee': regticket_db.worker_fee,
+        // 'blocknum': regticket_db.blocknum,
+        // 'pastel_id': self.pastelid,
+        // 'passphrase': self.passphrase
+
         if (response.data.status === 'SUCCESS') {
-            event.reply('imageRegFormStep3Response', {
-                status: RESPONSE_STATUS_OK,
-                txid: response.data.txid
-            });
-            const regticketTXID = response.data.txid;
-            callRpcMethod('getblockcount', resp => {
-                const currentHeight = resp.data.result;
-                const fee = 100;
-                // TODO: get height from regticket, get fee from regticket as well.
-                callRpcMethod('tickets', ['register', 'conf', fee, regticketTXID, currentHeight]).then(response => {
-                    log.error(response.data);
-                })
-            });
+            const actTicketParams = [response.data.txid, response.data.blocknum, response.data.fee, response.data.pastel_id, response.data.passphrase];
+            // event.reply('imageRegFormStep3Response', {
+            //     status: RESPONSE_STATUS_OK,
+            //     txid: response.data.txid
+            // });
+            log.error('TAKSA2');
+            log.error('TAKSA3');
+            callRpcMethod('tickets', ['register', 'act', ...actTicketParams]).then(response => {
+                log.error('TAKSA4');
+                log.error(response.data);
+                // response.data = {result: {txid: ''}}
+            // event.reply('imageRegFormStep3Response', {
+            //     status: RESPONSE_STATUS_OK,
+            //     txid: response.data.txid
+            // });
 
-
+            }).catch(err => {
+                debugger;
+                log.error(err);
+            });
         } else {
             event.reply('imageRegFormStep3Response', {
                 status: RESPONSE_STATUS_ERROR,
@@ -127,5 +140,7 @@ ipcMain.on('imageRegFormStep3', (event, data) => {
             status: RESPONSE_STATUS_ERROR
         });
     })
+};
 
-});
+// image registration form step 3
+ipcMain.on('imageRegFormStep3', imageRegistrationStep3Handler);

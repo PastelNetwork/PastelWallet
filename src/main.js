@@ -74,7 +74,6 @@ ipcMain.on('sendPSLRequest', (event, arg) => {
 ipcMain.on('blockchainDataRequest', (event, arg) => {
     return callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND, [""]).then((response) => {
         const bcAddress = response.data.result;
-        log.info(`BC data result ${bcAddress}`);
         win.webContents.send('blockchainDataResponse', {
             status: RESPONSE_STATUS_OK,
             address: bcAddress,
@@ -83,11 +82,6 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
         win.webContents.send('walletAddress', `Cannot connect to local pasteld!, command: ${GET_ACCOUNT_ADDRESS_COMMAND}`);
     });
 });
-
-// TODO: extract to another file
-// IPC pastel ID related events
-
-// END of IPC pastel ID related events
 
 
 const updateCnodeStatus = () => {
