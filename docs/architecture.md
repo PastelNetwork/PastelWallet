@@ -1,6 +1,7 @@
 ### Pastel wallet architecture overview
 
 This document describes wallet-ralated part of the system and its interactions.
+![Pastel architecture](pastel_architecture.png)
 
 #### Wallet app components
  - Electron.js wallet applications. Includes renderer part (UI) and main part (everything else, like access to the file system, network, using APIs).
