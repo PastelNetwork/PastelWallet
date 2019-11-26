@@ -29,6 +29,11 @@ export const setImageRegFormTxid = (value) => ({
     value
 });
 
+export const setImageRegFormTxidActTicket = (value) => ({
+    type: actionTypes.SET_IMAGE_REGISTER_FORM_TXID_ACT_TICKET,
+    value
+});
+
 export const resetImageRegFormErrors = () => ({
     type: actionTypes.RESET_IMAGE_REGISTER_FORM_ERRORS
 });

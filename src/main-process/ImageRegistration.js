@@ -96,34 +96,20 @@ ipcMain.on('imageRegFormProceed', (event, data) => {
 const imageRegistrationStep3Handler = (event, data) => {
     log.error('TAKSA');
     axios.post(IMAGE_REGISTRATION_STEP_3_RESOURCE, {regticket_id: data.regticketId}).then((response) => {
-        // const msg = `mn0: ${response.data.mn_data.mn0.status}: ${response.data.mn_data.mn0.msg};
-        //              mn1: ${response.data.mn_data.mn1.status}: ${response.data.mn_data.mn1.msg};
-        //              mn2: ${response.data.mn_data.mn2.status}: ${response.data.mn_data.mn2.msg}`;
-        log.error('TAKSA1');
-
-        // 'txid': txid,
-        // 'fee': regticket_db.worker_fee,
-        // 'blocknum': regticket_db.blocknum,
-        // 'pastel_id': self.pastelid,
-        // 'passphrase': self.passphrase
-
         if (response.data.status === 'SUCCESS') {
             const actTicketParams = [response.data.txid, response.data.blocknum, response.data.fee, response.data.pastel_id, response.data.passphrase];
-            // event.reply('imageRegFormStep3Response', {
-            //     status: RESPONSE_STATUS_OK,
-            //     txid: response.data.txid
-            // });
-            log.error('TAKSA2');
-            log.error('TAKSA3');
+            event.reply('imageRegFormStep3Response', {
+                status: RESPONSE_STATUS_OK,
+                txid: response.data.txid
+            });
             callRpcMethod('tickets', ['register', 'act', ...actTicketParams]).then(response => {
                 log.error('TAKSA4');
                 log.error(response.data);
                 // response.data = {result: {txid: ''}}
-            // event.reply('imageRegFormStep3Response', {
-            //     status: RESPONSE_STATUS_OK,
-            //     txid: response.data.txid
-            // });
-
+                event.reply('imageRegFormActTicketCreated', {
+                    status: RESPONSE_STATUS_OK,
+                    txid: response.data.result.txid
+                });
             }).catch(err => {
                 debugger;
                 log.error(err);

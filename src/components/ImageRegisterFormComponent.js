@@ -4,7 +4,7 @@ import {store} from "../app";
 import {
     resetImageRegFormErrors,
     setImageRegFormError,
-    setImageRegFormRegFee, setImageRegFormState, setImageRegFormTxid, setImageRegTicketID,
+    setImageRegFormRegFee, setImageRegFormState, setImageRegFormTxid, setImageRegFormTxidActTicket, setImageRegTicketID,
     setImageRegWorkerFee,
     setRegFee
 } from "../actions";
@@ -62,6 +62,23 @@ ipcRenderer.on('imageRegFormStep3Response', (event, data) => {
             store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_MN_2_3_RESPONSE_RECEIVED));
             console.log(`TXID received: ${data.txid}`);
             store.dispatch(setImageRegFormTxid(data.txid));
+            break;
+        default:
+            break;
+    }
+});
+
+ipcRenderer.on('imageRegFormActTicketCreated', (event, data) => {
+    switch (data.status) {
+        case constants.RESPONSE_STATUS_ERROR:
+            console.log(data);
+            store.dispatch(setImageRegFormError('all', data.msg));
+            store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_ERROR));
+            break;
+        case constants.RESPONSE_STATUS_OK:
+            store.dispatch(resetImageRegFormErrors());
+            store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_ACT_TICKET_RECEIVED));
+            store.dispatch(setImageRegFormTxidActTicket(data.txid));
             break;
         default:
             break;
@@ -247,7 +264,19 @@ export class ImageRegisterForm extends Component {
                 buttonArea = <div>
                     <div className="regfee-msg">
                         Registration ticket has been written to the blockchain.
-                        TXID: {this.props.txid}
+                        TXID: {this.props.txid}.
+                        Waiting for activation ticket...
+                    </div>
+                </div>;
+                break;
+
+            case constants.IMAGE_REG_FORM_STATE_ACT_TICKET_RECEIVED:
+                buttonArea = <div>
+                    <div className="regfee-msg">
+                        Activation ticket was created
+                        TXID: {this.props.regFormTxidAct}
+                        <br/>
+                        Artwork will appear in the network when current block will be mined.
                     </div>
                 </div>;
                 break;
