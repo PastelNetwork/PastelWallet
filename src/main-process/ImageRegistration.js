@@ -94,7 +94,6 @@ ipcMain.on('imageRegFormProceed', (event, data) => {
 });
 
 const imageRegistrationStep3Handler = (event, data) => {
-    log.error('TAKSA');
     axios.post(IMAGE_REGISTRATION_STEP_3_RESOURCE, {regticket_id: data.regticketId}).then((response) => {
         if (response.data.status === 'SUCCESS') {
             const actTicketParams = [response.data.txid, response.data.blocknum, response.data.fee, response.data.pastel_id, response.data.passphrase];
@@ -103,7 +102,6 @@ const imageRegistrationStep3Handler = (event, data) => {
                 txid: response.data.txid
             });
             callRpcMethod('tickets', ['register', 'act', ...actTicketParams]).then(response => {
-                log.error('TAKSA4');
                 log.error(response.data);
                 // response.data = {result: {txid: ''}}
                 event.reply('imageRegFormActTicketCreated', {
@@ -111,7 +109,11 @@ const imageRegistrationStep3Handler = (event, data) => {
                     txid: response.data.result.txid
                 });
             }).catch(err => {
-                debugger;
+                event.reply('imageRegFormStep3Response', {
+                    status: RESPONSE_STATUS_ERROR,
+                    msg: err.response.data
+                });
+
                 log.error(err);
             });
         } else {
