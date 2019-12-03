@@ -1,5 +1,6 @@
 import {ipcMain} from 'electron';
 import stringify from 'json-stable-stringify';
+import {createPyProc} from "./StartProcesses";
 
 const callRpcMethod = require('./utils');
 const constants = require('../constants');

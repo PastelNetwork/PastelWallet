@@ -42,7 +42,7 @@ const getPasteldPath = () => {
 };
 
 
-const createPyProc = (pastelid, passphrase) => {
+export const createPyProc = (pastelid, passphrase) => {
     let script = getScriptPath();
     let port = pyPort;
     if (process.defaultApp) {
