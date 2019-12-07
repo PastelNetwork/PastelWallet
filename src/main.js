@@ -138,6 +138,9 @@ function createWindow() {
     } else {
         win.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
     }
+    win.on('closed', () => {
+        win = null;
+    });
 }
 
 
