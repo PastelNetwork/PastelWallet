@@ -146,7 +146,6 @@ ipcMain.on('pastelIdCheckPassphrase', (event, arg) => {
             pastelID,
             passphrase
         });
-        // TODO: start python proccess
         createPyProc(pastelID, passphrase);
     }).catch((err) => {
         event.sender.send('pastelIdCheckPassphraseResponse', {

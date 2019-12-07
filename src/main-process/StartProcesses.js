@@ -1,6 +1,9 @@
 import * as path from "path";
 import * as log from "electron-log";
 import {addMessageToBox} from '../main';
+import callRpcMethod from "./utils";
+import {GETINFO_COMMAND} from "../constants";
+import * as constants from "../constants";
 
 let pyProc = null;
 let pastelProc = null;
@@ -9,8 +12,6 @@ let pyPort = 5000;
 const PY_DIST_FOLDER = 'src';
 const PY_FOLDER = 'StoVaCore';
 const PY_MODULE = 'wallet_api'; // without .py suffix
-
-
 
 
 const getScriptPath = () => {
@@ -74,7 +75,7 @@ export const createPyProc = (pastelid, passphrase) => {
         addMessageToBox(msg);
     });
     if (pyProc != null) {
-        const msg = 'child process success on port ' + port;
+        const msg = 'wallet_api process is started and listening on port ' + port;
         log.info(msg);
         addMessageToBox(msg);
     } else {
@@ -85,27 +86,34 @@ export const createPyProc = (pastelid, passphrase) => {
 };
 
 export const checkAndRunPastelD = () => {
-    const pastelPath = getPasteldPath();
-    if (!process.defaultApp) {
-        pastelProc = require('child_process').execFile(pastelPath, [], (error, stdout, stderr) => {
-            log.error(`[pasteld] Error: ${error}`);
-            log.info(`[pasteld] Stdout: ${stdout}`);
-            log.warn(`[pasteld] Stderr: ${stderr}`);
-        });
-    }
+    // first check if pastelD is already running. If not - start it.
+    callRpcMethod(GETINFO_COMMAND).then((response) => {
+        // cNode is running, don't need to do anything
+        log.info('PastelD is already running')
+    }).catch((err) => {
+        // start cNode
+        const pastelPath = getPasteldPath();
+        if (!process.defaultApp) {
+            pastelProc = require('child_process').execFile(pastelPath, [], (error, stdout, stderr) => {
+                log.error(`[pasteld] Error: ${error}`);
+                log.info(`[pasteld] Stdout: ${stdout}`);
+                log.warn(`[pasteld] Stderr: ${stderr}`);
+            });
+        }
 
-    if (pastelProc != null) {
-        log.info('PastelD is running')
-    } else {
-        log.warn('PastelD proccess failed to start')
-    }
+        if (pastelProc != null) {
+            log.info('PastelD is running')
+        } else {
+            log.warn('PastelD process failed to start')
+        }
+    });
 };
 
 
 export const cleanUp = () => {
-    addMessageToBox = (msg) => {
-    };
-    pyProc.kill();
+    if (pyProc) {
+        pyProc.kill();
+    }
     if (pastelProc) {
         pastelProc.kill();
     }
