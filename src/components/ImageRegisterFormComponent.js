@@ -3,7 +3,7 @@ import '../styles.scss';
 import {store} from "../app";
 import {
     resetImageRegFormErrors,
-    setImageRegFormError,
+    setImageRegFormError, setImageRegFormMsg,
     setImageRegFormRegFee, setImageRegFormState, setImageRegFormTxid, setImageRegFormTxidActTicket, setImageRegTicketID,
     setImageRegWorkerFee,
     setRegFee
@@ -57,10 +57,17 @@ ipcRenderer.on('imageRegFormStep3Response', (event, data) => {
             store.dispatch(setImageRegFormError('all', data.msg));
             store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_ERROR));
             break;
+        case constants.RESPONSE_STATUS_PENDING:
+            store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_MN_2_3_RESPONSE_RECEIVED));
+            store.dispatch(setImageRegFormMsg(data.msg));
+            break;
         case constants.RESPONSE_STATUS_OK:
             store.dispatch(resetImageRegFormErrors());
             store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_MN_2_3_RESPONSE_RECEIVED));
-            console.log(`TXID received: ${data.txid}`);
+            const message = `Registration ticket has been written to the blockchain.
+                        TXID: ${data.txid}.
+                        Waiting for activation ticket...`;
+            store.dispatch(setImageRegFormMsg(message));
             store.dispatch(setImageRegFormTxid(data.txid));
             break;
         default:
@@ -78,6 +85,10 @@ ipcRenderer.on('imageRegFormActTicketCreated', (event, data) => {
         case constants.RESPONSE_STATUS_OK:
             store.dispatch(resetImageRegFormErrors());
             store.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_ACT_TICKET_RECEIVED));
+            const message = `Activation ticket was created
+                          TXID: ${data.txid}
+                          Artwork will appear in the network when current block will be mined.`;
+            store.dispatch(setImageRegFormMsg(message));
             store.dispatch(setImageRegFormTxidActTicket(data.txid));
             break;
         default:
@@ -149,13 +160,14 @@ export class ImageRegisterForm extends Component {
         this.props.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_DEFAULT));
         ipcRenderer.send('imageRegFormCancel', {regticketId: this.props.regticketId});
         this.props.dispatch(setImageRegTicketID(null));
-        history.push('/');
+        history.push('/wallet');
     };
     onAcceptStep3Click = (e) => {
         e.preventDefault();
         ipcRenderer.send('imageRegFormStep3', {regticketId: this.props.regticketId});
         this.props.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_SEND_REGTICKET_MN_2_3));
     };
+
     render() {
         let buttonArea;
         switch (this.props.regFormState) {
@@ -169,9 +181,9 @@ export class ImageRegisterForm extends Component {
                         </button>
                     </div>
                     <div className="flex-centered">
-                        <div className={this.props.regFormError.all ? '' : 'display-none'}>
+                        <div className={this.props.commonError ? '' : 'display-none'}>
                             <div className="reg-form-error">
-                                {this.props.regFormError.all}
+                                {this.props.commonError}
                             </div>
                         </div>
                     </div>
@@ -187,9 +199,9 @@ export class ImageRegisterForm extends Component {
                         </button>
                     </div>
                     <div className="flex-centered">
-                        <div className={this.props.regFormError.all ? '' : 'display-none'}>
+                        <div className={this.props.commonError ? '' : 'display-none'}>
                             <div className="reg-form-error">
-                                {this.props.regFormError.all}
+                                {this.props.commonError}
                             </div>
                         </div>
                     </div>
@@ -263,9 +275,7 @@ export class ImageRegisterForm extends Component {
             case constants.IMAGE_REG_FORM_STATE_MN_2_3_RESPONSE_RECEIVED:
                 buttonArea = <div>
                     <div className="regfee-msg">
-                        Registration ticket has been written to the blockchain.
-                        TXID: {this.props.txid}.
-                        Waiting for activation ticket...
+                        {this.props.imageRegFormMessage}
                     </div>
                 </div>;
                 break;
@@ -273,10 +283,7 @@ export class ImageRegisterForm extends Component {
             case constants.IMAGE_REG_FORM_STATE_ACT_TICKET_RECEIVED:
                 buttonArea = <div>
                     <div className="regfee-msg">
-                        Activation ticket was created
-                        TXID: {this.props.regFormTxidAct}
-                        <br/>
-                        Artwork will appear in the network when current block will be mined.
+                        {this.props.imageRegFormMessage}
                     </div>
                 </div>;
                 break;
@@ -302,9 +309,10 @@ export class ImageRegisterForm extends Component {
                                             <input type="text" className="input is-default" name="artName"
                                                    value={this.state.artName} onChange={this.onChange}/>
                                         </div>
-                                        <div className={this.props.regFormError.artName ? '' : 'display-none'}>
+                                        <div
+                                            className={this.props.artNameError ? '' : 'display-none'}>
                                             <div className="reg-form-error">
-                                                {this.props.regFormError.artName}
+                                                {this.props.artNameError}
                                             </div>
                                         </div>
 
@@ -331,7 +339,8 @@ export class ImageRegisterForm extends Component {
                                     <div className="info-block">
                                         <div className={this.state.file ? '' : 'display-none'}>
                                             <div className="flex-row flex-centered">
-                                                <img src={this.state.file} className="img-preview pb-1" alt=""/>
+                                                <img src={this.state.file} className="img-preview pb-1"
+                                                     alt=""/>
                                             </div>
                                         </div>
                                         <span className="label-text">Art file</span>
@@ -339,9 +348,10 @@ export class ImageRegisterForm extends Component {
                                             <input type="file" accept="image/*" id="idArtFile"
                                                    onChange={this.onAddFile}/>
                                         </div>
-                                        <div className={this.props.regFormError.artFile ? '' : 'display-none'}>
+                                        <div
+                                            className={this.props.artFileError ? '' : 'display-none'}>
                                             <div className="reg-form-error">
-                                                {this.props.regFormError.artFile}
+                                                {this.props.artFileError}
                                             </div>
                                         </div>
 

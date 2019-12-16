@@ -43,6 +43,11 @@ export const setImageRegFormRegFee = (value) => ({
     value
 });
 
+export const setImageRegFormMsg = (value) => ({
+    type: actionTypes.SET_IMAGE_REGISTER_MESSAGE,
+    value
+});
+
 export const setImageRegWorkerFee = (value) => ({
     type: actionTypes.SET_IMAGE_REGISTER_WORKER_FEE,
     value

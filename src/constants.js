@@ -1,5 +1,6 @@
 export const RESPONSE_STATUS_OK = 'OK';
 export const RESPONSE_STATUS_ERROR = 'ERROR';
+export const RESPONSE_STATUS_PENDING = 'PENDING';
 
 
 export const IMAGE_REG_FORM_STATE_ERROR = -1;

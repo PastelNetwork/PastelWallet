@@ -9,6 +9,8 @@ const reducer  = (state = {}, action) => {
         case actionTypes.STOP_AJAX:
             return {...state, ajaxInProgress: {...state.ajaxInProgress, [action.entity]: false}};
         case actionTypes.SET_IMAGE_REGISTER_FORM_ERROR:
+            console.log(`Set form error reducer`);
+            console.log(action);
             return {...state, regFormError: {...state.regFormError, [action.key]: action.value}};
         case actionTypes.RESET_IMAGE_REGISTER_FORM_ERRORS:
             return {...state, regFormError: {}};
@@ -20,6 +22,8 @@ const reducer  = (state = {}, action) => {
             return {...state, regFormTxidAct: action.value};
         case actionTypes.SET_IMAGE_REGISTER_WORKER_FEE:
             return {...state, workerFee: action.value};
+        case actionTypes.SET_IMAGE_REGISTER_MESSAGE:
+            return {...state, imageRegFormMessage: action.value};
         case actionTypes.SET_IMAGE_REGTICKET_ID:
             return {...state, regticketId: action.value};
         case actionTypes.SET_BLOCKCHAIN_ADDRESS:

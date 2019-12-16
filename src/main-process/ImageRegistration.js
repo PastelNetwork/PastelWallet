@@ -4,7 +4,7 @@ import callRpcMethod from './utils';
 import {LOCAL_PY_URL} from "./settings";
 import log from 'electron-log';
 import {addMessageToBox} from "../main";
-import {GETBALANCE_COMMAND, RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK} from "../constants";
+import {GETBALANCE_COMMAND, RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK, RESPONSE_STATUS_PENDING} from "../constants";
 
 const IMAGE_REGISTRATION_STEP_2_RESOURCE = `${LOCAL_PY_URL}image_registration_step_2`;
 const IMAGE_REGISTRATION_STEP_3_RESOURCE = `${LOCAL_PY_URL}image_registration_step_3`;
@@ -93,6 +93,23 @@ ipcMain.on('imageRegFormProceed', (event, data) => {
     });
 });
 
+const createActivationTicket = (event, params) => {
+    callRpcMethod('tickets', params).then(response => {
+        event.reply('imageRegFormActTicketCreated', {
+            status: RESPONSE_STATUS_OK,
+            txid: response.data.result.txid
+        });
+    }).catch(err => {
+        // error will be returned if regticket is not read by cNode yet. Need to wait and retry until success
+        log.error('setting interval for create actticket');
+        setInterval(() => createActivationTicket(event, params), 10000);
+        event.reply('imageRegFormStep3Response', {
+            status: RESPONSE_STATUS_PENDING,
+            msg: `Error received from cNode: ${err.response.data.error.message}. Will retry in 10 seconds..`
+        });
+    });
+};
+
 const imageRegistrationStep3Handler = (event, data) => {
     axios.post(IMAGE_REGISTRATION_STEP_3_RESOURCE, {regticket_id: data.regticketId}).then((response) => {
         if (response.data.status === 'SUCCESS') {
@@ -101,31 +118,18 @@ const imageRegistrationStep3Handler = (event, data) => {
                 status: RESPONSE_STATUS_OK,
                 txid: response.data.txid
             });
-            callRpcMethod('tickets', ['register', 'act', ...actTicketParams]).then(response => {
-                log.error(response.data);
-                // response.data = {result: {txid: ''}}
-                event.reply('imageRegFormActTicketCreated', {
-                    status: RESPONSE_STATUS_OK,
-                    txid: response.data.result.txid
-                });
-            }).catch(err => {
-                event.reply('imageRegFormStep3Response', {
-                    status: RESPONSE_STATUS_ERROR,
-                    msg: err.response.data
-                });
-
-                log.error(err);
-            });
+            createActivationTicket(event, ['register', 'act', ...actTicketParams]);
         } else {
             event.reply('imageRegFormStep3Response', {
                 status: RESPONSE_STATUS_ERROR,
-                msg: data.msg
+                msg: JSON.stringify(response.data.msg)
             });
         }
     }).catch((err) => {
         log.warn(err);
         event.reply('imageRegFormStep3Response', {
-            status: RESPONSE_STATUS_ERROR
+            status: RESPONSE_STATUS_ERROR,
+            msg: JSON.stringify(err.response.data.error)
         });
     })
 };
