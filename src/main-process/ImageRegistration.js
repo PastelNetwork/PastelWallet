@@ -102,7 +102,7 @@ const createActivationTicket = (event, params) => {
     }).catch(err => {
         // error will be returned if regticket is not read by cNode yet. Need to wait and retry until success
         log.error('setting interval for create actticket');
-        setInterval(() => createActivationTicket(event, params), 10000);
+        setTimeout(() => createActivationTicket(event, params), 10000);
         event.reply('imageRegFormStep3Response', {
             status: RESPONSE_STATUS_PENDING,
             msg: `Error received from cNode: ${err.response.data.error.message}. Will retry in 10 seconds..`
