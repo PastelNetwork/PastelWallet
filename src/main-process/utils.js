@@ -10,7 +10,7 @@ const callRpcMethod = (method, params) => {
     if (params) {
         data.params = params;
     }
-    return axios.post('http://localhost:19932', data, {
+    return axios.post('http://localhost:9932', data, {
         headers: {
             'Content-Type': 'text/plain'
         },
