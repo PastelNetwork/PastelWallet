@@ -6,6 +6,7 @@ import {SendPSLContainer} from "../containers/SendPSLContainer";
 import {SideBar} from "./common/SideBarComponent";
 import {ProfileEdit} from "./ProfileEditComponent";
 import {PastelIdHomeContainer} from "../containers/pastel_id_selection/HomeContainer";
+import Artworks from '../containers/Artworks';
 
 
 const ipcRenderer = window.require('electron').ipcRenderer;
@@ -24,6 +25,7 @@ class Main extends Component {
                 <Route exact path='/send_psl' component={SendPSLContainer}/>
                 <Route exact path='/register' component={ImageRegisterFormContainer}/>
                 <Route path='/user_profile' component={ProfileEdit}/>
+                <Route exact path='/artworks' component={Artworks}/>
                 <Redirect to='/pastel_id'/>
             </Switch>
         </React.Fragment>;

@@ -136,6 +136,8 @@ export class ImageRegisterForm extends Component {
         e.preventDefault();
         let data = {
             name: this.state.artName,
+            numCopies: this.state.numCopies,
+            copyPrice: this.state.copyPrice,
             filePath: this.state.filePath
         };
         ipcRenderer.send('imageRegFormProceed', data);

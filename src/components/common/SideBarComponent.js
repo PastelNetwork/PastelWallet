@@ -44,6 +44,10 @@ class SideBarWithoutRouter extends Component {
                                onClick={() => this.onLinkClick('/register')}>
                     <Feather.Plus/>
                 </LeftMenuPoint>
+                <LeftMenuPoint active={path === "/artworks"}
+                               onClick={() => this.onLinkClick('/artworks')}>
+                    <Feather.Grid/>
+                </LeftMenuPoint>
 
 
                 {/*TODO: the following menu points are just placeholders*/}

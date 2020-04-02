@@ -56,7 +56,13 @@ ipcMain.on('imageRegFormCancel', (event, data) => {
 
 // image registration form step 2
 ipcMain.on('imageRegFormProceed', (event, data) => {
-    axios.post(IMAGE_REGISTRATION_STEP_2_RESOURCE, {image: data.filePath, title: data.name}).then((response) => {
+    const pyApiData = {
+        image: data.filePath,
+        title: data.name,
+        num_copies: data.numCopies,
+        copy_price: data.copyPrice
+    };
+    axios.post(IMAGE_REGISTRATION_STEP_2_RESOURCE, pyApiData).then((response) => {
         const fee = response.data.fee;
         const regticket_id = response.data.regticket_id;
         callRpcMethod(GETBALANCE_COMMAND).then((response) => {
