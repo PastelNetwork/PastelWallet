@@ -53,8 +53,8 @@ export const initialState = {
   pastelIDError: null,
   currentPastelID: null,
   currentPassphrase: '',
-  // artworksData: null
-  artworksData: defaultArtworksData
+  artworksData: null
+  // artworksData: defaultArtworksData
 };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -6,6 +6,7 @@ import * as constants from './constants';
 import callRpcMethod from './main-process/utils';
 import './main-process/pastelid';
 import './main-process/ImageRegistration';
+import './main-process/artworks';
 import {LOCAL_PY_URL} from "./main-process/settings";
 import {checkAndRunPastelD} from './main-process/StartProcesses';
 import {cleanUp} from './main-process/StartProcesses';

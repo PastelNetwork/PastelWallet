@@ -2,6 +2,20 @@ import React, { Component } from 'react';
 import { MainWrapper } from '../../components/MainWrapperComponent';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
+import { RESPONSE_STATUS_OK } from '../../constants';
+import { store } from '../../app';
+import { SET_ARTWORKS_DATA } from '../../actionTypes';
+
+const ipcRenderer = window.require('electron').ipcRenderer;
+
+ipcRenderer.on('artworksDataResponse', (event, data) => {
+  if (data.status === RESPONSE_STATUS_OK) {
+    console.log(data);
+    store.dispatch({ type: SET_ARTWORKS_DATA, value: data.data });
+  } else {
+    console.log('Error requesting artworks data');
+  }
+});
 
 class SingleArtworkCard extends Component {
   render () {
@@ -46,20 +60,15 @@ class SingleArtworkCard extends Component {
 
 class ArtWorks extends Component {
   componentDidMount () {
-    document.title = 'Pastel wallet';
-    // ipcRenderer.send('blockchainDataRequest', {});
-    // ipcRenderer.send('getBalanceRequest', {});
+    ipcRenderer.send('artworksDataRequest', {});
   }
 
   render () {
-    // const artworks = this.props.artworkData.map((artwork, idx) => {
-    //   return <SingleArtworkCard artwork={artwork} key={idx}/>;
-    // });
     return <MainWrapper>
       <div className="columns is-product-list is-multiline">
         <div className="column is-12">
           <ul>
-            {this.props.artworksData.map((artwork, idx) => {
+            {this.props.artworksData && this.props.artworksData.map((artwork, idx) => {
               return <SingleArtworkCard artwork={artwork} key={idx}/>;
             })}
 

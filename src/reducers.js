@@ -52,6 +52,8 @@ const reducer  = (state = {}, action) => {
             return {...state, currentPastelID: action.value};
         case actionTypes.SET_CURRENT_PASSPHRASE:
             return {...state, currentPassphrase: action.value};
+        case actionTypes.SET_ARTWORKS_DATA:
+            return {...state, artworksData: action.value};
         case actionTypes.RESET_STORE:
             return {...initialState};
         default:
