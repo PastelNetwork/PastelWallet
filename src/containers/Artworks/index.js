@@ -4,7 +4,8 @@ import * as style from './style.module.scss';
 import { connect } from 'react-redux';
 import { RESPONSE_STATUS_OK } from '../../constants';
 import { store } from '../../app';
-import { SET_ARTWORKS_DATA } from '../../actionTypes';
+import { SET_ARTWORKS_DATA, SET_ARTWORKS_DATA_LOADING } from '../../actionTypes';
+import { BarLoader } from 'react-spinners';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -12,6 +13,7 @@ ipcRenderer.on('artworksDataResponse', (event, data) => {
   if (data.status === RESPONSE_STATUS_OK) {
     console.log(data);
     store.dispatch({ type: SET_ARTWORKS_DATA, value: data.data });
+    store.dispatch({ type: SET_ARTWORKS_DATA_LOADING, value: false });
   } else {
     console.log('Error requesting artworks data');
   }
@@ -33,7 +35,9 @@ class SingleArtworkCard extends Component {
         {/*    <i className="fa fa-star"></i>*/}
         {/*    <small className="is-hidden-mobile">47 Ratings</small>*/}
         {/*</span>*/}
-        <a href="product.html"><span className="product-name">{artwork.name}</span></a>
+        {/*<a href="product.html">*/}
+        <span className="product-name">{artwork.name}</span>
+        {/*</a>*/}
         <span className="product-description">Total {artwork.numOfCopies} copies</span>
         <span className={`product-price ${style['product-price']}`}>
                     {artwork.copyPrice}
@@ -59,18 +63,50 @@ class SingleArtworkCard extends Component {
 }
 
 class ArtWorks extends Component {
-  componentDidMount () {
-    ipcRenderer.send('artworksDataRequest', {});
+  constructor (props) {
+    super(props);
+    this.state = {
+      onlyMyArtworks: false
+    };
   }
 
+  componentDidMount () {
+    ipcRenderer.send('artworksDataRequest', {});
+    this.props.dispatch({ type: SET_ARTWORKS_DATA_LOADING, value: true });
+  }
+
+  f = (e) => {
+    debugger;
+    console.log(e.target);
+    this.setState({ onlyMyArtworks: e.target.value });
+  };
+
   render () {
+    let artworks;
+    if (this.props.artworksData) {
+      artworks = (this.state.onlyMyArtworks ? this.props.artworksData.filter(a => a.artistPastelId === this.props.currentPastelID) : this.props.artworksData).map((artwork, idx) => {
+        return <SingleArtworkCard artwork={artwork} key={idx}/>;
+      });
+    }
+
     return <MainWrapper>
+      <div className={style.filter}>
+        <span className={this.state.onlyMyArtworks ? style['only-my-artworks'] : style['all-artworks']}
+              onClick={() => this.setState({ onlyMyArtworks: !this.state.onlyMyArtworks })}>
+          {this.state.onlyMyArtworks ? 'All artworks' : 'Mine artworks'}
+        </span>
+      </div>
       <div className="columns is-product-list is-multiline">
         <div className="column is-12">
           <ul>
-            {this.props.artworksData && this.props.artworksData.map((artwork, idx) => {
-              return <SingleArtworkCard artwork={artwork} key={idx}/>;
-            })}
+            {this.props.artworksDataLoading ? <BarLoader
+                sizeUnit={'%'}
+                width={90}
+                color={'#00D1B2'}
+                loading={true}
+              />
+              : null}
+            {this.props.artworksData && artworks}
 
           </ul>
 
@@ -81,4 +117,8 @@ class ArtWorks extends Component {
   }
 }
 
-export default connect(state => ({ artworksData: state.artworksData }), dispatch => ({ dispatch }))(ArtWorks);
+export default connect(state => ({
+  artworksData: state.artworksData,
+  artworksDataLoading: state.artworksDataLoading,
+  currentPastelID: state.currentPastelID
+}), dispatch => ({ dispatch }))(ArtWorks);

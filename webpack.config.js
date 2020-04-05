@@ -76,7 +76,23 @@ module.exports = {
                     "style-loader", // creates style nodes from JS strings
                     "css-loader", // translates CSS into CommonJS
                     "sass-loader" // compiles Sass to CSS, using Node Sass by default
-                ]
+                ],
+                exclude: /\.module\.scss$/
+            },
+            { // css modules support
+                test: /\.scss$/,
+                use: [
+                    "style-loader", // creates style nodes from JS strings
+                    {
+                        loader: "css-loader",
+                        options: {
+                            importLoaders: 1,
+                            modules: true
+                        }
+                    }, // translates CSS into CommonJS
+                    "sass-loader" // compiles Sass to CSS, using Node Sass by default
+                ],
+                include: /\.module\.scss$/
             },
             {
                 test: /\.sass$/,

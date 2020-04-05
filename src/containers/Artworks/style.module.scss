@@ -3,3 +3,24 @@
     content: 'PSL' !important;
   }
 }
+
+.filter {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 15px;
+  span {
+    width: 100px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 30px;
+    border: 1px solid;
+  }
+  span.only-my-artworks {
+    border-color: #66676b;
+  }
+  span.all-artworks {
+    border-color: #828282;
+  }
+}

@@ -23,7 +23,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+pynode.log
 
 public.key
 private.key
@@ -36,3 +36,5 @@ pasteld_binary/main.cpp
 *.db
 src/main_electron_built.js
 src/main_built.js
+
+

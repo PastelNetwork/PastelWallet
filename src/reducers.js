@@ -54,6 +54,8 @@ const reducer  = (state = {}, action) => {
             return {...state, currentPassphrase: action.value};
         case actionTypes.SET_ARTWORKS_DATA:
             return {...state, artworksData: action.value};
+        case actionTypes.SET_ARTWORKS_DATA_LOADING:
+            return {...state, artworksDataLoading: action.value};
         case actionTypes.RESET_STORE:
             return {...initialState};
         default:
