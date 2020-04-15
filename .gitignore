@@ -38,3 +38,4 @@ src/main_electron_built.js
 src/main_built.js
 
 thumbnails/
+thumbnails/*

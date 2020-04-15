@@ -58,9 +58,15 @@ ipcMain.on('imageRegFormCancel', (event, data) => {
 ipcMain.on('imageRegFormProceed', (event, data) => {
     const pyApiData = {
         image: data.filePath,
-        title: data.name,
-        num_copies: data.numCopies,
-        copy_price: data.copyPrice
+        artwork_title: data.name,
+        total_copies: data.numCopies,
+        copy_price: data.copyPrice,
+        artist_name: data.artistName,
+        artist_website: data.artistWebsite,
+        artist_written_statement: data.artistWrittenStatement,
+        artwork_series_name: data.artworkSeriesName,
+        artwork_creation_video_youtube_url: data.artworkCreationVideoYoutubeUrl,
+        artwork_keyword_set: data.artworkKeywordSet
     };
     axios.post(IMAGE_REGISTRATION_STEP_2_RESOURCE, pyApiData).then((response) => {
         const fee = response.data.fee;
