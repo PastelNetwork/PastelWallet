@@ -6,6 +6,7 @@ import { RESPONSE_STATUS_OK } from '../../constants';
 import { store } from '../../app';
 import { SET_ARTWORKS_DATA, SET_ARTWORKS_DATA_LOADING } from '../../actionTypes';
 import { BarLoader } from 'react-spinners';
+import history from '../../history';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -22,34 +23,18 @@ ipcRenderer.on('artworksDataResponse', (event, data) => {
 class SingleArtworkCard extends Component {
   render () {
     const artwork = this.props.artwork;
-    return <li className="flat-card is-auto is-list-item">
+    return <li className={`flat-card is-auto is-list-item ${style['artwork-item']}`}
+               onClick={() => history.push(`/artworks/${artwork.imageHash}`)}>
                 <span className="image">
                     <img src={`file://${this.props.artwork.thumbnailPath}`} alt=""/>
                 </span>
       <span className="product-info">
-                {/*<span className="rating">*/}
-        {/*    <i className="fa fa-star"></i>*/}
-        {/*    <i className="fa fa-star"></i>*/}
-        {/*    <i className="fa fa-star"></i>*/}
-        {/*    <i className="fa fa-star"></i>*/}
-        {/*    <i className="fa fa-star"></i>*/}
-        {/*    <small className="is-hidden-mobile">47 Ratings</small>*/}
-        {/*</span>*/}
-        {/*<a href="product.html">*/}
         <span className="product-name">{artwork.name}</span>
-        {/*</a>*/}
         <span className="product-description">Total {artwork.numOfCopies} copies</span>
         <span className={`product-price ${style['product-price']}`}>
                     {artwork.copyPrice}
                 </span>
                 </span>
-
-      {/*<span className="product-abstract is-hidden-mobile">*/}
-      {/*              This is a well designed and crafted product that will suit many needs, in terms of quality, craftmanship and aesthetics.*/}
-      {/*  <span className="view-more">*/}
-      {/*      <a href="product.html">View more <i data-feather="chevron-right"></i></a>*/}
-      {/*  </span>*/}
-      {/*</span>*/}
 
       <span className="actions">
         <span className="add"><i data-feather="shopping-cart" className="has-simple-popover"
@@ -74,12 +59,6 @@ class ArtWorks extends Component {
     ipcRenderer.send('artworksDataRequest', {});
     this.props.dispatch({ type: SET_ARTWORKS_DATA_LOADING, value: true });
   }
-
-  f = (e) => {
-    debugger;
-    console.log(e.target);
-    this.setState({ onlyMyArtworks: e.target.value });
-  };
 
   render () {
     let artworks;

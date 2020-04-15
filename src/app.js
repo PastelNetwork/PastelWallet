@@ -17,24 +17,7 @@ let defaultAjaxInProgress = Object.getOwnPropertyNames(ajaxEntities).filter(a =>
 }, {});
 
 export const defaultSendPslStatusData = { status: null, msg: '' };
-const defaultArtworksData = [
-  {
-      name: 'First artwork',
-      numOfCopies: 55,
-      copyPrice: 999
-  },
-  {
-      name: 'Second artwork',
-      numOfCopies: 11,
-      copyPrice: 1999
-  },
-  {
-      name: 'Another artwork',
-      numOfCopies: 2,
-      copyPrice: 150
-  },
 
-];
 export const initialState = {
   ajaxInProgress: defaultAjaxInProgress,
   userProfile: null,
