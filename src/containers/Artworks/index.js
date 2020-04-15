@@ -24,7 +24,7 @@ class SingleArtworkCard extends Component {
     const artwork = this.props.artwork;
     return <li className="flat-card is-auto is-list-item">
                 <span className="image">
-                    <img src="https://loremflickr.com/500/500/digital,painting?random=1" alt=""/>
+                    <img src={`file://${this.props.artwork.thumbnailPath}`} alt=""/>
                 </span>
       <span className="product-info">
                 {/*<span className="rating">*/}
