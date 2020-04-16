@@ -73,15 +73,28 @@ ipcMain.on('sendPSLRequest', (event, arg) => {
 });
 
 ipcMain.on('blockchainDataRequest', (event, arg) => {
-    return callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND, [""]).then((response) => {
-        const bcAddress = response.data.result;
+    // also request number of masternode and number of artworks
+    // masternode list
+    const accountAddressCall = callRpcMethod(GET_ACCOUNT_ADDRESS_COMMAND, [""]);
+    const masternodeListCall = callRpcMethod('masternode', ["list"]);
+    const listActTickets = callRpcMethod('tickets', ["list", "act"]);
+    axios.all([accountAddressCall, masternodeListCall, listActTickets]).then(axios.spread((...responses) => {
+        const addressResponse = responses[0];
+        const mnListResponse = responses[1];
+        const actTicketResponse = responses[2];
+        const bcAddress = addressResponse.data.result;
+        const mnQuantity = Object.keys(mnListResponse.data.result).length;
+        const artworkAmount = actTicketResponse.data.result.filter(x => x.length === 64).length;
         win.webContents.send('blockchainDataResponse', {
             status: RESPONSE_STATUS_OK,
             address: bcAddress,
+            mnQuantity: mnQuantity,
+            artworkAmount: artworkAmount
         });
-    }).catch((err) => {
-        win.webContents.send('walletAddress', `Cannot connect to local pasteld!, command: ${GET_ACCOUNT_ADDRESS_COMMAND}`);
+    })).catch((err) => {
+        win.webContents.send('walletAddress', `Cannot connect to local pasteld white loading blockchain data`);
     });
+
 });
 
 

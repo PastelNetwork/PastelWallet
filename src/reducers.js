@@ -28,6 +28,10 @@ const reducer  = (state = {}, action) => {
             return {...state, regticketId: action.value};
         case actionTypes.SET_BLOCKCHAIN_ADDRESS:
             return {...state, blockchainAddress: action.value};
+        case actionTypes.SET_MASTERNODE_QUANTITY:
+            return {...state, masternodes: action.value};
+        case actionTypes.SET_ARTWORK_QUANTITY:
+            return {...state, artworks: action.value};
         case actionTypes.SET_BALANCE:
             return {...state, balance: action.value};
         case actionTypes.SET_USER_PROFILE:

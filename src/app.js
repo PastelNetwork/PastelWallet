@@ -24,8 +24,8 @@ export const initialState = {
   blockchainAddress: null,
   balance: null,
   sendPslStatusData: defaultSendPslStatusData,
-  artworks: 16, // TODO: fetch amount of artworks from pastel network when backend is ready
-  masternodes: 2, // TODO: fetch amount of masternodes from pastel network when backend is ready
+  artworks: 0,
+  masternodes: 0,
   regFormError: {},
   regFormState: constants.IMAGE_REG_FORM_STATE_DEFAULT,
   cNodeStatus: constants.CNODE_STATUS_PENDING,
