@@ -24,18 +24,18 @@ class ArtworkDetails extends Component {
     let artwork = this.props.artworksData.filter(a => a.imageHash === imageHash)[0];
     const dataFields = dataFieldNames.map((item, idx) => {
       return <div className={style['artwork-data-item']} key={idx}>
-        <div className={style['local-header']}>{humanReadaableFieldNames[item]}</div>
-        <div className={style['content']}>{artwork[item]}</div>
+        <h3>{humanReadaableFieldNames[item]}</h3>
+        <p>{artwork[item]}</p>
       </div>;
-
     });
     return (
       <MainWrapper>
+        <div className={style.back} onClick={() => history.push('/artworks')}>{'<<'}Back to artworks</div>
         <div className={style['image-wrapper']}>
           <img src={`file://${artwork.thumbnailPath}`} alt=""/>
         </div>
         <div className={style['artwork-main-data']}>
-          <h1>{artwork.name}</h1>
+          <h3>{artwork.name}</h3>
           <h5>Buy {artwork.artistName}</h5>
           <p>TXID {artwork.orderBlockTxid}</p>
         </div>

@@ -1,0 +1,61 @@
+div.back {
+  cursor: pointer;
+  text-decoration: underline;
+  text-transform: uppercase;
+  font-family: 'Gill Sans', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 10px 0 20px 10px;
+  color: #4a4a4a;
+}
+.image-wrapper {
+  img {
+    margin: auto;
+    width: 100%;
+  }
+}
+
+.artwork-main-data {
+  font-family: 'Gill Sans', sans-serif;
+  margin: 20px 0;
+  word-break: break-all;
+
+  h3 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #27251f;
+    text-transform: uppercase;
+  }
+  h5 {
+    font-size: 1.1rem;
+    color: #999;
+  }
+  p {
+    padding-top: 20px;
+    color: #999;
+    font-size: 1rem;
+  }
+}
+.artwork-other-data {
+  background-color: white;
+  margin-top: 20px;
+  word-break: break-all;
+  padding: 10px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+
+  .artwork-data-item {
+    margin: 10px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    h3 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #4a4a4a;
+      text-transform: uppercase;
+    }
+    p {
+      color: #999;
+      padding-top: 5px;
+      font-size: 0.9rem;
+    }
+  }
+}
