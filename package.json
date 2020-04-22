@@ -27,7 +27,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
-    "dev-server": "webpack-dev-server --open --mode development",
+    "dev-server": "webpack-dev-server --mode development",
     "start": "webpack-dashboard npm run dev-server",
     "sass:watch": "node-sass -w --source-map true src/artist.scss src/artist.css",
     "electron-pack:mac": "build --mac -c.extraMetadata.main=build/main_electron.js",

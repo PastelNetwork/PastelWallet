@@ -4,7 +4,7 @@ import * as style from './style.module.scss';
 import { connect } from 'react-redux';
 import history from '../../history';
 
-const humanReadaableFieldNames = {
+const humanReadableFieldNames = {
   artistPastelId: 'Artist Pastel ID',
   numOfCopies: 'Total copies',
   copyPrice: ' Copy price',
@@ -19,12 +19,18 @@ const humanReadaableFieldNames = {
 const dataFieldNames = ['artistPastelId', 'numOfCopies', 'copyPrice', 'artistWebsite', 'artistWrittenStatement', 'artworkSeriesName', 'artworkCreationVideoYoutubeUrl', 'artworkKeywordSet', 'imageHash', 'blocknum'];
 
 class ArtworkDetails extends Component {
+  onSellClick = () => {
+    console.log('Sell artwork click');
+  };
+  onBuyClick = () => {
+    console.log('Sell artwork click');
+  };
   render () {
     const imageHash = this.props.match.params.image_hash;
     let artwork = this.props.artworksData.filter(a => a.imageHash === imageHash)[0];
     const dataFields = dataFieldNames.map((item, idx) => {
       return <div className={style['artwork-data-item']} key={idx}>
-        <h3>{humanReadaableFieldNames[item]}</h3>
+        <h3>{humanReadableFieldNames[item]}</h3>
         <p>{artwork[item]}</p>
       </div>;
     });
@@ -34,8 +40,8 @@ class ArtworkDetails extends Component {
         <div className={style['image-wrapper']}>
           <img src={`file://${artwork.thumbnailPath}`} alt=""/>
         </div>
-        <button>Sell artwork</button>
-        <button>Buy artwork</button>
+        <button className={style['trade-btn']} style={{'margin-right': '20px'}} onClick={this.onSellClick}>Sell artwork</button>
+        <button className={style['trade-btn']}  onClick={this.onBuyClick}>Buy artwork</button>
         <div className={style['artwork-main-data']}>
           <h3>{artwork.name}</h3>
           <h5>Buy {artwork.artistName}</h5>
