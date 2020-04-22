@@ -34,6 +34,8 @@ class ArtworkDetails extends Component {
         <div className={style['image-wrapper']}>
           <img src={`file://${artwork.thumbnailPath}`} alt=""/>
         </div>
+        <button>Sell artwork</button>
+        <button>Buy artwork</button>
         <div className={style['artwork-main-data']}>
           <h3>{artwork.name}</h3>
           <h5>Buy {artwork.artistName}</h5>
