@@ -25,6 +25,7 @@ class ArtworkDetails extends Component {
   onBuyClick = () => {
     console.log('Sell artwork click');
   };
+
   render () {
     const imageHash = this.props.match.params.image_hash;
     let artwork = this.props.artworksData.filter(a => a.imageHash === imageHash)[0];
@@ -40,8 +41,12 @@ class ArtworkDetails extends Component {
         <div className={style['image-wrapper']}>
           <img src={`file://${artwork.thumbnailPath}`} alt=""/>
         </div>
-        <button className={style['trade-btn']} style={{'margin-right': '20px'}} onClick={this.onSellClick}>Sell artwork</button>
-        <button className={style['trade-btn']}  onClick={this.onBuyClick}>Buy artwork</button>
+        <div className={style['button-block']}>
+          <button className={style['trade-btn']} style={{ 'margin-right': '20px' }} onClick={this.onSellClick}>Sell
+            artwork
+          </button>
+          <button className={style['trade-btn']} onClick={this.onBuyClick}>Buy artwork</button>
+        </div>
         <div className={style['artwork-main-data']}>
           <h3>{artwork.name}</h3>
           <h5>Buy {artwork.artistName}</h5>
