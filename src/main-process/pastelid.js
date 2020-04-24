@@ -15,6 +15,7 @@ const PASTEL_ID_COMMAND = 'pastelid';
 const TICKETS_COMMAND = 'tickets';
 
 const getPastelIdsRegistrationInProgress = (fn) => {
+    fn(['jXaJ6nNQRcgEm5hdJroRJ4qu67DqHbDWJmFmz5Jbh4BhxApiaXMfGorWty27PMrF6Q74ngXRy7UV9gnkyMAPDq']);
   // getDatabase().all('select pastelid from pastelid', [], (e, r) => {
   //   const pastelIdInProgress = r.map(i => i.pastelid);
   //   fn(pastelIdInProgress);
