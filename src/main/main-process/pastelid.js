@@ -6,7 +6,7 @@ import {
     PASTELID_REG_STATUS_NON_REGISTERED,
     PASTELID_REG_STATUS_REGISTERED
 } from '../constants';
-// import { getDatabase } from './database';
+import { getDatabase } from './database';
 
 const callRpcMethod = require('./utils');
 const constants = require('../constants');
@@ -15,11 +15,11 @@ const PASTEL_ID_COMMAND = 'pastelid';
 const TICKETS_COMMAND = 'tickets';
 
 const getPastelIdsRegistrationInProgress = (fn) => {
-    fn(['jXaJ6nNQRcgEm5hdJroRJ4qu67DqHbDWJmFmz5Jbh4BhxApiaXMfGorWty27PMrF6Q74ngXRy7UV9gnkyMAPDq']);
-  // getDatabase().all('select pastelid from pastelid', [], (e, r) => {
-  //   const pastelIdInProgress = r.map(i => i.pastelid);
-  //   fn(pastelIdInProgress);
-  // });
+    // fn(['jXaJ6nNQRcgEm5hdJroRJ4qu67DqHbDWJmFmz5Jbh4BhxApiaXMfGorWty27PMrF6Q74ngXRy7UV9gnkyMAPDq']);
+  getDatabase().all('select pastelid from pastelid', [], (e, r) => {
+    const pastelIdInProgress = r.map(i => i.pastelid);
+    fn(pastelIdInProgress);
+  });
 };
 
 ipcMain.on('pastelIdList', (event, arg) => {
@@ -85,9 +85,11 @@ ipcMain.on('pastelIdCreateAndRegister', (event, arg) => {
     callRpcMethod(PASTEL_ID_COMMAND, ['newkey', passphrase]).then((response) => {
         const pastelId = response.data.result.pastelid;
         callRpcMethod(TICKETS_COMMAND, ['register', 'id', pastelId, passphrase, blockchainAddress]).then((resp) => {
-            // create database record with pastelID register
-            event.sender.send('pastelIdCreateResponse', {
-                status: constants.RESPONSE_STATUS_OK
+            // create database record with pastelID registered
+            getDatabase().run(`INSERT INTO pastelid values ('${pastelId}');`, [], (e) => {
+                event.sender.send('pastelIdCreateResponse', {
+                    status: constants.RESPONSE_STATUS_OK
+                });
             });
         }).catch((err) => {
             event.sender.send('pastelIdCreateResponse', {

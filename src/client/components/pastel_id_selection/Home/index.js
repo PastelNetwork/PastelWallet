@@ -109,7 +109,7 @@ ipcRenderer.on('pastelIdCheckPassphraseResponse', (event, data) => {
 
 const regStatusColor  = {
   [PASTELID_REG_STATUS_REGISTERED]: 'green',
-  [PASTELID_REG_STATUS_IN_PROGRESS]: 'yellow',
+  [PASTELID_REG_STATUS_IN_PROGRESS]: '#fcba03',
   [PASTELID_REG_STATUS_NON_REGISTERED]: 'red'
 };
 
@@ -469,6 +469,18 @@ class HasActiveKeysCardComponent extends Component {
           <PastelIDButton onClick={this.usePastelID} text="Proceed" disabled={!this.state.passphrase}/>
           <OrRecord/>
         </React.Fragment>;
+      } else if (this.state.selectedPastelId.regStatus === PASTELID_REG_STATUS_IN_PROGRESS) {
+        registerProceedButton = <React.Fragment>
+          <div className="pt-1"/>
+          <div className="control flex-row">
+            <input type="text" className="input is-default" value={this.state.passphrase}
+                   onChange={this.onPassphraseChange} name="firstName" placeholder="Passphrase"/>
+          </div>
+          <div className="pt-1"/>
+          <PastelIDButton onClick={this.usePastelID} text="Waiting for activation..." disabled={true}/>
+          <OrRecord/>
+        </React.Fragment>;
+
       } else {
         registerProceedButton = <React.Fragment>
           <div className="pt-1"/>
