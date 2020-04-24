@@ -38,7 +38,8 @@
     "electron-build:linux": "rm -rf build/* dist/*; npm run electron-bundle; npm run build; npm run electron-pack:linux",
     "electron-bundle": "webpack --config webpack.config.electron.js --mode production",
     "electron-bundle-dev": "webpack --config webpack.config.electron.dev.js --mode development",
-    "start-electron": "npm run electron-bundle-dev; electron --inspect ./src/main/main_built.js"
+    "start-electron-webpack": "npm run electron-bundle-dev; electron --inspect ./src/main/main_built.js",
+    "start-electron": "babel ./src/main  --ignore ./src/main/build -d ./src/main/build; electron --inspect ./src/main/build/main.js"
   },
   "keywords": [],
   "author": "Pastel INC <pastel@pastel.network>",
@@ -56,6 +57,7 @@
     "electron": "^5.0.0",
     "electron-builder": "^20.39.0",
     "electron-log": "^3.0.6",
+    "electron-rebuild": "^1.10.1",
     "file-loader": "^3.0.1",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",

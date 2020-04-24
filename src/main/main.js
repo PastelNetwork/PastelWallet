@@ -17,6 +17,7 @@ import {SEND_TO_ADDRESS_COMMAND} from "./constants";
 import {GET_ACCOUNT_ADDRESS_COMMAND} from "./constants";
 import {GETINFO_COMMAND} from "./constants";
 // import { initDatabase } from './main-process/database';
+// import sqlite3 from 'sqlite3';
 
 const PING_RESOURCE = `${LOCAL_PY_URL}ping`;
 

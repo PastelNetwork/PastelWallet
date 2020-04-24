@@ -4,7 +4,7 @@ import callRpcMethod from './utils';
 import {LOCAL_PY_URL} from "./settings";
 import log from 'electron-log';
 import {addMessageToBox} from "../main";
-import {GETBALANCE_COMMAND, RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK, RESPONSE_STATUS_PENDING} from "../../client/constants";
+import {GETBALANCE_COMMAND, RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK, RESPONSE_STATUS_PENDING} from "../constants";
 
 const IMAGE_REGISTRATION_STEP_2_RESOURCE = `${LOCAL_PY_URL}image_registration_step_2`;
 const IMAGE_REGISTRATION_STEP_3_RESOURCE = `${LOCAL_PY_URL}image_registration_step_3`;

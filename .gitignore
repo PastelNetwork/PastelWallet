@@ -37,6 +37,7 @@ pasteld_binary/main.cpp
 src/main_electron_built.js
 src/main_built.js
 src/main/main_built.js
+src/main/build/
 
 thumbnails/
 thumbnails/*
