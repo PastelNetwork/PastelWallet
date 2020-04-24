@@ -27,3 +27,10 @@ export const GETBALANCE_COMMAND = 'getbalance';
 export const GETINFO_COMMAND = 'getinfo';
 export const GET_ACCOUNT_ADDRESS_COMMAND = 'getaccountaddress';
 export const SEND_TO_ADDRESS_COMMAND = 'sendtoaddress';
+
+
+// pastel ID registration status
+export const PASTELID_REG_STATUS_NON_REGISTERED = 0;
+export const PASTELID_REG_STATUS_IN_PROGRESS = 1;
+export const PASTELID_REG_STATUS_REGISTERED = 2;
+

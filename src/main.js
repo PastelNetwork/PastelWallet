@@ -16,7 +16,8 @@ import {RESPONSE_STATUS_ERROR} from "./constants";
 import {SEND_TO_ADDRESS_COMMAND} from "./constants";
 import {GET_ACCOUNT_ADDRESS_COMMAND} from "./constants";
 import {GETINFO_COMMAND} from "./constants";
-
+// import { initDatabase } from './main-process/database';
+let sqlite3 = require('sqlite3');
 
 const PING_RESOURCE = `${LOCAL_PY_URL}ping`;
 
@@ -161,4 +162,5 @@ function createWindow() {
 app.on('ready', createWindow);
 app.on('ready', updateNodeStatusesProccess);
 app.on('ready', checkAndRunPastelD);
+// app.on('ready', initDatabase);
 app.on('will-quit', cleanUp);

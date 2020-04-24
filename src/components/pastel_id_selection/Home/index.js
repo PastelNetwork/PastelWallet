@@ -10,6 +10,9 @@ import { setCurrentPassphrase, setCurrentPasteID, setPasteIDError, setPasteIDLis
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import * as style from './style.module.scss';
+import { PASTELID_REG_STATUS_REGISTERED } from '../../../constants';
+import { PASTELID_REG_STATUS_IN_PROGRESS } from '../../../constants';
+import { PASTELID_REG_STATUS_NON_REGISTERED } from '../../../constants';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -28,12 +31,12 @@ ipcRenderer.on('pastelIdListResponse', (event, data) => {
       store.dispatch(setPasteIDList(pastelIdList));
 
       // if no active(registered) keys
-      if (pastelIdList.filter(pastelId => pastelId.isRegistered).length === 0) {
+      if (pastelIdList.filter(pastelId => pastelId.regStatus === PASTELID_REG_STATUS_REGISTERED).length === 0) {
         history.push('/pastel_id/no_active_keys');
       }
 
       // if at least some keys are registered
-      if (pastelIdList.filter(pastelId => pastelId.isRegistered).length > 0) {
+      if (pastelIdList.filter(pastelId => pastelId.regStatus === PASTELID_REG_STATUS_REGISTERED).length > 0) {
         history.push('/pastel_id/has_active_keys');
       }
 
@@ -103,6 +106,12 @@ ipcRenderer.on('pastelIdCheckPassphraseResponse', (event, data) => {
       break;
   }
 });
+
+const regStatusColor  = {
+  [PASTELID_REG_STATUS_REGISTERED]: 'green',
+  [PASTELID_REG_STATUS_IN_PROGRESS]: 'yellow',
+  [PASTELID_REG_STATUS_NON_REGISTERED]: 'red'
+};
 
 const OrRecord = (props) => <div className="flex-row">
   <div className="or-record">
@@ -333,7 +342,7 @@ class NoActiveKeysCardComponent extends Component {
     const pastelIDsOptions = this.props.pastelIDs.map(x => ({
       value: x.PastelID,
       label: x.PastelID.substr(0, 10),
-      isRegistered: x.isRegistered
+      regStatus: x.regStatus
     }));
     const customStyles = {
       container: (provided) => ({
@@ -342,7 +351,7 @@ class NoActiveKeysCardComponent extends Component {
       }),
       option: (provided, state) => ({
         ...provided,
-        color: state.data.isRegistered ? 'green' : 'red'
+        color: regStatusColor[state.data.regStatus]
       })
     };
     let registerSelected = <OrRecord/>;
@@ -427,10 +436,15 @@ class HasActiveKeysCardComponent extends Component {
   };
 
   render () {
+    const regStatusVerbose = {
+      [PASTELID_REG_STATUS_REGISTERED]: ' (registered)',
+      [PASTELID_REG_STATUS_IN_PROGRESS]: ' (pending)',
+      [PASTELID_REG_STATUS_NON_REGISTERED]: ' (not registered)'
+    };
     const pastelIDsOptions = this.props.pastelIDs.map(x => ({
       value: x.PastelID,
-      label: x.PastelID.substr(0, 10) + (x.isRegistered ? ' (registered)' : ' (not registered)'),
-      isRegistered: x.isRegistered
+      label: x.PastelID.substr(0, 10) + regStatusVerbose[x.regStatus],
+      regStatus: x.regStatus
     }));
     const customStyles = {
       container: (provided) => ({
@@ -439,12 +453,12 @@ class HasActiveKeysCardComponent extends Component {
       }),
       option: (provided, state) => ({
         ...provided,
-        color: state.data.isRegistered ? 'green' : 'red'
+        color: regStatusColor[state.data.regStatus]
       })
     };
     let registerProceedButton = <OrRecord/>;
     if (this.state.selectedPastelId !== null) {
-      if (this.state.selectedPastelId.isRegistered) {
+      if (this.state.selectedPastelId.regStatus === PASTELID_REG_STATUS_REGISTERED) {
         registerProceedButton = <React.Fragment>
           <div className="pt-1"/>
           <div className="control flex-row">

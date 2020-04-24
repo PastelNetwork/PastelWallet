@@ -1,6 +1,12 @@
 import {ipcMain} from 'electron';
 import stringify from 'json-stable-stringify';
 import {createPyProc} from "./StartProcesses";
+import {
+    PASTELID_REG_STATUS_IN_PROGRESS,
+    PASTELID_REG_STATUS_NON_REGISTERED,
+    PASTELID_REG_STATUS_REGISTERED
+} from '../constants';
+// import { getDatabase } from './database';
 
 const callRpcMethod = require('./utils');
 const constants = require('../constants');
@@ -8,18 +14,36 @@ const constants = require('../constants');
 const PASTEL_ID_COMMAND = 'pastelid';
 const TICKETS_COMMAND = 'tickets';
 
+const getPastelIdsRegistrationInProgress = (fn) => {
+  // getDatabase().all('select pastelid from pastelid', [], (e, r) => {
+  //   const pastelIdInProgress = r.map(i => i.pastelid);
+  //   fn(pastelIdInProgress);
+  // });
+};
+
 ipcMain.on('pastelIdList', (event, arg) => {
     callRpcMethod(PASTEL_ID_COMMAND, ['list']).then((response) => {
         const pastelIdList = response.data.result;
         callRpcMethod(TICKETS_COMMAND, ['list', 'id']).then(response => {
-            const registeredPastelIDs = response.data.result;
-            const data = pastelIdList.map(key => ({
-                PastelID: key.PastelID,
-                isRegistered: registeredPastelIDs.includes(key.PastelID)
-            }));
-            event.reply('pastelIdListResponse', {
-                status: constants.RESPONSE_STATUS_OK,
-                data
+            getPastelIdsRegistrationInProgress(pastelIdInProgress => {
+                const getPastelIdRegStatus = (pastelID) => {
+                    if (registeredPastelIDs.includes(pastelID)) {
+                        return PASTELID_REG_STATUS_REGISTERED;
+                    } else if (pastelIdInProgress.includes(pastelID)) {
+                        return PASTELID_REG_STATUS_IN_PROGRESS;
+                    } else {
+                        return PASTELID_REG_STATUS_NON_REGISTERED;
+                    }
+                };
+                const registeredPastelIDs = response.data.result;
+                const data = pastelIdList.map(key => ({
+                    PastelID: key.PastelID,
+                    regStatus: getPastelIdRegStatus(key.PastelID)
+                }));
+                event.reply('pastelIdListResponse', {
+                    status: constants.RESPONSE_STATUS_OK,
+                    data
+                });
             });
         }).catch(err => {
             event.sender.send('pastelIdListResponse', {
@@ -60,6 +84,7 @@ ipcMain.on('pastelIdCreateAndRegister', (event, arg) => {
     callRpcMethod(PASTEL_ID_COMMAND, ['newkey', passphrase]).then((response) => {
         const pastelId = response.data.result.pastelid;
         callRpcMethod(TICKETS_COMMAND, ['register', 'id', pastelId, passphrase, blockchainAddress]).then((resp) => {
+            // create database record with pastelID register
             event.sender.send('pastelIdCreateResponse', {
                 status: constants.RESPONSE_STATUS_OK
             });
