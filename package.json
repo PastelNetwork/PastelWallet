@@ -2,7 +2,7 @@
   "name": "pastel-wallet",
   "version": "1.0.0",
   "description": "",
-  "main": "src/main.js",
+  "main": "main/main.js",
   "homepage": "./",
   "build": {
     "appId": "com.Pastel.Wallet",
@@ -38,7 +38,7 @@
     "electron-build:linux": "rm -rf build/* dist/*; npm run electron-bundle; npm run build; npm run electron-pack:linux",
     "electron-bundle": "webpack --config webpack.config.electron.js --mode production",
     "electron-bundle-dev": "webpack --config webpack.config.electron.dev.js --mode development",
-    "start-electron": "npm run electron-bundle-dev; electron --inspect ./src/main_built.js"
+    "start-electron": "npm run electron-bundle-dev; electron --inspect ./src/main/main_built.js"
   },
   "keywords": [],
   "author": "Pastel INC <pastel@pastel.network>",

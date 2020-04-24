@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK} from "../constants";
-import {defaultSendPslStatusData, store} from "../app";
-import {setPSLSendStatusData} from "../actions";
+import {RESPONSE_STATUS_ERROR, RESPONSE_STATUS_OK} from "../../client/constants";
+import {defaultSendPslStatusData, store} from "../../client/app";
+import {setPSLSendStatusData} from "../../client/actions";
 import {MainWrapper} from "./MainWrapperComponent";
 
 const ipcRenderer = window.require('electron').ipcRenderer;

@@ -1,9 +1,9 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/main.js',
+    entry: './src/main/main.js',
     output: {
-        path: path.resolve(__dirname, 'src'),
+        path: path.resolve(__dirname, 'src', 'main'),
         filename: 'main_built.js'
     },
     target: 'electron-main',

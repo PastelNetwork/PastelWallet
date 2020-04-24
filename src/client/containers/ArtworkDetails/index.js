@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { MainWrapper } from '../../components/MainWrapperComponent';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
-import history from '../../history';
+import history from '../../../client/history';
 
 const humanReadableFieldNames = {
   artistPastelId: 'Artist Pastel ID',

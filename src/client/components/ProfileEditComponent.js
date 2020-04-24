@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
-import '../styles.scss';
+import '../../client/styles.scss';
 import '../assets/scss/core.scss';
 import '../assets/scss/custom.scss';
 import 'bulma/bulma.sass';
 import {MainWrapper} from "./MainWrapperComponent";
 import * as Feather from 'react-feather';
 import axios from 'axios';
-import * as settings from '../settings';
+import * as settings from '../../client/settings';
 import {connect} from "react-redux";
 import * as md5 from 'md5';
-import {setUserProfile} from "../actions";
-import * as constants from "../constants";
-import {store} from "../app";
+import {setUserProfile} from "../../client/actions";
+import * as constants from "../../client/constants";
+import {store} from "../../client/app";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 

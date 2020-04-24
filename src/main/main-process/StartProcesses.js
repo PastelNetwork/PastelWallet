@@ -3,7 +3,6 @@ import * as log from "electron-log";
 import {addMessageToBox} from '../main';
 import callRpcMethod from "./utils";
 import {GETINFO_COMMAND} from "../constants";
-import * as constants from "../constants";
 
 let pyProc = null;
 let pastelProc = null;

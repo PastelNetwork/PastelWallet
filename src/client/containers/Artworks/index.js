@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { MainWrapper } from '../../components/MainWrapperComponent';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
-import { RESPONSE_STATUS_OK } from '../../constants';
-import { store } from '../../app';
-import { SET_ARTWORKS_DATA, SET_ARTWORKS_DATA_LOADING } from '../../actionTypes';
+import { RESPONSE_STATUS_OK } from '../../../client/constants';
+import { store } from '../../../client/app';
+import { SET_ARTWORKS_DATA, SET_ARTWORKS_DATA_LOADING } from '../../../client/actionTypes';
 import { BarLoader } from 'react-spinners';
-import history from '../../history';
+import history from '../../../client/history';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 

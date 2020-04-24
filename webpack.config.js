@@ -3,7 +3,7 @@ const DashboardPlugin = require("webpack-dashboard/plugin");
 const path = require('path');
 
 module.exports = {
-    entry: './src/app.js',
+    entry: './src/client/app.js',
     module: {
         rules: [
             {
@@ -112,7 +112,7 @@ module.exports = {
 
     plugins: [
         new HtmlWebPackPlugin({
-            template: "./src/index.html",
+            template: "./src/client/index.html",
             filename: "./index.html"
         }),
         new DashboardPlugin()

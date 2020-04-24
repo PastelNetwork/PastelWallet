@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom'
 import '../../styles.scss';
-import history from '../../history';
+import history from '../../../client/history';
 import * as PastelFavicon from '../../assets/images/favicon.png';
 import * as Feather from 'react-feather';
 import {connect} from "react-redux";

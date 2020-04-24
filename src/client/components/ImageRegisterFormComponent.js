@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import '../styles.scss';
-import { store } from '../app';
+import '../../client/styles.scss';
+import { store } from '../../client/app';
 import {
   resetImageRegFormErrors,
   setImageRegFormError, setImageRegFormMsg,
   setImageRegFormRegFee, setImageRegFormState, setImageRegFormTxid, setImageRegFormTxidActTicket, setImageRegTicketID,
   setImageRegWorkerFee,
   setRegFee
-} from '../actions';
-import history from '../history';
-import * as constants from '../constants';
+} from '../../client/actions';
+import history from '../../client/history';
+import * as constants from '../../client/constants';
 import { MainWrapper } from './MainWrapperComponent';
 import { BarLoader } from 'react-spinners';
 

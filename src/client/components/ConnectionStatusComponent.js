@@ -4,12 +4,12 @@ import {
     CNODE_STATUS_DISCONNECTED,
     CNODE_STATUS_PENDING,
     PYNODE_STATUS_CONNECTED, PYNODE_STATUS_DISCONNECTED, PYNODE_STATUS_PENDING
-} from "../constants";
-import {store} from "../app";
+} from "../../client/constants";
+import {store} from "../../client/app";
 import {
     setCNodeStatus,
     setPynodeStatus
-} from "../actions";
+} from "../../client/actions";
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 

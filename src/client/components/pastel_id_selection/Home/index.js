@@ -3,16 +3,16 @@ import { MainWrapper } from '../../MainWrapperComponent';
 import { BarLoader } from 'react-spinners';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import '../../../assets/scss/core.scss';
-import history from '../../../history';
-import * as constants from '../../../constants';
-import { store } from '../../../app';
-import { setCurrentPassphrase, setCurrentPasteID, setPasteIDError, setPasteIDList } from '../../../actions';
+import history from '../../../../client/history';
+import * as constants from '../../../../client/constants';
+import { store } from '../../../../client/app';
+import { setCurrentPassphrase, setCurrentPasteID, setPasteIDError, setPasteIDList } from '../../../../client/actions';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import * as style from './style.module.scss';
-import { PASTELID_REG_STATUS_REGISTERED } from '../../../constants';
-import { PASTELID_REG_STATUS_IN_PROGRESS } from '../../../constants';
-import { PASTELID_REG_STATUS_NON_REGISTERED } from '../../../constants';
+import { PASTELID_REG_STATUS_REGISTERED } from '../../../../client/constants';
+import { PASTELID_REG_STATUS_IN_PROGRESS } from '../../../../client/constants';
+import { PASTELID_REG_STATUS_NON_REGISTERED } from '../../../../client/constants';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
