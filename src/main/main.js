@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {app, BrowserWindow, ipcMain} from 'electron';
+import {app, BrowserWindow, ipcMain, dialog} from 'electron';
 import * as axios from 'axios';
 import * as log from 'electron-log';
 import * as constants from './constants';
@@ -150,8 +150,11 @@ function createWindow() {
         BrowserWindow.addDevToolsExtension(
             '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
     } else {
-        // win.loadFile(`${path.join(__dirname, '../build/index.html')}`);
-        win.loadFile(`build/index.html')}`);
+        // win.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
+        // const indexPath = `file://${path.join(__dirname, '../index.html')}`;
+        const indexPath = path.join(__dirname, '../index.html');
+        // dialog.showMessageBox({message: indexPath});
+        win.loadFile(indexPath);
         win.webContents.openDevTools();
         BrowserWindow.addDevToolsExtension(
             '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
