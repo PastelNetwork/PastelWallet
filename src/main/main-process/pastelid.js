@@ -6,7 +6,7 @@ import {
     PASTELID_REG_STATUS_NON_REGISTERED,
     PASTELID_REG_STATUS_REGISTERED
 } from '../constants';
-import { getDatabase } from './database';
+import { getDatabase, SELECT_PASTELID_SQL } from './database';
 
 const callRpcMethod = require('./utils');
 const constants = require('../constants');
@@ -16,7 +16,7 @@ const TICKETS_COMMAND = 'tickets';
 
 const getPastelIdsRegistrationInProgress = (fn) => {
     // fn(['jXaJ6nNQRcgEm5hdJroRJ4qu67DqHbDWJmFmz5Jbh4BhxApiaXMfGorWty27PMrF6Q74ngXRy7UV9gnkyMAPDq']);
-  getDatabase().all('select pastelid from pastelid', [], (e, r) => {
+  getDatabase().all(SELECT_PASTELID_SQL, [], (e, r) => {
     const pastelIdInProgress = r.map(i => i.pastelid);
     fn(pastelIdInProgress);
   });

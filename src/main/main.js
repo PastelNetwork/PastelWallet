@@ -150,7 +150,11 @@ function createWindow() {
         BrowserWindow.addDevToolsExtension(
             '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
     } else {
-        win.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
+        // win.loadFile(`${path.join(__dirname, '../build/index.html')}`);
+        win.loadFile(`build/index.html')}`);
+        win.webContents.openDevTools();
+        BrowserWindow.addDevToolsExtension(
+            '/Users/alex/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
     }
     win.on('closed', () => {
         win = null;

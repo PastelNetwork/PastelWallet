@@ -15,7 +15,7 @@ const PY_MODULE = 'wallet_api'; // without .py suffix
 
 const getScriptPath = () => {
     if (process.defaultApp) {
-        return path.join(__dirname, PY_FOLDER, PY_MODULE + '.py');
+        return path.join(process.cwd(), PY_DIST_FOLDER, PY_FOLDER, PY_MODULE + '.py');
     }
     if (process.platform === 'win32') {
         return path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, 'dist', PY_MODULE + '.exe')
