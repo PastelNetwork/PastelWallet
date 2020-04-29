@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as log from "electron-log";
-import {addMessageToBox} from '../main';
+import { addMessageToBox, getWorkDir } from '../main';
 import callRpcMethod from "./utils";
 import {GETINFO_COMMAND} from "../constants";
 
@@ -46,7 +46,7 @@ export const createPyProc = (pastelid, passphrase) => {
     let script = getScriptPath();
     let port = pyPort;
     if (process.defaultApp) {
-        pyProc = require('child_process').execFile('python', [script, process.cwd(), pastelid, passphrase], (error, stdout, stderr) => {
+        pyProc = require('child_process').execFile('python', [script, getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
         });
     } else {
         let appPath;
@@ -58,7 +58,7 @@ export const createPyProc = (pastelid, passphrase) => {
                 appPath = path.join(process.resourcesPath, '..', '..');
                 break;
         }
-        pyProc = require('child_process').execFile(script, [appPath, pastelid, passphrase], (error, stdout, stderr) => {
+        pyProc = require('child_process').execFile(script, [getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
         });
     }
 
