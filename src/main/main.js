@@ -155,9 +155,12 @@ function createWindow () {
     height: 600,
     minWidth: 600,
     minHeight: 400,
-    webPreferences: { nodeIntegration: true, webSecurity: false }
+    webPreferences: { nodeIntegration: true, webSecurity: false },
+    icon: '/Users/alex/PycharmProjects/spa/src/client/assets/images/favicon.png'
   });
 
+  win.removeMenu();
+  app.setName('Pastel');
   if (process.defaultApp) {
     win.loadURL('http://localhost:3000/');
     win.webContents.openDevTools();

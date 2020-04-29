@@ -1,5 +1,5 @@
 {
-  "name": "pastel-wallet",
+  "name": "pastel",
   "version": "1.0.0",
   "description": "",
   "main": "main/main.js",
@@ -24,7 +24,8 @@
     },
     "win": {
       "target": "msi"
-    }
+    },
+    "productName": "Pastel"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

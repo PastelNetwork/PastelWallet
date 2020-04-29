@@ -116,10 +116,6 @@ export class ImageRegisterForm extends Component {
     };
   }
 
-  componentDidMount () {
-    document.title = 'Pastel wallet';
-  }
-
   validateImageRegForm = () => {
     let isValid = true;
     if (this.state.artName === '') {

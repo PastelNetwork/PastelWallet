@@ -30,6 +30,7 @@ As currently `PastelD` binary is not available for Mac - it can be run with Dock
 ## Build on Mac OS
  - First - build `wallet_api` (from the StoVaCore dir)
  - `pyinstaller --add-data "misc":"misc"  -F wallet_api.py`
+ - Next - build the wallet (`wallet_api` executable will be included).
  - `npm run electron-build:mac`
  
 ### Install Linux build

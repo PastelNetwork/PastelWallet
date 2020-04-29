@@ -42,7 +42,6 @@ ipcRenderer.on('getBalanceResponse', (event, data) => {
 
 export class ArtWallet extends Component {
     componentDidMount() {
-        document.title = 'Pastel wallet';
         ipcRenderer.send('blockchainDataRequest', {});
         ipcRenderer.send('getBalanceRequest', {});
     }
