@@ -6,10 +6,11 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Router } from 'react-router-dom';
 import reducer from './reducers';
 import * as ajaxEntities from './ajaxEntities';
-import 'font-awesome/css/font-awesome.css';
 import Main from './components/MainComponent';
 import history from './history';
 import * as constants from './constants';
+import './styles.scss';
+import './ipc/index';
 
 let defaultAjaxInProgress = Object.getOwnPropertyNames(ajaxEntities).filter(a => a !== '__esModule').reduce((acc, curr) => {
   acc[ajaxEntities[curr]] = false;
@@ -32,7 +33,7 @@ export const initialState = {
   pyNodeStatus: constants.PYNODE_STATUS_PENDING,
   userDisplayMessages: [],
   messageBoxCollaped: true,
-  pastelIDs: [],
+  pastelIDs: null,
   pastelIDError: null,
   currentPastelID: null,
   currentPassphrase: '',

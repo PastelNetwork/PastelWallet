@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { MainWrapper } from '../../MainWrapperComponent';
 import { BarLoader } from 'react-spinners';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import '../../../assets/scss/core.scss';
 import history from '../../../../client/history';
 import * as constants from '../../../../client/constants';
 import { store } from '../../../../client/app';

@@ -151,10 +151,9 @@ function createWindow () {
   log.silly('Starting main proccess....');
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    minWidth: 600,
-    minHeight: 400,
+    width: 850,
+    height: 630,
+    resizable: false,
     webPreferences: { nodeIntegration: true, webSecurity: false },
     icon: '/Users/alex/PycharmProjects/spa/src/client/assets/images/favicon.png'
   });

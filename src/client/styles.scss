@@ -1,115 +1,17 @@
-@import './assets2/scss/common';
-@import './assets2/scss/paddings';
-@import './assets2/scss/image_register';
-@import './assets2/scss/pastel_id';
-//* {
-//  outline: 1px solid red !important;
-//}
-html {
-  min-height: 100%;
-}
 body {
-  min-height: 100%;
-}
-.flex-row {
-  @extend %flex-row;
-}
-
-.flex-col {
-  @extend %flex-col;
+  font-family: 'Gill Sans', sans-serif;
+  background-color: white;
+  margin: 0;
 }
 
-.flex-centered {
-  @extend %flex-centered;
-}
+:root {
+  // core colors
+  --black: #27251F;
+  --green: #279989;
+  --blue: #41B6E6;
+  --pink: #FC9BB3;
+  --light-grey: #D7D2CB;
 
-.space-between {
-  justify-content: space-between;
-}
-
-.wrap {
-  flex-wrap: wrap;
-}
-
-.footer-row {
-  flex-basis: 80%;
-}
-
-.space-around {
-  justify-content: space-around;
-}
-
-.display-none {
-  display: none;
-}
-
-.img-preview {
-  width: 150px;
-  height: 150px;
-}
-
-.main-content {
-  padding-top: $header-height;
-}
-
-.full-width {
-  width: 100%;
-}
-
-.copy {
-  &:hover {
-    color: $primary;
-  }
-}
-
-.hidden-text-area {
-  position: absolute;
-  left: -9999px;
-}
-
-.conn-status-wrapper {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 8pt;
-}
-
-.conn-status-cnode.connected, .conn-status-pynode.connected {
-  color: #1e801e;
-}
-
-.conn-status-cnode.pending, .conn-status-pynode.pending {
-  color: #ffc754;
-}
-
-.conn-status-cnode.disconnected, .conn-status-pynode.disconnected {
-  color: #ff2038;
-}
-
-.message-box-wrapper {
-  position: absolute;
-  right: 10px;
-  border: 1px double black;
-  border-radius: 3px;
-  z-index: 1;
-}
-
-.message-box-body {
-  border: 1px double black;
-  border-radius: 3px;
-  margin: 5px;
-  height: 80px;
-  overflow-y: auto;
-  cursor: pointer;
-  transition-property: width;
-  transition-duration: 1s;
-  width: 275px;
-}
-
-.message-box-body.collapsed {
-  width: 10px;
-}
-
-.message-box-item {
-  font-size: 6pt;
+  // other colors
+  --text-grey: #505B61;
 }
