@@ -42,13 +42,16 @@
   "author": "Pastel INC <pastel@pastel.network>",
   "license": "ISC",
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.3.4",
     "@babel/plugin-proposal-class-properties": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
+    "aws-sdk": "^2.662.0",
     "babel-loader": "^8.0.5",
     "bip39": "^3.0.1",
     "bootstrap": "^4.3.1",
+    "bulma": "^0.7.5",
     "css-loader": "^2.1.1",
     "electron": "^5.0.0",
     "electron-builder": "^20.39.0",
@@ -80,9 +83,7 @@
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
     "webpack-dashboard": "^3.0.0",
-    "webpack-dev-server": "^3.2.1",
-    "aws-sdk": "^2.662.0",
-    "bulma": "^0.7.5"
+    "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
     "sqlite3": "^4.1.1",

@@ -24,15 +24,23 @@ As currently `PastelD` binary is not available for Mac - it can be run with Dock
  - electron main proccess will start python proccess (`src/StoVaCore/wallet_api.py`) on 5000 port.
 
 
-## How to make a build
- - (On Ubuntu 18.04 instance) Run `linux_build.sh`
-
 ## Build on Mac OS
  - First - build `wallet_api` (from the StoVaCore dir)
  - `pyinstaller --add-data "misc":"misc"  -F wallet_api.py`
  - Next - build the wallet (`wallet_api` executable will be included).
  - `npm run electron-build:mac`
  
+## Build on Linux
+ - Run `linux_build.sh` or manually execute every single line from this script.
+ 
+## Build on Windows
+ - Install Python and Node
+ - Install Python deps (`pip install -r requirements.win.txt`) from the StoVaCore repo
+ - Build `wallet_api` (on Windows syntax is a little bit different)
+ - `pyinstaller --add-data "misc;misc" -F wallet_api.py`
+ - Install babel globally `npm install -g @babel/core @babel/cli`
+ - 
+  
 ### Install Linux build
  - `sudo dpkg -i paste-wallet_1.0.0_amd64.deb`
  - if there are any uninstalled dependencies - run `sudo apt -f install`
