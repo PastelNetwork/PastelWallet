@@ -38,8 +38,9 @@ As currently `PastelD` binary is not available for Mac - it can be run with Dock
  - Install Python deps (`pip install -r requirements.win.txt`) from the StoVaCore repo
  - Build `wallet_api` (on Windows syntax is a little bit different)
  - `pyinstaller --add-data "misc;misc" -F wallet_api.py`
- - Install babel globally `npm install -g @babel/core @babel/cli`
- - 
+ - `npm electron-rebuild`. If it fails because of missing MS build tools - install it:
+ - `npm install --global --production windows-build-tools`
+ - Build wallet: `npm run electron-build:win`
   
 ### Install Linux build
  - `sudo dpkg -i paste-wallet_1.0.0_amd64.deb`
