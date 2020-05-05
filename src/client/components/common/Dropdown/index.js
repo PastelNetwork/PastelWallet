@@ -1,41 +1,47 @@
 import React, { Component } from 'react';
-import Select from 'react-select';
-import {
-  PASTELID_REG_STATUS_IN_PROGRESS,
-  PASTELID_REG_STATUS_NON_REGISTERED,
-  PASTELID_REG_STATUS_REGISTERED
-} from '../../../constants';
+import * as style from './style.module.scss';
 
-const regStatusColor  = {
-  [PASTELID_REG_STATUS_REGISTERED]: 'green',
-  [PASTELID_REG_STATUS_IN_PROGRESS]: '#fcba03',
-  [PASTELID_REG_STATUS_NON_REGISTERED]: 'red'
-};
+class CustomDropdown extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      opened: false,
+      selected: null
+    };
+  }
 
-const customStyles = {
-  container: (provided) => ({
-    ...provided,
-    width: '100%'
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    color: regStatusColor[state.data.regStatus]
-  }),
-  valueContainer: p => ({
-    ...p,
-    backgroundColor: 'reds'
-  })
-};
+  clickExpander = (e) => {
+    this.setState({ opened: !this.state.opened });
+  };
 
-class Dropdown extends Component {
   render () {
-    const { onChange, value, options } = this.props;
-    return <Select onChange={onChange}
-                   value={value}
-                   options={options}
-                   styles={customStyles}
-    />;
+    const { onChange, value, options, ...props } = this.props;
+
+    const renderedOptions = options && options.map((option, idx) =>
+      <span
+        className={`${style.option} ${this.state.selected && this.state.selected.value === option.value ? style.selected : ''}`}
+        data-value={option.value}
+        onClick={() => this.setState({ selected: option, opened: false })}
+      >
+        {option.label}</span>
+    );
+    return <div className={style.wrapper}>
+      <div className={`${style.select} ${this.state.opened ? style.open : ''}`}>
+        <div className={style.expandable}>
+          <div className={style['select-trigger']} onClick={this.clickExpander}>
+            <span>{this.state.selected ? this.state.selected.label : this.props.placeholder}</span>
+            <div className={`${style.expander} ${this.state.opened ? style.open : ''}`}/>
+          </div>
+          <div className={style.options}
+               style={{ maxHeight: `${this.state.opened ? (options.length * 60 < 200 ? options.length * 60 : 200) : 0}px` }}>
+            {renderedOptions}
+          </div>
+        </div>
+
+      </div>
+    </div>;
+
   }
 }
 
-export default Dropdown;
+export default CustomDropdown;
