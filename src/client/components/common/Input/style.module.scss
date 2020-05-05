@@ -1,0 +1,30 @@
+.input {
+  border-radius: 3px;
+  border: 1px solid;
+  outline: none;
+  font-size: 14px;
+  &::placeholder {
+    color: var(--grey-3);
+  }
+  color: var(--black);
+  line-height: 27px;
+  padding: 5px 0 5px 18px;
+}
+
+.grey {
+  border-color: var(--grey-1);
+  background-color: var(--grey-2);
+  &:hover {
+    border-color: var(--pink);
+  }
+  &:active {
+    border-color: var(--pink);
+  }
+  &.error {
+    border-color: var(--error-red);
+  }
+}
+
+.white {
+  border-color: white;
+}

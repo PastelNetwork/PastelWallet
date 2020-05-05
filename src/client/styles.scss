@@ -2,8 +2,11 @@ body {
   font-family: 'Gill Sans', sans-serif;
   background-color: white;
   margin: 0;
-}
 
+}
+* {
+  box-sizing: border-box;
+}
 :root {
   // core colors
   --black: #27251F;
@@ -18,6 +21,9 @@ body {
   --pink: #FC9BB3;
   --light-grey: #D7D2CB;
   --grey-1: #CDCFCF;
+  --grey-2: #F8F8F8;
+  --grey-3: #B1B7B9;
+  --error-red: #F24444;
 
   // other colors
   --text-grey: #505B61;

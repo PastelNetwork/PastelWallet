@@ -14,13 +14,15 @@
   background-size: 100px;
   margin: auto;
   padding-top: 231px;
-  span {
+  .text {
     color: var(--text-grey);
     font-size: 14px;
   }
-}
-
-.proceed-btn {
-  width: 100%;
-  margin-top: 15px;
+  .btn-block {
+    display: flex;
+    justify-content: space-between;
+    line-height: 37px;
+    color: var(--black);
+    margin-top: 8px;
+  }
 }

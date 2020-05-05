@@ -16,7 +16,7 @@ const btnClassNames = {
 class PastelButton extends Component {
   render()
   {
-    const {children, btnType, className, ...otherProps} = this.props;
+    const {children, btnType = BTN_TYPE_BLUE, className, ...otherProps} = this.props;
 
     const updatedClassName = `${className || ''} ${style.btn} ${btnClassNames[btnType]}`;
     return <button className={updatedClassName} {...otherProps}>
