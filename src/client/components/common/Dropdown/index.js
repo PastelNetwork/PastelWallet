@@ -20,6 +20,10 @@ const customStyles = {
   option: (provided, state) => ({
     ...provided,
     color: regStatusColor[state.data.regStatus]
+  }),
+  valueContainer: p => ({
+    ...p,
+    backgroundColor: 'reds'
   })
 };
 

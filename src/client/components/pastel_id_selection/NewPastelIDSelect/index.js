@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
 import Dropdown from '../../common/Dropdown';
-import {ipcRenderer} from '../../../ipc/ipc';
+import { ipcRenderer } from '../../../ipc/ipc';
+import PastelButton, { BTN_TYPE_GREEN } from '../../common/Button';
 
 class NewPastelIDSelect extends Component {
   constructor (props) {
@@ -49,6 +50,7 @@ class NewPastelIDSelect extends Component {
         <Dropdown onChange={this.onChange}
                   value={this.state.selectedPastelId}
                   options={pastelIDsOptions}/>
+        <PastelButton btnType={BTN_TYPE_GREEN} className={style['proceed-btn']} disabled>Proceed</PastelButton>
 
       </div>
     </div>;
