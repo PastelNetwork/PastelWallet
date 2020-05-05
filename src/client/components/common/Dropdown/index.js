@@ -14,18 +14,39 @@ class CustomDropdown extends Component {
     this.setState({ opened: !this.state.opened });
   };
 
+  componentDidMount () {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  setWrapperRef = (node) => {
+    this.wrapperRef = node;
+  };
+
+  handleClickOutside = (event) => {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.setState({opened: false});
+    }
+  };
+
   render () {
-    const { onChange, value, options, ...props } = this.props;
+    const { onChange, options, ...props } = this.props;
 
     const renderedOptions = options && options.map((option, idx) =>
       <span
         className={`${style.option} ${this.state.selected && this.state.selected.value === option.value ? style.selected : ''}`}
         data-value={option.value}
-        onClick={() => this.setState({ selected: option, opened: false })}
+        onClick={() => {
+          this.setState({ selected: option, opened: false });
+          onChange(option);
+        }}
       >
         {option.label}</span>
     );
-    return <div className={style.wrapper}>
+    return <div className={style.wrapper} ref={this.setWrapperRef}>
       <div className={`${style.select} ${this.state.opened ? style.open : ''}`}>
         <div className={style.expandable}>
           <div className={style['select-trigger']} onClick={this.clickExpander}>

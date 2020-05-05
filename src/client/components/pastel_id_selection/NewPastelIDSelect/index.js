@@ -14,9 +14,9 @@ import {
 } from '../../../constants';
 
 const regStatusVerbose = {
-  [PASTELID_REG_STATUS_REGISTERED]: <span style={{color: 'green'}}>(registered)</span>,
-  [PASTELID_REG_STATUS_IN_PROGRESS]: <span style={{color: '#fcba03'}}>(pending)</span>,
-  [PASTELID_REG_STATUS_NON_REGISTERED]: <span style={{color: 'red'}}>(not registered)</span>
+  [PASTELID_REG_STATUS_REGISTERED]: <span style={{ color: 'green' }}>(registered)</span>,
+  [PASTELID_REG_STATUS_IN_PROGRESS]: <span style={{ color: '#fcba03' }}>(pending)</span>,
+  [PASTELID_REG_STATUS_NON_REGISTERED]: <span style={{ color: 'red' }}>(not registered)</span>
 };
 
 class NewPastelIDSelect extends Component {
@@ -32,11 +32,10 @@ class NewPastelIDSelect extends Component {
     if (!this.props.pastelIDs) {
       ipcRenderer.send('pastelIdList', {});
     }
-
   }
 
   onChange = (selectedOption) => {
-    this.setState({ selectedPastelId: selectedOption });
+    this.setState({ selectedPastelId: selectedOption.value });
   };
 
   render () {
@@ -52,9 +51,14 @@ class NewPastelIDSelect extends Component {
                   value={this.state.selectedPastelId}
                   options={pastelIDsOptions}
                   placeholder={'Pastel ID'}/>
+        {
+          this.state.selectedPastelId ?
+            <PastelInput style={{ width: '100%', marginTop: '44px' }} placeholder={'Passphrase'}/> : null
+        }
 
-        <PastelInput style={{ width: '100%', marginTop: '44px' }} placeholder={'Passphrase'}/>
-        <PastelButton btnType={BTN_TYPE_GREEN} style={{ width: '100%', marginTop: '15px' }} disabled>
+        <PastelButton btnType={BTN_TYPE_GREEN}
+                      style={{ width: '100%', marginTop: this.state.selectedPastelId ? '15px' : '52px' }}
+                      disabled={!this.state.selectedPastelId}>
           Proceed
         </PastelButton>
         <Divider style={{ marginTop: '25px' }}/>
