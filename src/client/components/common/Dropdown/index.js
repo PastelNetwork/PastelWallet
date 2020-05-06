@@ -43,6 +43,7 @@ class CustomDropdown extends Component {
           this.setState({ selected: option, opened: false });
           onChange(option);
         }}
+        key={idx}
       >
         {option.label}</span>
     );

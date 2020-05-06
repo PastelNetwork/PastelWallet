@@ -7,6 +7,7 @@ import PastelButton, { BTN_TYPE_GREEN } from '../../common/Button';
 import Divider from '../../common/Divider';
 import PastelInput from '../../common/Input';
 import Dropdown from '../../common/Dropdown';
+import Spinner from '../../common/Spinner';
 import {
   PASTELID_REG_STATUS_IN_PROGRESS,
   PASTELID_REG_STATUS_NON_REGISTERED,
@@ -14,9 +15,17 @@ import {
 } from '../../../constants';
 
 const regStatusVerbose = {
-  [PASTELID_REG_STATUS_REGISTERED]: <span style={{ color: 'green' }}>(registered)</span>,
-  [PASTELID_REG_STATUS_IN_PROGRESS]: <span style={{ color: '#fcba03' }}>(pending)</span>,
-  [PASTELID_REG_STATUS_NON_REGISTERED]: <span style={{ color: 'red' }}>(not registered)</span>
+  [PASTELID_REG_STATUS_REGISTERED]: <span style={{ color: '#6EA65A' }}>(registered)</span>,
+  [PASTELID_REG_STATUS_IN_PROGRESS]: <span style={{ color: '#D9C82D' }}>(pending)</span>,
+  [PASTELID_REG_STATUS_NON_REGISTERED]: <span style={{ color: '#F24444' }}>(not registered)</span>
+};
+
+const proceedButton = (disabled, marginTop) => {
+  return <PastelButton btnType={BTN_TYPE_GREEN}
+                       style={{ width: '100%', marginTop: marginTop }}
+                       disabled={disabled}>
+    Proceed
+  </PastelButton>;
 };
 
 class NewPastelIDSelect extends Component {
@@ -35,14 +44,46 @@ class NewPastelIDSelect extends Component {
   }
 
   onChange = (selectedOption) => {
-    this.setState({ selectedPastelId: selectedOption.value });
+    this.setState({ selectedPastelId: selectedOption });
   };
 
   render () {
     const pastelIDsOptions = this.props.pastelIDs && this.props.pastelIDs.map(x => ({
       value: x.PastelID,
-      label: <React.Fragment>{x.PastelID.substr(0, 10)} {regStatusVerbose[x.regStatus]}</React.Fragment>
+      label: <React.Fragment>{x.PastelID.substr(0, 10)} {regStatusVerbose[x.regStatus]}</React.Fragment>,
+      regStatus: x.regStatus
     }));
+    const passphraseInput = <PastelInput style={{ width: '100%', marginTop: '44px' }} placeholder={'Passphrase'}
+                                         value={this.state.passphrase}
+                                         onChange={(e) => this.setState({ passphrase: e.target.value })}
+    />;
+
+    let input;
+    let button;
+    let inProgress;
+    if (!this.state.selectedPastelId) {
+      // no passphrase field, proceed btn inactive
+      button = proceedButton(true, '52px');
+
+    } else if (this.state.selectedPastelId.regStatus === PASTELID_REG_STATUS_REGISTERED) {
+      // add passphrase field, proceed btn active
+      input = passphraseInput;
+      button = proceedButton(!this.state.passphrase, '15px');
+    } else if (this.state.selectedPastelId.regStatus === PASTELID_REG_STATUS_IN_PROGRESS) {
+      // msg, spinner, proceed button inactive
+      inProgress = <div className={style['in-progress-msg']}>Your Pastel ID is being registered
+        <Spinner style={{marginRight: '15px', float: 'right'}}/>
+      </div>;
+      button = proceedButton(true, '5px');
+    } else if (this.state.selectedPastelId.regStatus === PASTELID_REG_STATUS_NON_REGISTERED) {
+      // add passphrase field, register button
+      input = passphraseInput;
+      button = <PastelButton btnType={BTN_TYPE_GREEN}
+                             style={{ width: '100%', marginTop: '15px' }}
+                             disabled={!this.state.passphrase}>
+        Register
+      </PastelButton>;
+    }
 
     return <div className={style['main']}>
       <div className={style['wrapper']}>
@@ -51,16 +92,9 @@ class NewPastelIDSelect extends Component {
                   value={this.state.selectedPastelId}
                   options={pastelIDsOptions}
                   placeholder={'Pastel ID'}/>
-        {
-          this.state.selectedPastelId ?
-            <PastelInput style={{ width: '100%', marginTop: '44px' }} placeholder={'Passphrase'}/> : null
-        }
-
-        <PastelButton btnType={BTN_TYPE_GREEN}
-                      style={{ width: '100%', marginTop: this.state.selectedPastelId ? '15px' : '52px' }}
-                      disabled={!this.state.selectedPastelId}>
-          Proceed
-        </PastelButton>
+        {input}
+        {inProgress}
+        {button}
         <Divider style={{ marginTop: '25px' }}/>
         <div className={style.text} style={{ marginTop: '16px' }}>If you do not have <b>Pastel ID</b> you can</div>
         <div className={style['btn-block']}>
