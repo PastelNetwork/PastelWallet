@@ -1,8 +1,19 @@
+@font-face {
+  font-family: 'Gill Sans';
+  src: url('assets/font/GillSans.ttc');
+}
+
+@font-face {
+  font-family: 'Open Sans Light';
+  src: url('assets/font/OpenSans-Light.ttf');
+}
+
 body {
   font-family: 'Gill Sans', sans-serif;
   background-color: white;
   margin: 0;
 }
+
 * {
   box-sizing: border-box;
   font-family: 'Gill Sans', sans-serif;
@@ -25,8 +36,9 @@ body {
   --grey-1: #CDCFCF;
   --grey-2: #F8F8F8;
   --grey-3: #B1B7B9;
+  --dark-grey: #363533;
   --error-red: #F24444;
-
+  --talksa: #41B6E6;
   // other colors
   --text-grey: #505B61;
 }

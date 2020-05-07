@@ -47,7 +47,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.ttf$/,
+                test: /\.(ttf)$/,
                 use: [
                     {
                         loader: 'ttf-loader',
@@ -58,7 +58,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(woff|woff2|eot)$/,
+                test: /\.(woff|woff2|eot|ttc)$/,
                 use: [
                     {
                         loader: 'url-loader',

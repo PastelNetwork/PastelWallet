@@ -19,7 +19,7 @@ const regStatusVerbose = {
 };
 
 
-class NewPastelIDSelect extends Component {
+class PastelIDSelect extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -116,4 +116,4 @@ class NewPastelIDSelect extends Component {
   }
 }
 
-export default connect(state => ({ pastelIDs: state.pastelIDs }), null)(NewPastelIDSelect);
+export default connect(state => ({ pastelIDs: state.pastelIDs }), null)(PastelIDSelect);

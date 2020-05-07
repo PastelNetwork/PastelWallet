@@ -7,6 +7,7 @@ import {Switch, Route, Redirect, withRouter} from 'react-router-dom'
 // import {PastelIdHomeContainer} from "../containers/pastel_id_selection/HomeContainer";
 // import Artworks from '../containers/Artworks';
 // import ArtworkDetails from '../containers/ArtworkDetails';
+import Menu from '../containers/Menu';
 
 import PastelID from '../containers/PastelID';
 
@@ -21,10 +22,15 @@ class Main extends Component {
 
     render() {
         return <React.Fragment>
-            {/*<LeftMenu/>*/}
+            <Menu/>
             <Switch>
                 {/*<Route path='/pastel_id' component={PastelIdHomeContainer}/>*/}
                 <Route path='/pastel_id' component={PastelID}/>
+                <Route path='/main' component={PastelID}/>
+                <Route path='/profile' component={PastelID}/>
+                <Route path='/register' component={PastelID}/>
+                <Route path='/gallery' component={PastelID}/>
+                <Route path='/info' component={PastelID}/>
                 {/*<Route exact path='/wallet' component={ArtWalletContainer}/>*/}
                 {/*<Route exact path='/send_psl' component={SendPSLContainer}/>*/}
                 {/*<Route exact path='/register' component={ImageRegisterFormContainer}/>*/}

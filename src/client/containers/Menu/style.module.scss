@@ -1,0 +1,99 @@
+.wrapper {
+  position: absolute;
+  width: 189px;
+  height: 100%;
+  background-color: var(--black);
+  user-select: none;
+}
+
+.logo {
+  margin: 30px 0 0 30px;
+  width: 70px;
+  height: 17px;
+}
+
+.user {
+  padding: 15px 30px;
+  margin: 36px 0 9px 0;
+  display: flex;
+  transition: all 0.5s;
+  img {
+    margin-top: 4px;
+    width: 37px;
+    height: 37px;
+    border-radius: 50%;
+  }
+  div {
+    margin-left: 13px;
+  }
+  h3 {
+    font-size: 16px;
+    color: white;
+    font-weight: normal;
+    line-height: 27px;
+  }
+  h6 {
+    font-size: 14px;
+    color: var(--blue);
+    font-weight: normal;
+    line-height: 19px;
+    cursor: pointer;
+    &:hover {
+      color: var(--blue-1);
+    }
+    &:active {
+      color: var(--blue-2);
+    }
+
+  }
+}
+
+.menu-active {
+  background-color: var(--dark-grey);
+  color: var(--grey-1) !important;
+  fill: var(--grey-1) !important;
+}
+
+.menu-item {
+  padding: 5px 0 5px 30px;
+  cursor: pointer;
+  color: var(--green);
+  fill: var(--green);
+  &:hover {
+    color: var(--green-1);
+    fill: var(--green-1);
+  }
+  &:active {
+    color: var(--green-2);
+    fill: var(--green-2);
+  }
+  svg {
+    margin-right: 11px;
+  }
+  span {
+    line-height: 27px;
+    font-size: 16px;
+  }
+}
+
+.logout {
+  display: flex;
+  cursor: pointer;
+  position: absolute;
+  bottom: 10px;
+  left: 30px;
+  color: var(--text-grey);
+  stroke: var(--text-grey);
+  &:hover {
+    color: var(--grey-3);
+    stroke: var(--grey-3);
+  }
+  &:active {
+    color: var(--text-grey);
+    stroke: var(--text-grey);
+  }
+  div:last-child {
+    margin-left: 10px;
+    font-size: 14px;
+  }
+}
