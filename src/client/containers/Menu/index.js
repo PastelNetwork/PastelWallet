@@ -4,10 +4,12 @@ import PastelLogo from '../../assets/logo/Pastel_logo_Secondary_white.png';
 import DefaultUser from '../../assets/images/default_user.png';
 import { withRouter } from 'react-router-dom';
 import { Home, Register, Gallery, Info, Logout } from '../../components/icons';
+import { SET_CURRENT_PASTEL_ID } from '../../actionTypes';
+import { connect } from 'react-redux';
 
 const MenuItem = (props) => {
-  const { icon, name, ...rest } = props;
-  return <div className={`${style['menu-item']} ${props.active ? style['menu-active'] : ''}`} {...rest}>
+  const { icon, name, menuActive, ...rest } = props;
+  return <div className={`${style['menu-item']} ${menuActive ? style['menu-active'] : ''}`} {...rest}>
     {icon}
     <span>{name}</span>
   </div>;
@@ -31,13 +33,16 @@ class Menu extends Component {
           {link}
         </div>
       </div>
-      <MenuItem name={'Main screen'} icon={<Home/>} active={isActive('/main')} onClick={() => history.push('/main')}/>
-      <MenuItem name={'Register image'} icon={<Register/>} active={isActive('/register')}
+      <MenuItem name={'Main screen'} icon={<Home/>} menuActive={isActive('/main')} onClick={() => history.push('/main')}/>
+      <MenuItem name={'Register image'} icon={<Register/>} menuActive={isActive('/register')}
                 onClick={() => history.push('/register')}/>
-      <MenuItem name={'Artwork gallery'} icon={<Gallery/>} active={isActive('/gallery')}
+      <MenuItem name={'Artwork gallery'} icon={<Gallery/>} menuActive={isActive('/gallery')}
                 onClick={() => history.push('/gallery')}/>
-      <MenuItem name={'Information'} icon={<Info/>} active={isActive('/info')} onClick={() => history.push('/info')}/>
-      <div className={style.logout}>
+      <MenuItem name={'Information'} icon={<Info/>} menuActive={isActive('/info')} onClick={() => history.push('/info')}/>
+      <div className={style.logout} onClick={() => {
+        this.props.dispatch({type: SET_CURRENT_PASTEL_ID, value: null});
+        history.push('/pastel_id');
+      }}>
         <div>
           <Logout/>
         </div>
@@ -48,4 +53,4 @@ class Menu extends Component {
   }
 }
 
-export default withRouter(Menu);
+export default withRouter(connect(null, dispatch => ({dispatch}))(Menu));
