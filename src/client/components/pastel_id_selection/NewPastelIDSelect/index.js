@@ -20,13 +20,6 @@ const regStatusVerbose = {
   [PASTELID_REG_STATUS_NON_REGISTERED]: <span style={{ color: '#F24444' }}>(not registered)</span>
 };
 
-const proceedButton = (disabled, marginTop) => {
-  return <PastelButton btnType={BTN_TYPE_GREEN}
-                       style={{ width: '100%', marginTop: marginTop }}
-                       disabled={disabled}>
-    Proceed
-  </PastelButton>;
-};
 
 class NewPastelIDSelect extends Component {
   constructor (props) {
@@ -47,7 +40,24 @@ class NewPastelIDSelect extends Component {
     this.setState({ selectedPastelId: selectedOption });
   };
 
+  onProceedClick = () => {
+    ipcRenderer.send('pastelIdCheckPassphrase', {
+      pastelID: this.state.selectedPastelId.value,
+      passphrase: this.state.passphrase
+    });
+    this.setState({ passphrase: '' });
+  };
   render () {
+    const proceedButton = (disabled, marginTop) => {
+      return <PastelButton btnType={BTN_TYPE_GREEN}
+                           style={{ width: '100%', marginTop: marginTop }}
+                           disabled={disabled}
+                           onClick={this.onProceedClick}
+      >
+        Proceed
+      </PastelButton>;
+    };
+
     const pastelIDsOptions = this.props.pastelIDs && this.props.pastelIDs.map(x => ({
       value: x.PastelID,
       label: <React.Fragment>{x.PastelID.substr(0, 10)} {regStatusVerbose[x.regStatus]}</React.Fragment>,
