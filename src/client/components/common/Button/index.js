@@ -1,10 +1,6 @@
 import React, {Component} from 'react';
 import * as style from './style.module.scss';
-
-export const BTN_TYPE_LIGHT_BLUE = 0;
-export const BTN_TYPE_BLUE = 1;
-export const BTN_TYPE_GREEN = 2;
-export const BTN_TYPE_LIGHT_GREEN = 3;
+import { BTN_TYPE_BLUE, BTN_TYPE_GREEN, BTN_TYPE_LIGHT_BLUE, BTN_TYPE_LIGHT_GREEN } from '../constants';
 
 const btnClassNames = {
   [BTN_TYPE_LIGHT_BLUE]: style['light-blue'],

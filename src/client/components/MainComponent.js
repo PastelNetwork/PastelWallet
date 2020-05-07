@@ -3,13 +3,12 @@ import {Switch, Route, Redirect, withRouter} from 'react-router-dom'
 // import {ArtWalletContainer} from "../containers/ArtWalletContainer";
 // import {ImageRegisterFormContainer} from "../containers/ImageRegisterFormContainer";
 // import {SendPSLContainer} from "../containers/SendPSLContainer";
-// import {SideBar} from "./common/SideBarComponent";
 // import {ProfileEdit} from "./ProfileEditComponent";
 // import {PastelIdHomeContainer} from "../containers/pastel_id_selection/HomeContainer";
 // import Artworks from '../containers/Artworks';
 // import ArtworkDetails from '../containers/ArtworkDetails';
 
-import NewPastelIDSelect from '../components/pastel_id_selection/NewPastelIDSelect';
+import PastelID from '../containers/PastelID';
 
 
 
@@ -22,10 +21,10 @@ class Main extends Component {
 
     render() {
         return <React.Fragment>
-            {/*<SideBar/>*/}
+            {/*<LeftMenu/>*/}
             <Switch>
                 {/*<Route path='/pastel_id' component={PastelIdHomeContainer}/>*/}
-                <Route path='/pastel_id' component={NewPastelIDSelect}/>
+                <Route path='/pastel_id' component={PastelID}/>
                 {/*<Route exact path='/wallet' component={ArtWalletContainer}/>*/}
                 {/*<Route exact path='/send_psl' component={SendPSLContainer}/>*/}
                 {/*<Route exact path='/register' component={ImageRegisterFormContainer}/>*/}
