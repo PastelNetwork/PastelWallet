@@ -110,7 +110,20 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
   })).catch((err) => {
     win.webContents.send('walletAddress', `Cannot connect to local pasteld white loading blockchain data`);
   });
+});
 
+ipcMain.on('getInfoRequest', (event, arg) => {
+  return callRpcMethod(GETINFO_COMMAND, []).then((response) => {
+    win.webContents.send('getInfoResponse', {
+      status: RESPONSE_STATUS_OK,
+      data: response.data.result
+    });
+  }).catch((err) => {
+    win.webContents.send('getInfoResponse', {
+      status: RESPONSE_STATUS_ERROR,
+      msg: err.response.data.error.message
+    });
+  });
 });
 
 const updateCnodeStatus = () => {

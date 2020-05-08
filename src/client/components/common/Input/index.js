@@ -11,10 +11,18 @@ const inputClassName = {
 
 class PastelInput extends Component {
   render() {
-    const {className, inputType = GREY_INPUT, valid=true, ...otherProps} = this.props;
+    const {className, inputType = GREY_INPUT, valid=true, label, name='', containerStyle={}, ...otherProps} = this.props;
 
     const updatedClassName = `${className || ''} ${style.input} ${inputClassName[inputType]} ${!valid ? style.error : ''}`;
-    return <input className={updatedClassName} {...otherProps}/>
+    if (label) {
+      return <div style={containerStyle}>
+        <label htmlFor={name} className={style.label}>{label}</label>
+        <input className={updatedClassName} {...otherProps} name={name}/>
+      </div>;
+    } else {
+      return <input className={updatedClassName} {...otherProps}/>;
+    }
+
   }
 }
 

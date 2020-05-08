@@ -137,3 +137,9 @@ export const getBalance = () => {
     ipcRenderer.send('getBalanceRequest', {});
   };
 };
+
+export const getInfo = () => {
+  return (dispatch, getState) => {
+    ipcRenderer.send('getInfoRequest', {});
+  };
+};

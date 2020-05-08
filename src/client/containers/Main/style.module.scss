@@ -43,3 +43,38 @@
     font-size: 10px;
   }
 }
+
+.send {
+  h3 {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 16px;
+  }
+}
+
+.info {
+  padding-bottom: 15px;
+  padding-right: 20px;
+  color: var(--black);
+  h3 {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 16px;
+    margin-bottom: 24px;
+  }
+  ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    li {
+      font-size: 14px;
+
+      div:first-child {
+        font-weight: bold;
+      }
+      div:last-child {
+        color: var(--text-grey);
+      }
+    }
+  }
+}

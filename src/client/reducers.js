@@ -1,8 +1,38 @@
 import * as actionTypes from './actionTypes';
-import {initialState} from "./app";
+import * as constants from './constants';
+import * as ajaxEntities from './ajaxEntities';
 
+let defaultAjaxInProgress = Object.getOwnPropertyNames(ajaxEntities).filter(a => a !== '__esModule').reduce((acc, curr) => {
+  acc[ajaxEntities[curr]] = false;
+  return acc;
+}, {});
 
-const reducer  = (state = {}, action) => {
+export const defaultSendPslStatusData = { status: null, msg: '' };
+
+export const initialState = {
+  ajaxInProgress: defaultAjaxInProgress,
+  userProfile: null,
+  blockchainAddress: null,
+  balance: null,
+  sendPslStatusData: defaultSendPslStatusData,
+  artworks: 0,
+  masternodes: 0,
+  regFormError: {},
+  regFormState: constants.IMAGE_REG_FORM_STATE_DEFAULT,
+  cNodeStatus: constants.CNODE_STATUS_PENDING,
+  pyNodeStatus: constants.PYNODE_STATUS_PENDING,
+  userDisplayMessages: [],
+  messageBoxCollaped: true,
+  pastelIDs: null,
+  pastelIDError: null,
+  currentPastelID: null,
+  currentPassphrase: '',
+  artworksData: null,
+  artworksDataLoading: false,
+  blockchainInfo: null
+};
+
+const reducer  = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.START_AJAX:
             return {...state, ajaxInProgress: {...state.ajaxInProgress, [action.entity]: true}};
@@ -60,6 +90,8 @@ const reducer  = (state = {}, action) => {
             return {...state, artworksData: action.value};
         case actionTypes.SET_ARTWORKS_DATA_LOADING:
             return {...state, artworksDataLoading: action.value};
+        case actionTypes.SET_BLOCKCHAIN_INFO:
+            return {...state, blockchainInfo: action.value};
         case actionTypes.RESET_STORE:
             return {...initialState};
         default:

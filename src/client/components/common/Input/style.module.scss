@@ -10,7 +10,11 @@
   line-height: 27px;
   padding: 5px 0 5px 18px;
 }
-
+.label {
+  font-size: 12px;
+  line-height: 137%;
+  color: var(--text-grey);
+}
 .grey {
   border-color: var(--grey-1);
   background-color: var(--grey-2);

@@ -17,6 +17,7 @@ const ipcRenderer = window.require('electron').ipcRenderer;
 class Main extends Component {
     componentDidMount() {
         ipcRenderer.send('blockchainDataRequest', {});
+        ipcRenderer.send('getInfoRequest', {});
     }
 
     render() {
