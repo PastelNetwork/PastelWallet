@@ -18,6 +18,10 @@ const MenuItem = (props) => {
 class Menu extends Component {
   render () {
     const { match, location, history } = this.props;
+    console.log(location.pathname);
+    if (location.pathname === '/pastel_id') {
+      return null;
+    }
     const isActive = (url) => location.pathname === url;
 
     let link = <h6 onClick={() => history.push('/profile')}>Edit</h6>;
