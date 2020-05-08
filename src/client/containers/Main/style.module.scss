@@ -1,0 +1,45 @@
+.wrapper {
+  overflow: scroll;
+  height: 100vw;
+  margin-left: var(--menu-width);
+  width: calc(100vw - var(--menu-width));
+  padding: 30px 20px 0 20px;
+}
+
+.card {
+  border-radius: 6px;
+  background-color: var(--beige-bg);
+  padding: 17px 0 0 25px;
+}
+
+.balance {
+  h3 {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 16px;
+    color: var(--black);
+    margin-bottom: 16px;
+  }
+  span {
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 137%;
+    color: var(--green-balance);
+  }
+}
+
+.pastelid {
+  color: var(--black);
+  padding-right: 10px;
+  h3 {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 16px;
+    margin-bottom: 10px;
+  }
+  span {
+    color: var(--black);
+    word-break: break-all;
+    font-size: 10px;
+  }
+}

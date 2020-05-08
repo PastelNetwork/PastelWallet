@@ -18,7 +18,6 @@ const MenuItem = (props) => {
 class Menu extends Component {
   render () {
     const { match, location, history } = this.props;
-    console.log(location.pathname);
     if (location.pathname === '/pastel_id') {
       return null;
     }

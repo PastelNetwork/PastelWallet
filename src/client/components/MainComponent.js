@@ -7,10 +7,9 @@ import {Switch, Route, Redirect, withRouter} from 'react-router-dom'
 // import {PastelIdHomeContainer} from "../containers/pastel_id_selection/HomeContainer";
 // import Artworks from '../containers/Artworks';
 // import ArtworkDetails from '../containers/ArtworkDetails';
-import Menu from '../containers/Menu';
-
 import PastelID from '../containers/PastelID';
-
+import Menu from '../containers/Menu';
+import MainScreen from '../containers/Main';
 
 
 const ipcRenderer = window.require('electron').ipcRenderer;
@@ -26,7 +25,7 @@ class Main extends Component {
             <Switch>
                 {/*<Route path='/pastel_id' component={PastelIdHomeContainer}/>*/}
                 <Route path='/pastel_id' component={PastelID}/>
-                <Route path='/main' component={PastelID}/>
+                <Route path='/main' component={MainScreen}/>
                 <Route path='/profile' component={PastelID}/>
                 <Route path='/register' component={PastelID}/>
                 <Route path='/gallery' component={PastelID}/>
