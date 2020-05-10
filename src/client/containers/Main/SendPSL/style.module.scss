@@ -1,0 +1,13 @@
+.send {
+  h3 {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 16px;
+  }
+}
+.error {
+  color: var(--error-red);
+  font-size: 14px;
+  font-style: italic;
+  margin-left: 16px;
+}

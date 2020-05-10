@@ -4,21 +4,10 @@ import * as style from './style.module.scss';
 import { connect } from 'react-redux';
 import { getBalance, getInfo } from '../../actions';
 import { Input, Button } from '../../components/common';
-
-const Card = (props) => {
-  const { children, className = '', ...rest } = props;
-  return <div className={`${style.card} ${className}`} {...rest}>{children}</div>;
-};
+import Card from './Card';
+import SendPSL from './SendPSL';
 
 class Main extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      address: '',
-      amount: 0
-    };
-  }
-
   componentDidMount () {
     this.props.dispatch(getBalance());
     if (!this.props.blockchainInfo) {
@@ -40,17 +29,7 @@ class Main extends Component {
 
           </Card>
         </div>
-        <Card style={{ marginBottom: '10px', marginLeft: '10px', width: '100%', paddingRight: '25px' }}
-              className={style.send}>
-          <h3>SEND PSL</h3>
-          <Input name={'address'} label={'Address'} style={{ width: '100%', lineHeight: '20px' }}
-                 containerStyle={{ marginTop: '13px' }} onChange={(e) => this.setState({ address: e.target.value })}
-                 value={this.state.address}/>
-          <Input name={'amount'} label={'Amount, PSL'} style={{ width: '100%', lineHeight: '20px' }}
-                 containerStyle={{ marginTop: '8px' }} onChange={(e) => this.setState({ amount: e.target.value })}
-                 value={this.state.amount}/>
-          <Button style={{ marginTop: '20px', width: '106px' }}>Send</Button>
-        </Card>
+        <SendPSL/>
       </div>
       <Card className={style.info}>
         <h3>NETWORK INFORMATION</h3>

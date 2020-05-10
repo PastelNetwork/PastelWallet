@@ -7,14 +7,12 @@ let defaultAjaxInProgress = Object.getOwnPropertyNames(ajaxEntities).filter(a =>
   return acc;
 }, {});
 
-export const defaultSendPslStatusData = { status: null, msg: '' };
 
 export const initialState = {
   ajaxInProgress: defaultAjaxInProgress,
   userProfile: null,
   blockchainAddress: null,
   balance: null,
-  sendPslStatusData: defaultSendPslStatusData,
   artworks: 0,
   masternodes: 0,
   regFormError: {},
@@ -29,7 +27,8 @@ export const initialState = {
   currentPassphrase: '',
   artworksData: null,
   artworksDataLoading: false,
-  blockchainInfo: null
+  blockchainInfo: null,
+  pslSendError: null
 };
 
 const reducer  = (state = initialState, action) => {
@@ -66,8 +65,6 @@ const reducer  = (state = initialState, action) => {
             return {...state, balance: action.value};
         case actionTypes.SET_USER_PROFILE:
             return {...state, userProfile: action.value};
-        case actionTypes.SET_SEND_PSL_SEND_STATUS_DATA:
-            return {...state, sendPslStatusData: action.value};
         case actionTypes.SET_IMAGE_REGISTER_FORM_STATE:
             return {...state, regFormState: action.value};
         case actionTypes.SET_CNODE_STATUS:
@@ -92,6 +89,8 @@ const reducer  = (state = initialState, action) => {
             return {...state, artworksDataLoading: action.value};
         case actionTypes.SET_BLOCKCHAIN_INFO:
             return {...state, blockchainInfo: action.value};
+        case actionTypes.SET_PSL_SEND_ERROR:
+            return {...state, pslSendError: action.value};
         case actionTypes.RESET_STORE:
             return {...initialState};
         default:

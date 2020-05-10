@@ -57,11 +57,6 @@ export const setImageRegTicketID = (value) => ({
   value
 });
 
-export const setPSLSendStatusData = (value) => ({
-  type: actionTypes.SET_SEND_PSL_SEND_STATUS_DATA,
-  value
-});
-
 export const setUserProfile = (value) => ({
   type: actionTypes.SET_USER_PROFILE,
   value

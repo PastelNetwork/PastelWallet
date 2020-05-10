@@ -1,15 +1,8 @@
 .wrapper {
   overflow: scroll;
-  height: 100vw;
   margin-left: var(--menu-width);
   width: calc(100vw - var(--menu-width));
   padding: 30px 20px 0 20px;
-}
-
-.card {
-  border-radius: 6px;
-  background-color: var(--beige-bg);
-  padding: 17px 0 0 25px;
 }
 
 .balance {
@@ -30,7 +23,6 @@
 
 .pastelid {
   color: var(--black);
-  padding-right: 10px;
   h3 {
     font-weight: bold;
     font-size: 16px;
@@ -44,17 +36,7 @@
   }
 }
 
-.send {
-  h3 {
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 16px;
-  }
-}
-
 .info {
-  padding-bottom: 15px;
-  padding-right: 20px;
   color: var(--black);
   h3 {
     font-weight: bold;

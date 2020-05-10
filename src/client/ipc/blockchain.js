@@ -1,7 +1,7 @@
 import { RESPONSE_STATUS_OK } from '../constants';
 import { store } from '../app';
-import { SET_ARTWORK_QUANTITY, SET_MASTERNODE_QUANTITY, SET_BLOCKCHAIN_INFO } from '../actionTypes';
-import { setBalance, setBlockchainAddress } from '../actions';
+import { SET_ARTWORK_QUANTITY, SET_MASTERNODE_QUANTITY, SET_BLOCKCHAIN_INFO, SET_PSL_SEND_ERROR } from '../actionTypes';
+import { getBalance, setBalance, setBlockchainAddress } from '../actions';
 import {ipcRenderer} from './ipc';
 
 ipcRenderer.on('blockchainDataResponse', (event, data) => {
@@ -35,5 +35,14 @@ ipcRenderer.on('getInfoResponse', (event, data) => {
         store.dispatch({type: SET_BLOCKCHAIN_INFO, value: data.data});
     } else {
         console.log('Error white calling getInfo: ' + data)
+    }
+});
+
+ipcRenderer.on('sendPSLResponse', (event, data) => {
+    if (data.status !== RESPONSE_STATUS_OK) {
+        store.dispatch({type: SET_PSL_SEND_ERROR, value: data.msg})
+    } else {
+        //refresh balance
+        store.dispatch(getBalance());
     }
 });
