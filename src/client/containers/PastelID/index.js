@@ -13,9 +13,9 @@ import {
 import { BTN_TYPE_GREEN } from '../../components/common/constants';
 
 const regStatusVerbose = {
-  [PASTELID_REG_STATUS_REGISTERED]: <span style={{ color: '#6EA65A' }}>(registered)</span>,
-  [PASTELID_REG_STATUS_IN_PROGRESS]: <span style={{ color: '#D9C82D' }}>(pending)</span>,
-  [PASTELID_REG_STATUS_NON_REGISTERED]: <span style={{ color: '#F24444' }}>(not registered)</span>
+  [PASTELID_REG_STATUS_REGISTERED]: <span style={{ color: 'var(--success)' }}>(registered)</span>,
+  [PASTELID_REG_STATUS_IN_PROGRESS]: <span style={{ color: 'var(--pending)' }}>(pending)</span>,
+  [PASTELID_REG_STATUS_NON_REGISTERED]: <span style={{ color: 'var(--failure)' }}>(not registered)</span>
 };
 
 

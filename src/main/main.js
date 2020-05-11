@@ -128,14 +128,13 @@ ipcMain.on('getInfoRequest', (event, arg) => {
 
 const updateCnodeStatus = () => {
   callRpcMethod(GETINFO_COMMAND).then((response) => {
-    const data = response.data;
     win.webContents.send('updateCNodeStatus', {
-      status: constants.CNODE_STATUS_CONNECTED
+      status: constants.NODE_STATUS_CONNECTED
     });
 
   }).catch((err) => {
     win.webContents.send('updateCNodeStatus', {
-      status: constants.CNODE_STATUS_DISCONNECTED
+      status: constants.NODE_STATUS_DISCONNECTED
     });
   });
 
@@ -144,14 +143,13 @@ const updateCnodeStatus = () => {
 const updatePynodeStatus = () => {
   axios.post(PING_RESOURCE, {}).then(() => {
     win.webContents.send('updatePynodeStatus', {
-      status: constants.PYNODE_STATUS_CONNECTED
+      status: constants.NODE_STATUS_CONNECTED
     });
     clearInterval(pyStatusTaskID);
   }).catch((err) => {
     win.webContents.send('updatePynodeStatus', {
-      status: constants.PYNODE_STATUS_DISCONNECTED
+      status: constants.NODE_STATUS_DISCONNECTED
     });
-    clearInterval(cNodeStatusTaskID);
   });
 };
 

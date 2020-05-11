@@ -1,6 +1,12 @@
 import { RESPONSE_STATUS_OK } from '../constants';
 import { store } from '../app';
-import { SET_ARTWORK_QUANTITY, SET_MASTERNODE_QUANTITY, SET_BLOCKCHAIN_INFO, SET_PSL_SEND_ERROR } from '../actionTypes';
+import {
+    SET_ARTWORK_QUANTITY,
+    SET_MASTERNODE_QUANTITY,
+    SET_BLOCKCHAIN_INFO,
+    SET_PSL_SEND_ERROR,
+    SET_CNODE_STATUS, SET_PYNODE_STATUS
+} from '../actionTypes';
 import { getBalance, setBalance, setBlockchainAddress } from '../actions';
 import {ipcRenderer} from './ipc';
 
@@ -45,4 +51,12 @@ ipcRenderer.on('sendPSLResponse', (event, data) => {
         //refresh balance
         store.dispatch(getBalance());
     }
+});
+
+ipcRenderer.on('updateCNodeStatus', (event, data) => {
+    store.dispatch({type: SET_CNODE_STATUS, value: data.status});
+});
+
+ipcRenderer.on('updatePynodeStatus', (event, data) => {
+    store.dispatch({type: SET_PYNODE_STATUS, value: data.status});
 });

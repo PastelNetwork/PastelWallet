@@ -82,16 +82,6 @@ export const fetchProfile = () => {
   };
 };
 
-export const setCNodeStatus = (value) => ({
-  type: actionTypes.SET_CNODE_STATUS,
-  value
-});
-
-export const setPynodeStatus = (value) => ({
-  type: actionTypes.SET_PYNODE_STATUS,
-  value
-});
-
 export const toggleMessageBox = () => ({
   type: actionTypes.TOGGLE_MESSAGE_BOX
 });
