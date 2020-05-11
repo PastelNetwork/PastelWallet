@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import {Switch, Route, Redirect, withRouter} from 'react-router-dom'
-import PastelID from '../containers/PastelID';
-import Menu from '../containers/AddOns/Menu';
-import MainScreen from '../containers/Main';
-import NodeStatus from '../containers/AddOns/NodeStatus';
-import WalletAddress from '../containers/AddOns/WalletAddress';
-import LogTab from '../containers/AddOns/LogTab';
+import PastelID from './containers/PastelID';
+import Menu from './containers/AddOns/Menu';
+import MainScreen from './containers/Main';
+import NodeStatus from './containers/AddOns/NodeStatus';
+import WalletAddress from './containers/AddOns/WalletAddress';
+import LogTab from './containers/AddOns/LogTab';
+import RegisterImage from './containers/RegisterImage';
 
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
-class Main extends Component {
+class App extends Component {
     componentDidMount() {
         ipcRenderer.send('blockchainDataRequest', {});
         ipcRenderer.send('getInfoRequest', {});
@@ -26,7 +27,7 @@ class Main extends Component {
                 <Route path='/pastel_id' component={PastelID}/>
                 <Route path='/main' component={MainScreen}/>
                 <Route path='/profile' component={PastelID}/>
-                <Route path='/register' component={PastelID}/>
+                <Route path='/register' component={RegisterImage}/>
                 <Route path='/gallery' component={PastelID}/>
                 <Route path='/info' component={PastelID}/>
                 {/*<Route exact path='/register' component={ImageRegisterFormContainer}/>*/}
@@ -39,4 +40,4 @@ class Main extends Component {
     }
 }
 
-export default withRouter(Main);
+export default withRouter(App);

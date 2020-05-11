@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
 import { getBalance, getInfo } from '../../actions';
-import { Input, Button } from '../../components/common';
-import Card from './Card';
+import {Card} from '../../components/common';
 import SendPSL from './SendPSL';
+import {Wrapper} from '../../components/common';
 
 class Main extends Component {
   componentDidMount () {
@@ -16,7 +16,7 @@ class Main extends Component {
   }
 
   render () {
-    return <div className={style.wrapper}>
+    return <Wrapper>
       <div style={{ display: 'flex' }}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <Card style={{ marginBottom: '10px', width: '221px', height: '108px' }} className={style.balance}>
@@ -53,7 +53,7 @@ class Main extends Component {
         </ul>
       </Card>
 
-    </div>;
+    </Wrapper>;
   }
 }
 

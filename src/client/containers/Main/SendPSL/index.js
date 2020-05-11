@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as style from './style.module.scss';
-import Card from '../Card';
+import Card from '../../../components/common/Card';
 import { Button, Input } from '../../../components/common';
 import { connect } from 'react-redux';
 import { ipcRenderer } from '../../../ipc/ipc';
