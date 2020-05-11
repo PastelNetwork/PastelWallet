@@ -31,7 +31,6 @@ class Main extends Component {
                 <Route path='/register' component={PastelID}/>
                 <Route path='/gallery' component={PastelID}/>
                 <Route path='/info' component={PastelID}/>
-                {/*<Route exact path='/wallet' component={ArtWalletContainer}/>*/}
                 {/*<Route exact path='/send_psl' component={SendPSLContainer}/>*/}
                 {/*<Route exact path='/register' component={ImageRegisterFormContainer}/>*/}
                 {/*<Route path='/user_profile' component={ProfileEdit}/>*/}
