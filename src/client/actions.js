@@ -3,11 +3,6 @@ import axios from 'axios';
 import * as settings from './settings';
 import { ipcRenderer } from './ipc/ipc';
 
-export const setBlockchainAddress = (value) => ({
-  type: actionTypes.SET_BLOCKCHAIN_ADDRESS,
-  value
-});
-
 export const setBalance = (value) => ({
   type: actionTypes.SET_BALANCE,
   value

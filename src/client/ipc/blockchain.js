@@ -5,9 +5,9 @@ import {
     SET_MASTERNODE_QUANTITY,
     SET_BLOCKCHAIN_INFO,
     SET_PSL_SEND_ERROR,
-    SET_CNODE_STATUS, SET_PYNODE_STATUS
+    SET_CNODE_STATUS, SET_PYNODE_STATUS, SET_BLOCKCHAIN_ADDRESS
 } from '../actionTypes';
-import { getBalance, setBalance, setBlockchainAddress } from '../actions';
+import { getBalance, setBalance } from '../actions';
 import {ipcRenderer} from './ipc';
 
 ipcRenderer.on('blockchainDataResponse', (event, data) => {
@@ -15,10 +15,9 @@ ipcRenderer.on('blockchainDataResponse', (event, data) => {
         console.log(data);
         store.dispatch({type: SET_MASTERNODE_QUANTITY, value: data.mnQuantity});
         store.dispatch({type: SET_ARTWORK_QUANTITY, value: data.artworkAmount});
-        store.dispatch(setBlockchainAddress(data.address));
+        store.dispatch({type: SET_BLOCKCHAIN_ADDRESS, value: data.address});
     } else {
         // if error - try until service will start
-
         setTimeout(() => {
             ipcRenderer.send('blockchainDataRequest', {})
         }, 500);

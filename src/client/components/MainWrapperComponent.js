@@ -1,6 +1,4 @@
 import React from "react";
-import * as PastelLogo from "../assets2/image/pastel_logo.png";
-import {ConnectionStatusContainer} from "../containers/dashboard/ConnectionStatusContainer";
 import {MessageBoxContainer} from "../containers/dashboard/MessageBoxContainer";
 
 export const MainWrapper = (props) => {

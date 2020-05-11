@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import * as style from './style.module.scss';
-import PastelLogo from '../../assets/logo/Pastel_logo_Secondary_white.png';
-import DefaultUser from '../../assets/images/default_user.png';
+import PastelLogo from '../../../assets/logo/Pastel_logo_Secondary_white.png';
+import DefaultUser from '../../../assets/images/default_user.png';
 import { withRouter } from 'react-router-dom';
-import { Home, Register, Gallery, Info, Logout } from '../../components/icons';
-import { SET_CURRENT_PASTEL_ID } from '../../actionTypes';
+import { Home, Register, Gallery, Info, Logout } from '../../../components/icons';
+import { SET_CURRENT_PASTEL_ID } from '../../../actionTypes';
 import { connect } from 'react-redux';
 
 const MenuItem = (props) => {

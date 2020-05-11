@@ -3,7 +3,7 @@ import {
   NODE_STATUS_CONNECTED,
   NODE_STATUS_DISCONNECTED,
   NODE_STATUS_PENDING
-} from '../../../client/constants';
+} from '../../../constants';
 import { connect } from 'react-redux';
 import * as style from './style.module.scss';
 

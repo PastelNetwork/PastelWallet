@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {Switch, Route, Redirect, withRouter} from 'react-router-dom'
 import PastelID from '../containers/PastelID';
-import Menu from '../containers/Menu';
+import Menu from '../containers/AddOns/Menu';
 import MainScreen from '../containers/Main';
-import NodeStatus from '../containers/NodeStatus';
+import NodeStatus from '../containers/AddOns/NodeStatus';
+import WalletAddress from '../containers/AddOns/WalletAddress';
 
 
 const ipcRenderer = window.require('electron').ipcRenderer;
@@ -18,6 +19,7 @@ class Main extends Component {
         return <React.Fragment>
             <Menu/>
             <NodeStatus/>
+            <WalletAddress/>
             <Switch>
                 {/*<Route path='/pastel_id' component={PastelIdHomeContainer}/>*/}
                 <Route path='/pastel_id' component={PastelID}/>
