@@ -1,7 +1,7 @@
 .wrapper {
   position: fixed;
   width: var(--menu-width);
-  height: 100%;
+  height: calc(100% - var(--log-tab-height));
   background-color: var(--black);
   user-select: none;
 }

@@ -5,7 +5,7 @@ import {
     SET_MASTERNODE_QUANTITY,
     SET_BLOCKCHAIN_INFO,
     SET_PSL_SEND_ERROR,
-    SET_CNODE_STATUS, SET_PYNODE_STATUS, SET_BLOCKCHAIN_ADDRESS
+    SET_CNODE_STATUS, SET_PYNODE_STATUS, SET_BLOCKCHAIN_ADDRESS, ADD_MESSAGE
 } from '../actionTypes';
 import { getBalance, setBalance } from '../actions';
 import {ipcRenderer} from './ipc';
@@ -58,4 +58,8 @@ ipcRenderer.on('updateCNodeStatus', (event, data) => {
 
 ipcRenderer.on('updatePynodeStatus', (event, data) => {
     store.dispatch({type: SET_PYNODE_STATUS, value: data.status});
+});
+
+ipcRenderer.on('addMessageToBox', (event, data) => {
+    store.dispatch({type: ADD_MESSAGE, value: data.msg})
 });

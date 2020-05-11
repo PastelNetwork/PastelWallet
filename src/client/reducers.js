@@ -1,15 +1,8 @@
 import * as actionTypes from './actionTypes';
 import * as constants from './constants';
-import * as ajaxEntities from './ajaxEntities';
-
-let defaultAjaxInProgress = Object.getOwnPropertyNames(ajaxEntities).filter(a => a !== '__esModule').reduce((acc, curr) => {
-  acc[ajaxEntities[curr]] = false;
-  return acc;
-}, {});
 
 
 export const initialState = {
-  ajaxInProgress: defaultAjaxInProgress,
   userProfile: null,
   blockchainAddress: null,
   balance: null,
@@ -20,7 +13,6 @@ export const initialState = {
   cNodeStatus: constants.NODE_STATUS_PENDING,
   pyNodeStatus: constants.NODE_STATUS_PENDING,
   userDisplayMessages: [],
-  messageBoxCollaped: true,
   pastelIDs: null,
   pastelIDError: null,
   currentPastelID: null,
@@ -33,10 +25,6 @@ export const initialState = {
 
 const reducer  = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.START_AJAX:
-            return {...state, ajaxInProgress: {...state.ajaxInProgress, [action.entity]: true}};
-        case actionTypes.STOP_AJAX:
-            return {...state, ajaxInProgress: {...state.ajaxInProgress, [action.entity]: false}};
         case actionTypes.SET_IMAGE_REGISTER_FORM_ERROR:
             console.log(`Set form error reducer`);
             console.log(action);
@@ -71,8 +59,6 @@ const reducer  = (state = initialState, action) => {
             return {...state, cNodeStatus: action.value};
         case actionTypes.SET_PYNODE_STATUS:
             return {...state, pyNodeStatus: action.value};
-        case actionTypes.TOGGLE_MESSAGE_BOX:
-            return {...state, messageBoxCollaped: !state.messageBoxCollaped};
         case actionTypes.ADD_MESSAGE:
             return {...state, userDisplayMessages: [...state.userDisplayMessages, action.value]};
         case actionTypes.SET_PASTEL_ID_LIST:
