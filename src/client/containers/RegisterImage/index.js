@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
 import { Wrapper, Card, Input } from '../../components/common';
+import AddImage from './AddImage';
 
 class RegisterImage extends Component {
   constructor (props) {
@@ -46,6 +47,7 @@ class RegisterImage extends Component {
                           }} onChange={this.onChange}
                           value={this.state.address} key={idx}/>;
           })}
+          <AddImage/>
 
         </div>
 
