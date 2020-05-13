@@ -56,4 +56,4 @@ class Menu extends Component {
   }
 }
 
-export default withRouter(connect(null, dispatch => ({dispatch}))(Menu));
+export default withRouter(connect(null)(Menu));

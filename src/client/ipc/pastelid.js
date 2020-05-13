@@ -2,7 +2,6 @@ import * as constants from '../constants';
 import { store } from '../app';
 import { setCurrentPassphrase, setCurrentPasteID, setPasteIDError, setPasteIDList } from '../actions';
 import history from '../history';
-import { PASTELID_REG_STATUS_REGISTERED } from '../constants';
 import {ipcRenderer} from './ipc';
 
 

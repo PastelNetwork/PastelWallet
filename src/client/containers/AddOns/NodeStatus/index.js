@@ -29,6 +29,6 @@ class NodeStatus extends Component {
 }
 
 export default connect(state => ({
-  cNodeStatus: state.cNodeStatus,
-  pyNodeStatus: state.pyNodeStatus
+  cNodeStatus: state.others.cNodeStatus,
+  pyNodeStatus: state.others.pyNodeStatus
 }), null)(NodeStatus);

@@ -116,4 +116,4 @@ class PastelIDSelect extends Component {
   }
 }
 
-export default connect(state => ({ pastelIDs: state.pastelIDs }), null)(PastelIDSelect);
+export default connect(state => ({ pastelIDs: state.others.pastelIDs }))(PastelIDSelect);
