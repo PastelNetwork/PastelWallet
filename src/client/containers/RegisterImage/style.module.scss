@@ -15,15 +15,17 @@
   font-style: italic;
   color: var(--error-red);
   overflow: scroll;
+  word-break: break-all;
 }
 
 .message {
+  width: calc(50% + 5px);
   font-size: 14px;
   font-style: italic;
   font-weight: 300;
   color: var(--black);
-  margin: 10px 0 0 14px;
-  span {
+  margin-top: 10px;
+  span.fee {
     color: var(--success);
     font-weight: bold;
   }

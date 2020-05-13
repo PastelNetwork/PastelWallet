@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
-import { Wrapper, Card, Input, Button } from '../../components/common';
+import { Wrapper, Card, Input, Button, Spinner } from '../../components/common';
 import AddImage from './AddImage';
 import { BTN_TYPE_GREEN, BTN_TYPE_LIGHT_GREEN } from '../../components/common/constants';
 import { ipcRenderer } from '../../ipc/ipc';
 import history from '../../history';
+import * as constants from '../../constants';
+import * as actionTypes from '../../actionTypes';
+import { store } from '../../app';
+import { setImageRegFormState } from '../../actions';
 
 class RegisterImage extends Component {
   constructor (props) {
@@ -41,10 +45,93 @@ class RegisterImage extends Component {
     if (this.props.regticketId) {
       ipcRenderer.send('imageRegFormCancel', { regticketId: this.props.regticketId });
     }
+    this.props.dispatch({ type: actionTypes.RESET_REGISTRATION });
     history.push('/main');
+  };
+  acceptClick = () => {
+    const data = {
+      name: this.state.artName,
+      numCopies: this.state.numCopies,
+      copyPrice: this.state.copyPrice,
+      filePath: this.state.filePath,
+      artistName: this.state.artistName,
+      artistWebsite: this.state.artistWebsite,
+      artistWrittenStatement: this.state.artistWrittenStatement,
+      artworkSeriesName: this.state.artworkSeriesName,
+      artworkCreationVideoYoutubeUrl: this.state.artworkCreationVideoYoutubeUrl,
+      artworkKeywordSet: this.state.artworkKeywordSet
+    };
+    ipcRenderer.send('imageRegFormProceed', data);
+    this.props.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_REQUESTING_NETWORK));
+  };
+  accept2Click = () => {
+    ipcRenderer.send('imageRegFormStep3', { regticketId: this.props.regticketId });
+    this.props.dispatch(setImageRegFormState(constants.IMAGE_REG_FORM_STATE_SEND_REGTICKET_MN_2_3));
   };
 
   render () {
+    let buttons;
+    let formDisabled = true;
+    let msg;
+    const getDeclineBtn = (disabled = false) =>
+      <Button btnType={BTN_TYPE_LIGHT_GREEN} style={{ width: 'calc(50% - 5px)' }}
+              onClick={() => this.setState({ confirmDecline: true })}
+              disabled={disabled}
+      >Decline</Button>;
+
+    switch (this.props.regFormState) {
+      case constants.IMAGE_REG_FORM_STATE_DEFAULT:
+        formDisabled = false;
+        const btnsDisabled = this.state.filePath === '';
+        buttons = <React.Fragment>
+          <Button btnType={BTN_TYPE_GREEN} style={{ marginRight: '10px', width: 'calc(50% - 5px)' }}
+                  disabled={btnsDisabled} onClick={this.getFeeClick}>Get
+            fee</Button>
+          {getDeclineBtn(btnsDisabled)}
+        </React.Fragment>;
+        break;
+      case constants.IMAGE_REG_FORM_STATE_PREL_FEE_RECEIVED:
+        buttons = <React.Fragment>
+          <Button btnType={BTN_TYPE_GREEN} style={{ marginRight: '10px', width: 'calc(50% - 5px)' }}
+                  onClick={this.acceptClick}>Accept</Button>
+          {getDeclineBtn()}
+        </React.Fragment>;
+        msg = <React.Fragment> Preliminary network fee:
+          <span className={style.fee}> {this.props.fee} PSL</span>
+        </React.Fragment>;
+        break;
+      case constants.IMAGE_REG_FORM_STATE_REQUESTING_NETWORK:
+        msg = <React.Fragment>
+          Requesting network for the worker fee <Spinner style={{ marginLeft: '15px' }}/>
+        </React.Fragment>;
+        break;
+      case constants.IMAGE_REG_FORM_STATE_WORKER_FEE_RECEIVED:
+        msg = <React.Fragment> Worker's fee:
+          <span className={style.fee}> {this.props.workerFee} PSL</span>
+        </React.Fragment>;
+        buttons = <React.Fragment>
+          <Button btnType={BTN_TYPE_GREEN} style={{ marginRight: '10px', width: 'calc(50% - 5px)' }}
+                  onClick={this.accept2Click}>Accept</Button>
+          {getDeclineBtn()}
+        </React.Fragment>;
+        break;
+      case constants.IMAGE_REG_FORM_STATE_SEND_REGTICKET_MN_2_3:
+        msg = <React.Fragment>
+          Sending registration ticket to masternodes 2 and 3 <Spinner style={{ marginLeft: '15px' }}/>
+        </React.Fragment>;
+        break;
+      case constants.IMAGE_REG_FORM_STATE_MN_2_3_RESPONSE_RECEIVED:
+        msg = this.props.imageRegFormMessage;
+        break;
+      case constants.IMAGE_REG_FORM_STATE_ACT_TICKET_RECEIVED:
+        msg = this.props.imageRegFormMessage;
+        break;
+      case constants.IMAGE_REG_FORM_STATE_ERROR:
+        msg = this.props.imageRegFormMessage;
+        break;
+      default:
+        break;
+    }
     const inputs = ['artName', 'artistName', 'artistWebsite', 'artistWrittenStatement', 'artworkSeriesName', 'artworkCreationVideoYoutubeUrl', 'artworkKeywordSet', 'numCopies'];
     const labels = {
       artName: 'Art name',
@@ -56,7 +143,7 @@ class RegisterImage extends Component {
       artworkKeywordSet: 'Artwork keyword set',
       numCopies: 'Number of copies'
     };
-    const btnsDisabled = this.state.filePath === '';
+
     return <Wrapper>
       <Card style={{ width: '100%' }} className={style.register}>
         <h3>REGISTER IMAGE</h3>
@@ -68,17 +155,18 @@ class RegisterImage extends Component {
                             width: 'calc(50% - 5px)',
                             marginRight: `${idx % 2 === 0 ? '10px' : 0} `
                           }} onChange={this.onChange}
-                          value={this.state.address} key={idx}/>;
+                          value={this.state.address} key={idx}
+                          disabled={formDisabled}
+            />;
           })}
 
-          <AddImage style={{ width: 'calc(50% - 5px)' }} onChange={this.onAddImageChange}/>
+          <AddImage style={{ width: 'calc(50% - 5px)' }} onChange={this.onAddImageChange} disabled={formDisabled}/>
           <div className={style.errors}>
-            {/*Errors*/}
+            {this.props.commonError}
           </div>
         </div>
         <div className={style.message}>
-          Preliminary network fee:
-          <span> 100 PSL</span>
+          {msg}
         </div>
         <div className={style.btns}>
           {this.state.confirmDecline ?
@@ -87,20 +175,12 @@ class RegisterImage extends Component {
                 Are you sure want to stop registration?
               </div>
               <Button btnType={BTN_TYPE_GREEN} style={{ marginRight: '10px', width: 'calc(50% - 5px)' }}
-              onClick={this.declineClick}>Yes</Button>
+                      onClick={this.declineClick}>Yes</Button>
               <Button btnType={BTN_TYPE_LIGHT_GREEN} style={{ width: 'calc(50% - 5px)' }}
                       onClick={() => this.setState({ confirmDecline: false })}>No</Button>
 
             </React.Fragment>
-            :
-            <React.Fragment>
-              <Button btnType={BTN_TYPE_GREEN} style={{ marginRight: '10px', width: 'calc(50% - 5px)' }}
-                      disabled={btnsDisabled} onClick={this.getFeeClick}>Get
-                fee</Button>
-              <Button btnType={BTN_TYPE_LIGHT_GREEN} style={{ width: 'calc(50% - 5px)' }}
-                      onClick={() => this.setState({ confirmDecline: true })}
-                      disabled={btnsDisabled}>Decline</Button>
-            </React.Fragment>
+            : buttons
           }
         </div>
 
@@ -115,7 +195,7 @@ export default connect(state => ({
   artNameError: state.registration.regFormError.artName,
   artFileError: state.registration.regFormError.artFile,
   commonError: state.registration.regFormError.all,
-  regFormFee: state.registration.regFormFee,
+  fee: state.registration.fee,
   workerFee: state.registration.workerFee,
   regFormState: state.registration.regFormState,
   regticketId: state.registration.regticketId,

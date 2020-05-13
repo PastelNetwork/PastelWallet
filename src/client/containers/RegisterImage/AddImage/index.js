@@ -35,14 +35,17 @@ class AddImage extends Component {
   };
 
   render () {
+    const {disabled = false} = this.props;
     return <div className={style.wrapper} style={this.props.style}>
       <label htmlFor="idArtFile">Art file</label>
       <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
 
-        <div className={style.choose} onClick={() => this.fileInputRef.current.click()}>
+        <div className={`${style.choose} ${disabled && style.disabled}`} onClick={() => !disabled && this.fileInputRef.current.click()}>
           <input type="file" accept="image/*" id="idArtFile"
                  onChange={this.onChange} ref={this.fileInputRef}
-                 style={{ visibility: 'hidden', position: 'absolute' }}/>
+                 style={{ visibility: 'hidden', position: 'absolute' }}
+                 disabled={disabled}
+          />
 
           <PlusIcon/>
           Choose file

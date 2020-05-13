@@ -13,6 +13,10 @@
   font-size: 14px;
   line-height: 22px;
   user-select: none;
+  &.disabled, &.disabled:hover, &.disabled:active {
+    color: var(--grey-1);
+    fill: var(--grey-1);
+  }
   span {
     margin-left: 7px;
   }
