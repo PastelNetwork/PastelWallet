@@ -28,13 +28,16 @@ class AddImage extends Component {
     if (e.target.files.length) {
       let file = e.target.files[0];
       this.setState({ file: URL.createObjectURL(file), path: file.path, name: file.name });
+      if (this.props.onChange) {
+        this.props.onChange(file.path);
+      }
     }
   };
 
   render () {
-    return <div className={style.wrapper}>
+    return <div className={style.wrapper} style={this.props.style}>
       <label htmlFor="idArtFile">Art file</label>
-      <div style={{ display: 'flex',  width: '100%', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
 
         <div className={style.choose} onClick={() => this.fileInputRef.current.click()}>
           <input type="file" accept="image/*" id="idArtFile"

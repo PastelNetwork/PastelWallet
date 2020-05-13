@@ -6,3 +6,36 @@
     color: var(--black);
   }
 }
+
+.errors {
+  margin-top: 10px;
+  padding-left: 10px;
+  width: calc(50% + 5px);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--error-red);
+  overflow: scroll;
+}
+
+.message {
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--black);
+  margin: 10px 0 0 14px;
+  span {
+    color: var(--success);
+    font-weight: bold;
+  }
+}
+
+.btns {
+  width: calc(50% - 5px);
+  margin-top: 14px;
+  display: flex;
+  .msg {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--black);
+  }
+}
