@@ -8,7 +8,6 @@ import { ipcRenderer } from '../../ipc/ipc';
 import history from '../../history';
 import * as constants from '../../constants';
 import * as actionTypes from '../../actionTypes';
-import { store } from '../../app';
 import { setImageRegFormState } from '../../actions';
 
 class RegisterImage extends Component {
@@ -73,6 +72,7 @@ class RegisterImage extends Component {
     let buttons;
     let formDisabled = true;
     let msg;
+    let localError;
     const getDeclineBtn = (disabled = false) =>
       <Button btnType={BTN_TYPE_LIGHT_GREEN} style={{ width: 'calc(50% - 5px)' }}
               onClick={() => this.setState({ confirmDecline: true })}
@@ -82,7 +82,7 @@ class RegisterImage extends Component {
     switch (this.props.regFormState) {
       case constants.IMAGE_REG_FORM_STATE_DEFAULT:
         formDisabled = false;
-        const btnsDisabled = this.state.filePath === '';
+        const btnsDisabled = this.state.filePath === '' || this.state.artName === '' || this.state.numCopies === 0;
         buttons = <React.Fragment>
           <Button btnType={BTN_TYPE_GREEN} style={{ marginRight: '10px', width: 'calc(50% - 5px)' }}
                   disabled={btnsDisabled} onClick={this.getFeeClick}>Get
@@ -121,13 +121,19 @@ class RegisterImage extends Component {
         </React.Fragment>;
         break;
       case constants.IMAGE_REG_FORM_STATE_MN_2_3_RESPONSE_RECEIVED:
-        msg = this.props.imageRegFormMessage;
+        msg = <React.Fragment>
+          {this.props.imageRegFormMessage} <Spinner style={{ marginLeft: '15px' }}/>
+        </React.Fragment>;
         break;
       case constants.IMAGE_REG_FORM_STATE_ACT_TICKET_RECEIVED:
         msg = this.props.imageRegFormMessage;
         break;
       case constants.IMAGE_REG_FORM_STATE_ERROR:
         msg = this.props.imageRegFormMessage;
+        buttons = getDeclineBtn();
+        if (!this.props.commonError) {
+          localError = 'Unknown error';
+        }
         break;
       default:
         break;
@@ -149,6 +155,12 @@ class RegisterImage extends Component {
         <h3>REGISTER IMAGE</h3>
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {inputs.map((item, idx) => {
+            const extra = {};
+            if (item === 'numCopies') {
+              extra.type = 'number';
+              extra.min = '0';
+              extra.step = '1';
+            }
             return <Input name={item} label={labels[item]} style={{ lineHeight: '20px', width: '100%' }}
                           containerStyle={{
                             marginTop: '13px',
@@ -157,12 +169,14 @@ class RegisterImage extends Component {
                           }} onChange={this.onChange}
                           value={this.state.address} key={idx}
                           disabled={formDisabled}
+                          {...extra}
             />;
           })}
 
           <AddImage style={{ width: 'calc(50% - 5px)' }} onChange={this.onAddImageChange} disabled={formDisabled}/>
           <div className={style.errors}>
             {this.props.commonError}
+            {localError}
           </div>
         </div>
         <div className={style.message}>

@@ -130,7 +130,21 @@ const imageRegistrationStep3Handler = (event, data) => {
                 status: RESPONSE_STATUS_OK,
                 txid: response.data.txid
             });
-            createActivationTicket(event, ['register', 'act', ...actTicketParams]);
+            // wait for 2 blocks and create activation ticket
+            callRpcMethod('getinfo').then(response => {
+
+                const blocks = response.data.result.blocks;
+                const intervalId = setInterval(() => {
+                    callRpcMethod('getinfo').then(r => {
+                       addMessageToBox(`Calling getinfo in a loop started from ${blocks}, current ${r.data.blocks}`);
+                       if (r.data.result.blocks - blocks >= 1) {
+                           clearInterval(intervalId);
+                           createActivationTicket(event, ['register', 'act', ...actTicketParams]);
+                       }
+                    });
+                }, 10000);
+            });
+
         } else {
             event.reply('imageRegFormStep3Response', {
                 status: RESPONSE_STATUS_ERROR,

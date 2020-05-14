@@ -40,4 +40,4 @@ class LogTab extends Component {
   }
 }
 
-export default connect(state => ({ messages: state.userDisplayMessages }))(LogTab);
+export default connect(state => ({ messages: state.others.userDisplayMessages }))(LogTab);
