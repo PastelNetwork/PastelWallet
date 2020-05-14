@@ -7,6 +7,7 @@ import NodeStatus from './containers/AddOns/NodeStatus';
 import WalletAddress from './containers/AddOns/WalletAddress';
 import LogTab from './containers/AddOns/LogTab';
 import RegisterImage from './containers/RegisterImage';
+import Gallery from './containers/Gallery';
 
 
 const ipcRenderer = window.require('electron').ipcRenderer;
@@ -28,7 +29,7 @@ class App extends Component {
                 <Route path='/main' component={MainScreen}/>
                 <Route path='/profile' component={PastelID}/>
                 <Route path='/register' component={RegisterImage}/>
-                <Route path='/gallery' component={PastelID}/>
+                <Route path='/gallery' component={Gallery}/>
                 <Route path='/info' component={PastelID}/>
                 {/*<Route exact path='/register' component={ImageRegisterFormContainer}/>*/}
                 {/*<Route path='/user_profile' component={ProfileEdit}/>*/}

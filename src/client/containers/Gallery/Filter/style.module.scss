@@ -1,0 +1,19 @@
+.filter {
+  span {
+    user-select: none;
+    cursor: pointer;
+    color: var(--text-grey);
+    font-size: 14px;
+    font-weight: bold;
+    &.active, &.active:hover {
+      cursor: default;
+      color: var(--pink);
+    }
+    &:hover {
+      color: var(--grey-3);
+    }
+    &:active {
+      color: var(--text-grey);
+    }
+  }
+}

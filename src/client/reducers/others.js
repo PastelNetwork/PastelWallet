@@ -14,8 +14,6 @@ const initialState = {
   pastelIDError: null,
   currentPastelID: null,
   currentPassphrase: '',
-  artworksData: null,
-  artworksDataLoading: false,
   blockchainInfo: null,
   pslSendError: null
 };
@@ -46,10 +44,6 @@ export default function (state = initialState, action) {
       return { ...state, currentPastelID: action.value };
     case actionTypes.SET_CURRENT_PASSPHRASE:
       return { ...state, currentPassphrase: action.value };
-    case actionTypes.SET_ARTWORKS_DATA:
-      return { ...state, artworksData: action.value };
-    case actionTypes.SET_ARTWORKS_DATA_LOADING:
-      return { ...state, artworksDataLoading: action.value };
     case actionTypes.SET_BLOCKCHAIN_INFO:
       return { ...state, blockchainInfo: action.value };
     case actionTypes.SET_PSL_SEND_ERROR:
