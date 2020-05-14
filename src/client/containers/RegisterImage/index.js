@@ -9,8 +9,10 @@ import history from '../../history';
 import * as constants from '../../constants';
 import * as actionTypes from '../../actionTypes';
 import { setImageRegFormState } from '../../actions';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import Success from './Success';
 
-class RegisterImage extends Component {
+class RegisterForm extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -33,9 +35,11 @@ class RegisterImage extends Component {
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+    this.props.dispatch({type: actionTypes.SET_ARTWORK_NAME, value: this.state.artName})
   };
-  onAddImageChange = (filePath) => {
+  onAddImageChange = (filePath, base64File) => {
     this.setState({ filePath });
+    this.props.dispatch({type: actionTypes.SET_ARTWORK_FILE, value: base64File})
   };
   getFeeClick = () => {
     ipcRenderer.send('imageRegFormSubmit', this.state);
@@ -126,7 +130,7 @@ class RegisterImage extends Component {
         </React.Fragment>;
         break;
       case constants.IMAGE_REG_FORM_STATE_ACT_TICKET_RECEIVED:
-        msg = this.props.imageRegFormMessage;
+        history.push('/register/success');
         break;
       case constants.IMAGE_REG_FORM_STATE_ERROR:
         msg = this.props.imageRegFormMessage;
@@ -204,7 +208,8 @@ class RegisterImage extends Component {
   }
 }
 
-export default connect(state => ({
+
+const formStateToProps =state => ({
   regFormError: state.registration.regFormError,
   artNameError: state.registration.regFormError.artName,
   artFileError: state.registration.regFormError.artFile,
@@ -216,4 +221,14 @@ export default connect(state => ({
   txid: state.registration.regFormTxid,
   regFormTxidAct: state.registration.regFormTxidAct,
   imageRegFormMessage: state.registration.imageRegFormMessage
-}))(RegisterImage);
+});
+
+
+const RegisterImage = (props) => {
+  return <Switch>
+    <Route path='/register/success' component={Success}/>
+    <Route path='/register' component={connect(formStateToProps)(RegisterForm)}/>
+  </Switch>;
+};
+
+export default withRouter(RegisterImage);

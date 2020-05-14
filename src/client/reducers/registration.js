@@ -9,10 +9,12 @@ const initialState = {
   regFormTxid: null,
   regFormTxidAct: null,
   workerFee: null,
-  imageRegFormMessage: ''
+  imageRegFormMessage: '',
+  artworkName: '',
+  base64File: null
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_IMAGE_REGISTER_FORM_ERROR:
       return { ...state, regFormError: { ...state.regFormError, [action.key]: action.value } };
@@ -32,8 +34,12 @@ export default function(state = initialState, action) {
       return { ...state, workerFee: action.value };
     case actionTypes.SET_IMAGE_REGISTER_MESSAGE:
       return { ...state, imageRegFormMessage: action.value };
+    case actionTypes.SET_ARTWORK_NAME:
+      return { ...state, artworkName: action.value };
+    case actionTypes.SET_ARTWORK_FILE:
+      return { ...state, base64File: action.value };
     case actionTypes.RESET_REGISTRATION:
-      return {...initialState};
+      return { ...initialState };
     default:
       return state;
   }

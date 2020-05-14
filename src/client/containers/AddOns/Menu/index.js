@@ -21,7 +21,7 @@ class Menu extends Component {
     if (location.pathname === '/pastel_id') {
       return null;
     }
-    const isActive = (url) => location.pathname === url;
+    const isActive = (url) => location.pathname.startsWith(url);
 
     let link = <h6 onClick={() => history.push('/profile')}>Edit</h6>;
     if (isActive('/profile')) {

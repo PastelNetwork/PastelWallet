@@ -27,9 +27,10 @@ class AddImage extends Component {
   onChange = (e) => {
     if (e.target.files.length) {
       let file = e.target.files[0];
-      this.setState({ file: URL.createObjectURL(file), path: file.path, name: file.name });
+      const base64File = URL.createObjectURL(file);
+      this.setState({ file: base64File, path: file.path, name: file.name });
       if (this.props.onChange) {
-        this.props.onChange(file.path);
+        this.props.onChange(file.path, base64File);
       }
     }
   };
