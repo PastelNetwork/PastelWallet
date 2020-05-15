@@ -136,7 +136,6 @@ const imageRegistrationStep3Handler = (event, data) => {
                 const blocks = response.data.result.blocks;
                 const intervalId = setInterval(() => {
                     callRpcMethod('getinfo').then(r => {
-                       addMessageToBox(`Calling getinfo in a loop started from ${blocks}, current ${r.data.blocks}`);
                        if (r.data.result.blocks - blocks >= 1) {
                            clearInterval(intervalId);
                            createActivationTicket(event, ['register', 'act', ...actTicketParams]);

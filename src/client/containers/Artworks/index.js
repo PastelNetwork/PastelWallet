@@ -2,23 +2,9 @@ import React, { Component } from 'react';
 import { MainWrapper } from '../../components/MainWrapperComponent';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
-import { RESPONSE_STATUS_OK } from '../../../client/constants';
-import { store } from '../../../client/app';
-import { SET_ARTWORKS_DATA, SET_ARTWORKS_DATA_LOADING } from '../../../client/actionTypes';
+import { SET_ARTWORKS_DATA_LOADING } from '../../../client/actionTypes';
 import { BarLoader } from 'react-spinners';
 import history from '../../../client/history';
-
-const ipcRenderer = window.require('electron').ipcRenderer;
-
-ipcRenderer.on('artworksDataResponse', (event, data) => {
-  if (data.status === RESPONSE_STATUS_OK) {
-    console.log(data);
-    store.dispatch({ type: SET_ARTWORKS_DATA, value: data.data });
-    store.dispatch({ type: SET_ARTWORKS_DATA_LOADING, value: false });
-  } else {
-    console.log('Error requesting artworks data');
-  }
-});
 
 class SingleArtworkCard extends Component {
   render () {

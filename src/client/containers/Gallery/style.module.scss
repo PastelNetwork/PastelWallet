@@ -6,3 +6,14 @@
     font-weight: bold;
   }
 }
+
+.artworks {
+  display: flex;
+  margin-top: 3px;
+  margin-left: -12.5px;
+  flex-wrap: wrap;
+  height: 408px;
+  width: calc(100% + 40px);
+  padding-right: 15px;
+  overflow: scroll;
+}
