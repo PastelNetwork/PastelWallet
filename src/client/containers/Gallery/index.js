@@ -7,6 +7,8 @@ import Artwork from './Artwork';
 import { SET_ARTWORKS_DATA_LOADING } from '../../actionTypes';
 import { ipcRenderer } from '../../ipc/ipc';
 import { SHOW_ALL } from './constants';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import Detail from './Detail';
 
 const getSampleSaleData = () => {
   if (Math.random() <= 0.33) {
@@ -23,7 +25,7 @@ const getSampleSaleData = () => {
   }
 };
 
-class Gallery extends Component {
+class ArtworkList extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -60,8 +62,17 @@ class Gallery extends Component {
   }
 }
 
-export default connect(state => ({
+const stateToProps = state => ({
   data: state.artworks.data,
   loading: state.artworks.loading,
   pastelID: state.others.currentPastelID
-}))(Gallery);
+});
+
+const Gallery = () => {
+  return <Switch>
+    <Route path='/gallery/:image_hash' component={Detail}/>
+    <Route path='/gallery' component={connect(stateToProps)(ArtworkList)}/>
+  </Switch>
+};
+
+export default withRouter(Gallery);

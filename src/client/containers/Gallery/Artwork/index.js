@@ -3,27 +3,11 @@ import * as style from './style.module.scss';
 import { Button } from '../../../components/common';
 import { connect } from 'react-redux';
 import { BTN_TYPE_GREEN } from '../../../components/common/constants';
-
-// {
-//     'artistPastelId': artwork.artist_pastelid,
-//     'name': artwork.artwork_title,
-//     'numOfCopies': artwork.total_copies,
-//     'copyPrice': -1,
-//     'thumbnailPath': artwork.get_thumbnail_path(),
-//     'artistName': artwork.artist_name,
-//     'artistWebsite': artwork.artist_website,
-//     'artistWrittenStatement': artwork.artist_written_statement,
-//     'artworkSeriesName': artwork.artwork_series_name,
-//     'artworkCreationVideoYoutubeUrl': artwork.artwork_creation_video_youtube_url,
-//     'artworkKeywordSet': artwork.artwork_keyword_set,
-//     'imageHash': artwork.get_image_hash_digest(),
-//     'blocknum': artwork.blocknum,
-//     'orderBlockTxid': artwork.order_block_txid
-// }
+import history from '../../../history';
 
 class Artwork extends Component {
   render () {
-    const { artistPastelId, name, numOfCopies, thumbnailPath } = this.props.data;
+    const { artistPastelId, name, numOfCopies, thumbnailPath, imageHash } = this.props.data;
     const { forSale, price } = this.props.saleData;
     return <div className={style.artwork}>
       {artistPastelId === this.props.pastelID ?
@@ -36,7 +20,8 @@ class Artwork extends Component {
       <div className={style['col-container']}>
         <p><b>Total</b> {numOfCopies} copies</p>
         <p><b>Pastel ID</b> {artistPastelId.substr(0, 10)}</p>
-        <Button style={{ width: '145px', marginLeft: '16px', marginTop: '7px' }}>More details</Button>
+        <Button style={{ width: '145px', marginLeft: '16px', marginTop: '7px' }}
+        onClick={() => history.push(`/gallery/${imageHash}`)}>More details</Button>
 
         {forSale ?
           <div style={{
