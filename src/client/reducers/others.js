@@ -12,8 +12,10 @@ const initialState = {
   userDisplayMessages: [],
   pastelIDs: null,
   pastelIDError: null,
-  currentPastelID: null,
-  currentPassphrase: '',
+  // currentPastelID: null,
+  currentPastelID: 'jXYkL1nzrubvZNeRgH5hdma4Wry6FzqCNQ8dawyKMpzQrwjgieTAePYYfSLru5yhqGKzDbXbqP3MaxJWdAztas',
+  // currentPassphrase: '',
+  currentPassphrase: 'taksa',
   blockchainInfo: null,
   pslSendError: null
 };

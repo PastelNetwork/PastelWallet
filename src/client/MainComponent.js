@@ -32,7 +32,7 @@ class App extends Component {
         {/*<Route path='/user_profile' component={ProfileEdit}/>*/}
         {/*<Route exact path='/artworks/:image_hash' component={ArtworkDetails}/>*/}
         {/*<Route exact path='/artworks' component={Artworks}/>*/}
-        <Redirect to='/pastel_id'/>
+        <Redirect to='/main'/>
       </Switch>
       <WalletAddress/>
       <LogTab/>
