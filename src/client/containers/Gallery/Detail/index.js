@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Wrapper, Card } from '../../../components/common';
+import { Wrapper, Card, Button } from '../../../components/common';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
 import history from '../../../history';
+import { BTN_TYPE_GREEN } from '../../../components/common/constants';
 
 // {
 //     'artistPastelId': artwork.artist_pastelid,
@@ -22,20 +23,38 @@ import history from '../../../history';
 // }
 
 class Detail extends Component {
+  componentDidMount () {
+
+  }
+
   render () {
+    const saleData = {
+      forSale: true,
+      price: 1232
+    };
     const imageHash = this.props.match.params.image_hash;
-    const data = this.props.artworksData.filter(a => a.imageHash === imageHash)[0];
-    const {name} = data;
+    const data = this.props.artworksData ? this.props.artworksData.filter(a => a.imageHash === imageHash)[0] : {};
+    const { name, orderBlockTxid, thumbnailPath } = data;
     return <Wrapper>
       <Card>
-        <div onClick={() => history.goBack()}>{'<<'} Back to gallery</div>
+        <div onClick={() => history.goBack()} className={style.backlink}>{'<<'} Back to gallery</div>
+
         <div className={style.artwork}>
-          TXID: {'txid'}
-          <h1>{name}</h1>
+          <p className={style.txid}><span>TXID</span> {orderBlockTxid}</p>
+          <img src={`file://${thumbnailPath}`} alt=""/>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <h3>{name}</h3>
+              {saleData.forSale ? <span className={style.price}>
+                {saleData.price} PSL
+              </span> : null}
+            </div>
+              <Button btnType={BTN_TYPE_GREEN} style={{ width: '145px', height: '37px', marginTop: '20px' }}>Sell artwork</Button>
+          </div>
         </div>
       </Card>
     </Wrapper>;
   }
 }
 
-export default connect(state => ({artworksData: state.artworks.data}))(Detail);
+export default connect(state => ({ artworksData: state.artworks.data }))(Detail);

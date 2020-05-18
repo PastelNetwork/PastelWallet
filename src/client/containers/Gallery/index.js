@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
 import { Card, Wrapper } from '../../components/common';
@@ -33,25 +33,18 @@ class ArtworkList extends Component {
     };
   }
 
-  componentDidMount () {
-    if (!this.props.data) {
-      ipcRenderer.send('artworksDataRequest', {});
-      this.props.dispatch({ type: SET_ARTWORKS_DATA_LOADING, value: true });
-    }
-  }
-
   onFilterChange = (value) => {
     this.setState({ filter: value });
   };
 
   render () {
-    const columns = {0: [], 1: [], 2: []};
+    const columns = { 0: [], 1: [], 2: [] };
     this.props.data && this.props.data.filter(item => {
       if (this.state.filter === SHOW_ALL) {
         return true;
       }
       return item.artistPastelId === this.props.pastelID;
-    }).map((item, idx) => columns[idx%3].push(<Artwork data={item} key={idx} saleData={getSampleSaleData()}/>)
+    }).map((item, idx) => columns[idx % 3].push(<Artwork data={item} key={idx} saleData={getSampleSaleData()}/>)
     );
 
     return <Wrapper>
@@ -74,11 +67,19 @@ const stateToProps = state => ({
   pastelID: state.others.currentPastelID
 });
 
-const Gallery = () => {
+const Gallery = (props) => {
+  useEffect(() => {
+    if (!props.data) {
+      ipcRenderer.send('artworksDataRequest', {});
+      props.dispatch({ type: SET_ARTWORKS_DATA_LOADING, value: true });
+    }
+  }, []);
   return <Switch>
     <Route path='/gallery/:image_hash' component={Detail}/>
     <Route path='/gallery' component={connect(stateToProps)(ArtworkList)}/>
   </Switch>;
 };
 
-export default withRouter(Gallery);
+export default connect(
+  state => ({ data: state.artworks.data, }))(
+  withRouter(Gallery));
