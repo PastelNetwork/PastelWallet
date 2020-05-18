@@ -9,6 +9,7 @@
 
 .artworks {
   display: flex;
+  //justify-content: space-between;
   margin-top: 3px;
   margin-left: -12.5px;
   flex-wrap: wrap;
@@ -16,4 +17,11 @@
   width: calc(100% + 40px);
   padding-right: 15px;
   overflow: scroll;
+}
+
+.art-column {
+  display: flex;
+  flex-direction: column;
+  width: 173px;
+  margin: 0 12.5px;
 }
