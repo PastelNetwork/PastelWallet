@@ -81,5 +81,5 @@ const Gallery = (props) => {
 };
 
 export default connect(
-  state => ({ data: state.artworks.data, }))(
+  state => ({ data: state.artworks.data }))(
   withRouter(Gallery));

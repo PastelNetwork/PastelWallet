@@ -23,10 +23,6 @@ import { BTN_TYPE_GREEN } from '../../../components/common/constants';
 // }
 
 class Detail extends Component {
-  componentDidMount () {
-
-  }
-
   render () {
     const saleData = {
       forSale: true,
@@ -34,13 +30,19 @@ class Detail extends Component {
     };
     const imageHash = this.props.match.params.image_hash;
     const data = this.props.artworksData ? this.props.artworksData.filter(a => a.imageHash === imageHash)[0] : {};
-    const { name, orderBlockTxid, thumbnailPath } = data;
+    const { name, orderBlockTxid, thumbnailPath, artistPastelId } = data;
     return <Wrapper>
       <Card>
         <div onClick={() => history.goBack()} className={style.backlink}>{'<<'} Back to gallery</div>
 
         <div className={style.artwork}>
           <p className={style.txid}><span>TXID</span> {orderBlockTxid}</p>
+      {
+        artistPastelId === this.props.pastelId ?
+        <div className={style['my-sticker']}>my</div> : null}
+      {saleData.forSale ?
+        <div className={style['sale-sticker']}>for sale</div> : null}
+
           <img src={`file://${thumbnailPath}`} alt=""/>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
@@ -57,4 +59,9 @@ class Detail extends Component {
   }
 }
 
-export default connect(state => ({ artworksData: state.artworks.data }))(Detail);
+export default connect(
+  state => ({
+    artworksData: state.artworks.data,
+    pastelId: state.others.currentPastelID
+  }))
+(Detail);

@@ -1,9 +1,9 @@
 .artwork {
+  position: relative;
   overflow: scroll;
   height: 468px;
   width: 596px;
   padding-right: 25px;
-  //margin
 
   img {
     margin-top: 8px;
@@ -42,4 +42,30 @@
   color: var(--success);
   font-size: 16px;
   line-height: 27px;
+}
+
+.my-sticker, .sale-sticker {
+  height: 23px;
+  position: absolute;
+  font-size: 14px;
+  color: var(--grey-2);
+  text-align: center;
+  vertical-align: middle;
+  border-bottom-right-radius: 6px;
+}
+.my-sticker {
+  top: 34px;
+  border-top-left-radius: 6px;
+  width: 57px;
+  z-index: 3;
+  background-color: var(--black);
+
+}
+.sale-sticker {
+  top: 34px;
+  border-bottom-left-radius: 6px;
+  width: 63px;
+  z-index: 2;
+  left: 52px;
+  background-color: var(--success);
 }
