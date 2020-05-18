@@ -10,6 +10,7 @@
     width: 100%;
     border-radius: 6px;
   }
+
   h3 {
     margin-top: 17px;
     margin-bottom: 2px;
@@ -53,6 +54,7 @@
   vertical-align: middle;
   border-bottom-right-radius: 6px;
 }
+
 .my-sticker {
   top: 34px;
   border-top-left-radius: 6px;
@@ -61,6 +63,7 @@
   background-color: var(--black);
 
 }
+
 .sale-sticker {
   top: 34px;
   border-bottom-left-radius: 6px;
@@ -68,4 +71,25 @@
   z-index: 2;
   left: 52px;
   background-color: var(--success);
+}
+
+.data {
+  margin-top: 15px;
+  h5 {
+    font-size: 14px;
+    color: var(--black);
+    font-weight: 900;
+  }
+
+  p {
+    font-size: 12px;
+    margin-top: 5px;
+    color: var(--text-grey);
+    word-break: break-all;
+  }
+  .line {
+    margin-top: 5px;
+    width: 100%;
+    border-bottom: 1px solid var(--grey-1);
+  }
 }
