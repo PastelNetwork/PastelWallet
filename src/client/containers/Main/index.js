@@ -58,9 +58,9 @@ class Main extends Component {
 }
 
 export default connect(state => ({
-  balance: state.others.balance,
+  balance: state.blockchain.balance,
   currentPastelID: state.others.currentPastelID,
-  artworks: state.others.artworks,
-  masternodes: state.others.masternodes,
-  blockchainInfo: state.others.blockchainInfo
+  artworks: state.blockchain.artworks,
+  masternodes: state.blockchain.masternodes,
+  blockchainInfo: state.blockchain.blockchainInfo
 }), dispatch => ({ dispatch }))(Main);

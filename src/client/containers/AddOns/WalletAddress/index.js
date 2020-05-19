@@ -13,4 +13,4 @@ const WalletAddress = (props) => {
   </div>
 };
 
-export default connect(state => ({address: state.others.blockchainAddress}))(WalletAddress)
+export default connect(state => ({address: state.blockchain.blockchainAddress}))(WalletAddress)

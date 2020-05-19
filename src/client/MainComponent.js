@@ -8,6 +8,7 @@ import WalletAddress from './containers/AddOns/WalletAddress';
 import LogTab from './containers/AddOns/LogTab';
 import RegisterImage from './containers/RegisterImage';
 import Gallery from './containers/Gallery';
+import Info from './containers/Info';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -27,9 +28,9 @@ class App extends Component {
         <Route path='/profile' component={PastelID}/>
         <Route path='/register' component={RegisterImage}/>
         <Route path='/gallery' component={Gallery}/>
-        <Route path='/info' component={PastelID}/>
-        {/*<Route path='/user_profile' component={ProfileEdit}/>*/}
-        <Redirect to='/main'/>
+        <Route path='/info' component={Info}/>
+        {/*<Redirect to='/pastel_id'/>*/}
+        <Redirect to='/info'/>
       </Switch>
       <WalletAddress/>
       <LogTab/>

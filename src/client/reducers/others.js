@@ -3,10 +3,6 @@ import * as constants from '../constants';
 
 const initialState = {
   userProfile: null,
-  blockchainAddress: null,
-  balance: null,
-  artworks: 0,
-  masternodes: 0,
   cNodeStatus: constants.NODE_STATUS_PENDING,
   pyNodeStatus: constants.NODE_STATUS_PENDING,
   userDisplayMessages: [],
@@ -16,20 +12,11 @@ const initialState = {
   currentPastelID: 'jXYkL1nzrubvZNeRgH5hdma4Wry6FzqCNQ8dawyKMpzQrwjgieTAePYYfSLru5yhqGKzDbXbqP3MaxJWdAztas',
   // currentPassphrase: '',
   currentPassphrase: 'taksa',
-  blockchainInfo: null,
   pslSendError: null
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_BLOCKCHAIN_ADDRESS:
-      return { ...state, blockchainAddress: action.value };
-    case actionTypes.SET_MASTERNODE_QUANTITY:
-      return { ...state, masternodes: action.value };
-    case actionTypes.SET_ARTWORK_QUANTITY:
-      return { ...state, artworks: action.value };
-    case actionTypes.SET_BALANCE:
-      return { ...state, balance: action.value };
     case actionTypes.SET_USER_PROFILE:
       return { ...state, userProfile: action.value };
     case actionTypes.SET_CNODE_STATUS:
@@ -46,8 +33,6 @@ export default function (state = initialState, action) {
       return { ...state, currentPastelID: action.value };
     case actionTypes.SET_CURRENT_PASSPHRASE:
       return { ...state, currentPassphrase: action.value };
-    case actionTypes.SET_BLOCKCHAIN_INFO:
-      return { ...state, blockchainInfo: action.value };
     case actionTypes.SET_PSL_SEND_ERROR:
       return { ...state, pslSendError: action.value };
     case actionTypes.RESET_STORE:
