@@ -16,6 +16,7 @@ class App extends Component {
   componentDidMount () {
     ipcRenderer.send('blockchainDataRequest', {});
     ipcRenderer.send('getInfoRequest', {});
+    ipcRenderer.send('getPeerInfoRequest', {});
   }
 
   render () {

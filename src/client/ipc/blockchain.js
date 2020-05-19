@@ -5,7 +5,7 @@ import {
     SET_MASTERNODE_QUANTITY,
     SET_BLOCKCHAIN_INFO,
     SET_PSL_SEND_ERROR,
-    SET_CNODE_STATUS, SET_PYNODE_STATUS, SET_BLOCKCHAIN_ADDRESS, ADD_MESSAGE
+    SET_CNODE_STATUS, SET_PYNODE_STATUS, SET_BLOCKCHAIN_ADDRESS, ADD_MESSAGE, SET_PEER_INFO
 } from '../actionTypes';
 import { getBalance, setBalance } from '../actions';
 import {ipcRenderer} from './ipc';
@@ -40,6 +40,14 @@ ipcRenderer.on('getInfoResponse', (event, data) => {
         store.dispatch({type: SET_BLOCKCHAIN_INFO, value: data.data});
     } else {
         console.log('Error white calling getInfo: ' + data)
+    }
+});
+
+ipcRenderer.on('getPeerInfoResponse', (event, data) => {
+    if (data.status === RESPONSE_STATUS_OK) {
+        store.dispatch({type: SET_PEER_INFO, value: data.data});
+    } else {
+        console.log('Error white calling getPeerInfo: ' + data)
     }
 });
 

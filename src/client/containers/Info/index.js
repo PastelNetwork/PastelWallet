@@ -12,7 +12,7 @@ const mainItems = [
 
 class Info extends Component {
   render () {
-    console.log(this.props.info);
+    console.log(this.props.peerInfo);
     return <Wrapper>
       <Card className={style.card}>
         <h3>MAIN INFORMATION</h3>

@@ -21,6 +21,7 @@ export const DATA_TYPE_USER_PICTURE = 1;
 
 export const GETBALANCE_COMMAND = 'getbalance';
 export const GETINFO_COMMAND = 'getinfo';
+export const GET_PEER_INFO_COMMAND = 'getpeerinfo';
 export const GET_ACCOUNT_ADDRESS_COMMAND = 'getaccountaddress';
 export const SEND_TO_ADDRESS_COMMAND = 'sendtoaddress';
 

@@ -18,6 +18,7 @@ import { GET_ACCOUNT_ADDRESS_COMMAND } from './constants';
 import { GETINFO_COMMAND } from './constants';
 import { initDatabase } from './main-process/database';
 import * as fs from 'fs';
+import { GET_PEER_INFO_COMMAND } from './constants';
 
 const PING_RESOURCE = `${LOCAL_PY_URL}ping`;
 
@@ -120,6 +121,20 @@ ipcMain.on('getInfoRequest', (event, arg) => {
     });
   }).catch((err) => {
     win.webContents.send('getInfoResponse', {
+      status: RESPONSE_STATUS_ERROR,
+      msg: err.response.data.error.message
+    });
+  });
+});
+
+ipcMain.on('getPeerInfoRequest', (event, arg) => {
+  return callRpcMethod(GET_PEER_INFO_COMMAND, []).then((response) => {
+    win.webContents.send('getPeerInfoResponse', {
+      status: RESPONSE_STATUS_OK,
+      data: response.data.result
+    });
+  }).catch((err) => {
+    win.webContents.send('getPeerInfoResponse', {
       status: RESPONSE_STATUS_ERROR,
       msg: err.response.data.error.message
     });
