@@ -10,21 +10,6 @@ import { SHOW_ALL } from './constants';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import Detail from './Detail';
 
-const getSampleSaleData = () => {
-  if (Math.random() <= 0.33) {
-    return {
-      forSale: true,
-      price: 1232
-    };
-  } else {
-    return {
-      forSale: false,
-      price: -1
-    };
-
-  }
-};
-
 class ArtworkList extends Component {
   constructor (props) {
     super(props);
@@ -44,7 +29,7 @@ class ArtworkList extends Component {
         return true;
       }
       return item.artistPastelId === this.props.pastelID;
-    }).map((item, idx) => columns[idx % 3].push(<Artwork data={item} key={idx} saleData={getSampleSaleData()}/>)
+    }).map((item, idx) => columns[idx % 3].push(<Artwork data={item} key={idx} saleData={item.saleData}/>)
     );
 
     return <Wrapper>

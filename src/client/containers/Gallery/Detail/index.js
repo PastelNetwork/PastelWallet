@@ -4,6 +4,7 @@ import * as style from './style.module.scss';
 import { connect } from 'react-redux';
 import history from '../../../history';
 import { BTN_TYPE_GREEN } from '../../../components/common/constants';
+import { getSampleSaleData } from '../index';
 
 // {
 //     'artistPastelId': artwork.artist_pastelid,
@@ -34,18 +35,23 @@ const humanReadableFieldNames = {
   imageHash: 'Artwork image hash (SHA3-512 digest)',
   blocknum: 'Registration ticket block number'
 };
+
 const dataFieldNames = ['artistPastelId', 'numOfCopies', 'copyPrice', 'artistWebsite', 'artistWrittenStatement', 'artworkSeriesName', 'artworkCreationVideoYoutubeUrl', 'artworkKeywordSet', 'imageHash', 'blocknum'];
 
 class Detail extends Component {
-  render () {
-    const saleData = {
-      forSale: true,
-      price: 1232
-    };
+  constructor (props) {
+    super(props);
+    this.state = {
+      sellMode: false,
+      buyMode: false
+    }
+  }
 
+  render () {
     const imageHash = this.props.match.params.image_hash;
     const data = this.props.artworksData ? this.props.artworksData.filter(a => a.imageHash === imageHash)[0] : {};
-    const { name, orderBlockTxid, thumbnailPath, artistPastelId, artistWrittenStatement } = data;
+    const {forSale, price} = data.saleData ? data.saleData : {};
+    const { name, orderBlockTxid, thumbnailPath, artistPastelId } = data;
     const isMy = artistPastelId === this.props.pastelId;
     return <Wrapper>
       <Card>
@@ -53,14 +59,14 @@ class Detail extends Component {
 
         <div className={style.artwork}>
           {isMy ? <div className={style['my-sticker']}>my</div> : null}
-          {saleData.forSale ? <div className={style['sale-sticker']}>for sale</div> : null}
+          {forSale ? <div className={style['sale-sticker']}>for sale</div> : null}
           <p className={style.txid}><span>TXID</span> {orderBlockTxid}</p>
           <img src={`file://${thumbnailPath}`} alt=""/>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
               <h3>{name}</h3>
-              {saleData.forSale ? <span className={style.price}>
-                {saleData.price} PSL
+              {forSale ? <span className={style.price}>
+                {price} PSL
               </span> : null}
             </div>
             <Button btnType={BTN_TYPE_GREEN} style={{ width: '145px', height: '37px', marginTop: '20px' }}>Sell

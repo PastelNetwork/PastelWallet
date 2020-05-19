@@ -29,7 +29,7 @@ class Artwork extends Component {
 
   render () {
     const { artistPastelId, name, numOfCopies, thumbnailPath, imageHash } = this.props.data;
-    const { forSale, price } = this.props.saleData;
+    const { forSale, price } = this.props.data.saleData;
 
     let bottomBlock = <React.Fragment>
       <Button style={{ width: '145px', marginLeft: '16px', marginTop: '7px' }}
@@ -46,7 +46,7 @@ class Artwork extends Component {
         </div> : null}
       {artistPastelId === this.props.pastelID ?
         <Button btnType={BTN_TYPE_GREEN} style={{ width: '145px', marginLeft: '16px', marginTop: '3px' }}
-                onClick={() => this.setState({ sellMode: true })}>Sell artwork copy</Button> : null
+                onClick={() => this.setState({ sellMode: true })} disabled={forSale}>Sell artwork copy</Button> : null
       }
     </React.Fragment>;
 
