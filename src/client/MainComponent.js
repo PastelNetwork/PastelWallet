@@ -28,10 +28,7 @@ class App extends Component {
         <Route path='/register' component={RegisterImage}/>
         <Route path='/gallery' component={Gallery}/>
         <Route path='/info' component={PastelID}/>
-        {/*<Route exact path='/register' component={ImageRegisterFormContainer}/>*/}
         {/*<Route path='/user_profile' component={ProfileEdit}/>*/}
-        {/*<Route exact path='/artworks/:image_hash' component={ArtworkDetails}/>*/}
-        {/*<Route exact path='/artworks' component={Artworks}/>*/}
         <Redirect to='/main'/>
       </Switch>
       <WalletAddress/>
