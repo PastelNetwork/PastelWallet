@@ -1,3 +1,8 @@
+.scroller  {
+  height: 525px;
+  overflow: scroll;
+  border-radius: 6px;
+}
 .card {
   margin-bottom: 8px;
   h3 {
@@ -16,4 +21,24 @@
     color: var(--text-grey);
     line-height: 19px;
   }
+}
+
+.peer {
+  margin-bottom: 20px;
+  p {
+    color: var(--text-grey);
+    font-size: 12px;
+    line-height: 19px;
+    span {
+      font-weight: bold;
+      font-size: 14px;
+      color: var(--black);
+    }
+  }
+}
+
+.show-all {
+  color: var(--blue);
+  font-size: 14px;
+  cursor: pointer;
 }
