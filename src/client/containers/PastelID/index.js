@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { ipcRenderer } from '../../ipc/ipc';
 import { Button, Divider, Input, Dropdown, Spinner } from '../../components/common';
 import * as actionTypes from '../../actionTypes';
+import history from '../../history';
 
 import {
   PASTELID_REG_STATUS_IN_PROGRESS,
@@ -13,8 +14,10 @@ import {
 } from '../../constants';
 import { BTN_TYPE_GREEN } from '../../components/common/constants';
 import { setPasteIDError } from '../../actions';
-import { withRouter } from 'react-router-dom';
-import { store } from '../../app';
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
+import Create from './Create';
+import Import from './Import';
+import Wrapper from './Wrapper';
 
 const regStatusVerbose = {
   [PASTELID_REG_STATUS_REGISTERED]: <span style={{ color: 'var(--success)' }}>(registered)</span>,
@@ -69,7 +72,6 @@ class PastelIDSelect extends Component {
   };
 
   render () {
-    console.log(this.props.match.params.key);
     const proceedButton = (disabled, marginTop) => {
       return <Button btnType={BTN_TYPE_GREEN}
                      style={{ width: '100%', marginTop: marginTop }}
@@ -122,8 +124,7 @@ class PastelIDSelect extends Component {
       </Button>;
     }
 
-    return <div className={style['main']}>
-      <div className={style['wrapper']}>
+    return <Wrapper>
         <div className={style.text} style={{ marginBottom: '8px' }}>Please choose which <b>PastelID</b> to use</div>
         <Dropdown onChange={this.onChange}
                   value={this.props.selectedPastelId}
@@ -137,17 +138,16 @@ class PastelIDSelect extends Component {
         <Divider style={{ marginTop: '25px' }}/>
         <div className={style.text} style={{ marginTop: '16px' }}>If you do not have <b>Pastel ID</b> you can</div>
         <div className={style['btn-block']}>
-          <Button style={{ width: '43%' }}>Create new</Button>
+          <Button style={{ width: '43%' }} onClick={() => history.push('/pastel_id/create')}>Create new</Button>
           or
-          <Button style={{ width: '43%' }}>Import existing</Button>
+          <Button style={{ width: '43%' }} onClick={() => history.push('/pastel_id/import')}>Import existing</Button>
         </div>
 
-      </div>
-    </div>;
+    </Wrapper>;
   }
 }
 
-export default withRouter(connect(state => (
+const stateToProps = state => (
   {
     pastelIDs: state.pastelid.pastelIDs,
     blockchainAddress: state.blockchain.blockchainAddress,
@@ -156,4 +156,15 @@ export default withRouter(connect(state => (
     selectedPastelId: state.pastelid.selectedPastelId,
     passphrase: state.pastelid.passphrase
   }
-))(PastelIDSelect));
+);
+
+const PastelID = (props) => {
+  return <Switch>
+    <Route path='/pastel_id/select' component={connect(stateToProps)(PastelIDSelect)}/>
+    <Route path='/pastel_id/create' component={Create}/>
+    <Route path='/pastel_id/import' component={Import}/>
+    <Redirect to='/pastel_id/select'/>
+  </Switch>;
+};
+
+export default withRouter(PastelID);

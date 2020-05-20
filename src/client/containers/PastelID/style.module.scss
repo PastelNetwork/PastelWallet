@@ -1,30 +1,13 @@
-.main {
-  width: 100vw;
-  height: 100vh;
-  background-image: url('../../assets/images/home_bg.jpg');
-  background-repeat: no-repeat;
-  background-position-y: 20px;
+.text {
+  color: var(--text-grey);
+  font-size: 14px;
 }
-
-.wrapper {
-  width: 336px;
-  background-image: url('../../assets/logo/Pastel_logo_Primary.png');
-  background-repeat: no-repeat;
-  background-position: 120px 81px;
-  background-size: 100px;
-  margin: auto auto 50px;
-  padding-top: 231px;
-  .text {
-    color: var(--text-grey);
-    font-size: 14px;
-  }
-  .btn-block {
-    display: flex;
-    justify-content: space-between;
-    line-height: 37px;
-    color: var(--black);
-    margin-top: 8px;
-  }
+.btn-block {
+  display: flex;
+  justify-content: space-between;
+  line-height: 37px;
+  color: var(--black);
+  margin-top: 8px;
 }
 
 .in-progress-msg {
