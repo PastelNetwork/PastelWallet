@@ -24,10 +24,15 @@ ipcRenderer.on('pastelIdCreateResponse', (event, data) => {
   switch (data.status) {
     case constants.RESPONSE_STATUS_ERROR:
       store.dispatch(setPasteIDError(data.err));
-      history.push('/pastel_id/error');
       break;
     case constants.RESPONSE_STATUS_OK:
-      history.push('/pastel_id/fetching');
+      // set message,
+      store.dispatch({
+        type: actionTypes.SET_PASTEL_ID_MSG,
+        value: 'Pastel ID was created'
+      });
+      ipcRenderer.send('pastelIdList', {});
+      history.push('/pastel_id/select');
       break;
     default:
       break;
@@ -38,7 +43,6 @@ ipcRenderer.on('pastelIdImportResponse', (event, data) => {
   switch (data.status) {
     case constants.RESPONSE_STATUS_ERROR:
       store.dispatch(setPasteIDError(data.err));
-      history.push('/pastel_id/error');
       break;
     case constants.RESPONSE_STATUS_OK:
       history.push('/pastel_id/fetching');

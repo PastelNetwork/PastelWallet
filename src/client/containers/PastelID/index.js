@@ -11,7 +11,7 @@ const PastelID = (props) => {
     <Route path='/pastel_id/select' component={Select}/>
     <Route path='/pastel_id/create' component={Create}/>
     <Route path='/pastel_id/import' component={Import}/>
-    <Redirect to='/pastel_id/select'/>
+    <Redirect to='/pastel_id/create'/>
   </Switch>;
 };
 
