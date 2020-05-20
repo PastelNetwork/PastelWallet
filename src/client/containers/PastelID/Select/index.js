@@ -135,9 +135,9 @@ class PastelIDSelect extends Component {
         <Divider style={{ marginTop: '25px' }}/>
         <div className={style.text} style={{ marginTop: '16px' }}>If you do not have <b>Pastel ID</b> you can</div>
         <div className={style['btn-block']}>
-          <Button style={{ width: '43%' }} onClick={() => history.push('/pastel_id/create')}>Create new</Button>
+          <Button style={{ width: '43%' }} onClick={() => {history.push('/pastel_id/create'); this.resetErrors()}}>Create new</Button>
           or
-          <Button style={{ width: '43%' }} onClick={() => history.push('/pastel_id/import')}>Import existing</Button>
+          <Button style={{ width: '43%' }} onClick={() => {history.push('/pastel_id/import'); this.resetErrors()}}>Import existing</Button>
         </div>
 
     </Wrapper>;
