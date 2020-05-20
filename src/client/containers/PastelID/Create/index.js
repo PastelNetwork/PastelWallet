@@ -7,6 +7,7 @@ import { BTN_TYPE_LIGHT_BLUE } from '../../../components/common/constants';
 import { ipcRenderer } from '../../../ipc/ipc';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../../actionTypes';
+import { setPasteIDError } from '../../../actions';
 
 class Create extends Component {
   constructor (props) {
@@ -15,6 +16,14 @@ class Create extends Component {
       passphrase: ''
     };
   }
+  resetErrors = () => {
+    this.props.error && this.props.dispatch(setPasteIDError(null));
+    this.props.msg && this.props.dispatch({
+      type: actionTypes.SET_PASTEL_ID_MSG,
+      value: null
+    });
+  };
+
   createAndRegister = () => {
     ipcRenderer.send('pastelIdCreateAndRegister', {
       passphrase: this.state.passphrase,
@@ -33,7 +42,10 @@ class Create extends Component {
     return <Wrapper>
       <div className={style.text}>
         If you have <b>Pastel ID,</b> <span style={{ color: 'var(--green)', cursor: 'pointer' }}
-                                            onClick={() => history.push('/pastel_id/select')}>choose</span> one of them
+                                            onClick={() => {
+                                              history.push('/pastel_id/select');
+                                              this.resetErrors();
+                                            }}>choose</span> one of them
       </div>
       <Divider style={{ marginTop: '21px' }}/>
       <div className={style.text} style={{ marginTop: '16px' }}>
@@ -53,5 +65,6 @@ class Create extends Component {
 
 export default connect(state => ({
   blockchainAddress: state.blockchain.blockchainAddress,
-  error: state.pastelid.pastelIDError
+  error: state.pastelid.pastelIDError,
+  msg: state.pastelid.pastelIDMsg
 }))(Create);

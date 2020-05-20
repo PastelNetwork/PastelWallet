@@ -11,7 +11,6 @@ const initialState = {
   pastelIDMsg: null,
   selectedPastelId: null,
   passphrase: ''
-
 };
 
 export default function (state = initialState, action) {

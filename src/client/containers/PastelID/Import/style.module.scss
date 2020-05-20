@@ -1,0 +1,20 @@
+.text {
+  color: var(--text-grey);
+  font-size: 14px;
+}
+
+.error-msg, .msg {
+  font-size: 14px;
+  font-style: italic;
+  line-height: 20px;
+  margin-top: 5px;
+  word-break: break-all;
+}
+.error-msg {
+  color: var(--error-red);
+}
+.msg {
+  color: var(--text-grey);
+  margin-top: 50px;
+  margin-left: 10px;
+}

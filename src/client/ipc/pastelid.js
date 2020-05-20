@@ -45,7 +45,12 @@ ipcRenderer.on('pastelIdImportResponse', (event, data) => {
       store.dispatch(setPasteIDError(data.err));
       break;
     case constants.RESPONSE_STATUS_OK:
-      history.push('/pastel_id/fetching');
+      store.dispatch({
+        type: actionTypes.SET_PASTEL_ID_MSG,
+        value: 'Pastel ID was imported'
+      });
+      ipcRenderer.send('pastelIdList', {});
+      history.push('/pastel_id/select');
       break;
     default:
       break;
