@@ -6,7 +6,6 @@ class CustomDropdown extends Component {
     super(props);
     this.state = {
       opened: false,
-      selected: null
     };
   }
 
@@ -37,7 +36,7 @@ class CustomDropdown extends Component {
 
     const renderedOptions = options && options.map((option, idx) =>
       <span
-        className={`${style.option} ${this.state.selected && this.state.selected.value === option.value ? style.selected : ''}`}
+        className={`${style.option} ${this.props.value && this.props.value.value === option.value ? style.selected : ''}`}
         data-value={option.value}
         onClick={() => {
           this.setState({ selected: option, opened: false });
@@ -51,7 +50,7 @@ class CustomDropdown extends Component {
       <div className={`${style.select} ${this.state.opened ? style.open : ''}`}>
         <div className={style.expandable}>
           <div className={style['select-trigger']} onClick={this.clickExpander}>
-            <span>{this.state.selected ? this.state.selected.label : this.props.placeholder}</span>
+            <span>{this.props.value ? this.props.value.label : this.props.placeholder}</span>
             <div className={`${style.expander} ${this.state.opened ? style.open : ''}`}/>
           </div>
           <div className={style.options}

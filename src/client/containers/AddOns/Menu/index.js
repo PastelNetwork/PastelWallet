@@ -18,7 +18,7 @@ const MenuItem = (props) => {
 class Menu extends Component {
   render () {
     const { match, location, history } = this.props;
-    if (location.pathname === '/pastel_id') {
+    if (location.pathname.startsWith('/pastel_id')) {
       return null;
     }
     const isActive = (url) => location.pathname.startsWith(url);
@@ -44,7 +44,7 @@ class Menu extends Component {
       <MenuItem name={'Information'} icon={<Info/>} menuActive={isActive('/info')} onClick={() => history.push('/info')}/>
       <div className={style.logout} onClick={() => {
         this.props.dispatch({type: SET_CURRENT_PASTEL_ID, value: null});
-        history.push('/pastel_id');
+        history.push('/pastel_id/select');
       }}>
         <div>
           <Logout/>

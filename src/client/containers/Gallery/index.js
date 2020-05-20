@@ -49,7 +49,7 @@ class ArtworkList extends Component {
 const stateToProps = state => ({
   data: state.artworks.data,
   loading: state.artworks.loading,
-  pastelID: state.others.currentPastelID
+  pastelID: state.pastelid.currentPastelID
 });
 
 const Gallery = (props) => {

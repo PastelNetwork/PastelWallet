@@ -24,14 +24,13 @@ class App extends Component {
       <Menu/>
       <NodeStatus/>
       <Switch>
-        <Route path='/pastel_id' component={PastelID}/>
+        <Route path='/pastel_id/:key' component={PastelID}/>
         <Route path='/main' component={MainScreen}/>
         <Route path='/profile' component={PastelID}/>
         <Route path='/register' component={RegisterImage}/>
         <Route path='/gallery' component={Gallery}/>
         <Route path='/info' component={Info}/>
-        {/*<Redirect to='/pastel_id'/>*/}
-        <Redirect to='/info'/>
+        <Redirect to='/pastel_id/select'/>
       </Switch>
       <WalletAddress/>
       <LogTab/>

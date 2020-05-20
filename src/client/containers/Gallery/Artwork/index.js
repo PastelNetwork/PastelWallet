@@ -92,5 +92,5 @@ class Artwork extends Component {
 }
 
 export default connect(state => (
-  { pastelID: state.others.currentPastelID }
+  { pastelID: state.pastelid.currentPastelID }
 ))(Artwork);

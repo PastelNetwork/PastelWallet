@@ -59,7 +59,7 @@ class Main extends Component {
 
 export default connect(state => ({
   balance: state.blockchain.balance,
-  currentPastelID: state.others.currentPastelID,
+  currentPastelID: state.pastelid.currentPastelID,
   artworks: state.blockchain.artworks,
   masternodes: state.blockchain.masternodes,
   blockchainInfo: state.blockchain.blockchainInfo

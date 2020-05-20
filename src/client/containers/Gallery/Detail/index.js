@@ -126,6 +126,6 @@ class Detail extends Component {
 export default connect(
   state => ({
     artworksData: state.artworks.data,
-    pastelId: state.others.currentPastelID
+    pastelId: state.pastelid.currentPastelID
   }))
 (Detail);

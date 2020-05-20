@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
 import { ipcRenderer } from '../../ipc/ipc';
-import {Button, Divider, Input, Dropdown, Spinner} from '../../components/common';
+import { Button, Divider, Input, Dropdown, Spinner } from '../../components/common';
+import * as actionTypes from '../../actionTypes';
 
 import {
   PASTELID_REG_STATUS_IN_PROGRESS,
@@ -11,6 +12,9 @@ import {
   PASTELID_REG_STATUS_REGISTERED
 } from '../../constants';
 import { BTN_TYPE_GREEN } from '../../components/common/constants';
+import { setPasteIDError } from '../../actions';
+import { withRouter } from 'react-router-dom';
+import { store } from '../../app';
 
 const regStatusVerbose = {
   [PASTELID_REG_STATUS_REGISTERED]: <span style={{ color: 'var(--success)' }}>(registered)</span>,
@@ -18,39 +22,59 @@ const regStatusVerbose = {
   [PASTELID_REG_STATUS_NON_REGISTERED]: <span style={{ color: 'var(--failure)' }}>(not registered)</span>
 };
 
-
 class PastelIDSelect extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      selectedPastelId: null,
-      passphrase: ''
-    };
-  }
-
   componentDidMount () {
     if (!this.props.pastelIDs) {
       ipcRenderer.send('pastelIdList', {});
     }
   }
-
+  resetErrors = () => {
+    this.props.error && this.props.dispatch(setPasteIDError(null));
+    this.props.msg && this.props.dispatch({
+      type: actionTypes.SET_PASTEL_ID_MSG,
+      value: null
+    });
+  };
   onChange = (selectedOption) => {
-    this.setState({ selectedPastelId: selectedOption });
+    this.props.dispatch({
+      type: actionTypes.SET_SELECTED_PASTEL_ID,
+      value: selectedOption
+    });
+    this.resetErrors();
   };
 
   onProceedClick = () => {
     ipcRenderer.send('pastelIdCheckPassphrase', {
-      pastelID: this.state.selectedPastelId.value,
-      passphrase: this.state.passphrase
+      pastelID: this.props.selectedPastelId.value,
+      passphrase: this.props.passphrase
     });
-    this.setState({ passphrase: '' });
+    this.props.dispatch({
+      type: actionTypes.SET_SELECTED_PASSPHRASE,
+      value: ''
+    });
   };
+  onRegisterClick = () => {
+    ipcRenderer.send('pastelIdRegister', {
+      pastelID: this.props.selectedPastelId.value,
+      passphrase: this.props.passphrase,
+      blockchainAddress: this.props.blockchainAddress
+    });
+  };
+  onPassphraseChange = (e) => {
+    this.props.dispatch({
+      type: actionTypes.SET_SELECTED_PASSPHRASE,
+      value: e.target.value
+    });
+    this.resetErrors();
+  };
+
   render () {
+    console.log(this.props.match.params.key);
     const proceedButton = (disabled, marginTop) => {
       return <Button btnType={BTN_TYPE_GREEN}
-                           style={{ width: '100%', marginTop: marginTop }}
-                           disabled={disabled}
-                           onClick={this.onProceedClick}
+                     style={{ width: '100%', marginTop: marginTop }}
+                     disabled={disabled}
+                     onClick={this.onProceedClick}
       >
         Proceed
       </Button>;
@@ -62,33 +86,38 @@ class PastelIDSelect extends Component {
       regStatus: x.regStatus
     }));
     const passphraseInput = <Input style={{ width: '100%', marginTop: '44px' }} placeholder={'Passphrase'}
-                                         value={this.state.passphrase}
-                                         onChange={(e) => this.setState({ passphrase: e.target.value })}
+                                   value={this.props.passphrase}
+                                   onChange={this.onPassphraseChange}
     />;
 
     let input;
     let button;
     let inProgress;
-    if (!this.state.selectedPastelId) {
+    let error = this.props.error ?
+      <div className={style['error-msg']}>{this.props.error.message}</div> : null;
+    let msg = this.props.msg ?
+      <div className={style.msg}>{this.props.msg}</div> : null;
+    if (!this.props.selectedPastelId) {
       // no passphrase field, proceed btn inactive
-      button = proceedButton(true, '52px');
+      const marginTop = msg ? '20px' : '52px';
+      button = proceedButton(true, marginTop);
 
-    } else if (this.state.selectedPastelId.regStatus === PASTELID_REG_STATUS_REGISTERED) {
+    } else if (this.props.selectedPastelId.regStatus === PASTELID_REG_STATUS_REGISTERED) {
       // add passphrase field, proceed btn active
       input = passphraseInput;
-      button = proceedButton(!this.state.passphrase, '15px');
-    } else if (this.state.selectedPastelId.regStatus === PASTELID_REG_STATUS_IN_PROGRESS) {
+      button = proceedButton(!this.props.passphrase, '15px');
+    } else if (this.props.selectedPastelId.regStatus === PASTELID_REG_STATUS_IN_PROGRESS) {
       // msg, spinner, proceed button inactive
       inProgress = <div className={style['in-progress-msg']}>Your Pastel ID is being registered
-        <Spinner style={{marginRight: '15px', float: 'right'}}/>
+        <Spinner style={{ marginRight: '15px', float: 'right' }}/>
       </div>;
       button = proceedButton(true, '5px');
-    } else if (this.state.selectedPastelId.regStatus === PASTELID_REG_STATUS_NON_REGISTERED) {
+    } else if (this.props.selectedPastelId.regStatus === PASTELID_REG_STATUS_NON_REGISTERED) {
       // add passphrase field, register button
       input = passphraseInput;
       button = <Button btnType={BTN_TYPE_GREEN}
-                             style={{ width: '100%', marginTop: '15px' }}
-                             disabled={!this.state.passphrase}>
+                       style={{ width: '100%', marginTop: '15px' }}
+                       disabled={!this.props.passphrase} onClick={this.onRegisterClick}>
         Register
       </Button>;
     }
@@ -97,11 +126,13 @@ class PastelIDSelect extends Component {
       <div className={style['wrapper']}>
         <div className={style.text} style={{ marginBottom: '8px' }}>Please choose which <b>PastelID</b> to use</div>
         <Dropdown onChange={this.onChange}
-                  value={this.state.selectedPastelId}
+                  value={this.props.selectedPastelId}
                   options={pastelIDsOptions}
                   placeholder={'Pastel ID'}/>
         {input}
         {inProgress}
+        {error}
+        {msg}
         {button}
         <Divider style={{ marginTop: '25px' }}/>
         <div className={style.text} style={{ marginTop: '16px' }}>If you do not have <b>Pastel ID</b> you can</div>
@@ -116,4 +147,13 @@ class PastelIDSelect extends Component {
   }
 }
 
-export default connect(state => ({ pastelIDs: state.others.pastelIDs }))(PastelIDSelect);
+export default withRouter(connect(state => (
+  {
+    pastelIDs: state.pastelid.pastelIDs,
+    blockchainAddress: state.blockchain.blockchainAddress,
+    error: state.pastelid.pastelIDError,
+    msg: state.pastelid.pastelIDMsg,
+    selectedPastelId: state.pastelid.selectedPastelId,
+    passphrase: state.pastelid.passphrase
+  }
+))(PastelIDSelect));
