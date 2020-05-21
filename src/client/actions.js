@@ -97,12 +97,6 @@ export const setCurrentPassphrase = (value) => ({
   value
 });
 
-export const getBlockchainData = () => {
-  return (dispatch, getState) => {
-    ipcRenderer.send('blockchainDataRequest', {});
-  };
-};
-
 export const getBalance = () => {
   return (dispatch, getState) => {
     ipcRenderer.send('getBalanceRequest', {});

@@ -4,10 +4,10 @@ import * as constants from '../constants';
 const initialState = {
   pastelIDs: null,
   pastelIDError: null,
-  // currentPastelID: null,
-  currentPastelID: 'jXYkL1nzrubvZNeRgH5hdma4Wry6FzqCNQ8dawyKMpzQrwjgieTAePYYfSLru5yhqGKzDbXbqP3MaxJWdAztas',
-  // currentPassphrase: '',
-  currentPassphrase: 'taksa',
+  currentPastelID: null,
+  // currentPastelID: 'jXYkL1nzrubvZNeRgH5hdma4Wry6FzqCNQ8dawyKMpzQrwjgieTAePYYfSLru5yhqGKzDbXbqP3MaxJWdAztas',
+  currentPassphrase: '',
+  // currentPassphrase: 'taksa',
   pastelIDMsg: null,
   selectedPastelId: null,
   passphrase: ''
