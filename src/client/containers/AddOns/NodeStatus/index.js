@@ -10,7 +10,7 @@ import * as style from './style.module.scss';
 const statusColor = {
     [NODE_STATUS_CONNECTED]: 'var(--success)',
     [NODE_STATUS_PENDING]: 'var(--pending)',
-    [NODE_STATUS_DISCONNECTED]: 'var(--failure)'
+    [NODE_STATUS_DISCONNECTED]: 'var(--error)'
 };
 const statusMsg = {
     [NODE_STATUS_CONNECTED]: 'connected',

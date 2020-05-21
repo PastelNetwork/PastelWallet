@@ -19,7 +19,7 @@ import Wrapper from '../Wrapper';
 const regStatusVerbose = {
   [PASTELID_REG_STATUS_REGISTERED]: <span style={{ color: 'var(--success)' }}>(registered)</span>,
   [PASTELID_REG_STATUS_IN_PROGRESS]: <span style={{ color: 'var(--pending)' }}>(pending)</span>,
-  [PASTELID_REG_STATUS_NON_REGISTERED]: <span style={{ color: 'var(--failure)' }}>(not registered)</span>
+  [PASTELID_REG_STATUS_NON_REGISTERED]: <span style={{ color: 'var(--error)' }}>(not registered)</span>
 };
 
 class PastelIDSelect extends Component {

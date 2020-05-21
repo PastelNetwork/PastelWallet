@@ -9,8 +9,28 @@
   margin-right: 10px;
   width: 138px;
   text-align: center;
+  img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-top: 13px;
+  }
+
+  p {
+    font-size: 14px;
+    line-height: 19px;
+    cursor: pointer;
+  }
 }
 
 .info {
-
+  width: 472px;
 }
+
+.error {
+  margin-top: 20px;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--error);
+}
+

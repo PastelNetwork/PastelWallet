@@ -30,9 +30,9 @@ class Menu extends Component {
     return <div className={style.wrapper}>
       <img src={PastelLogo} alt="" className={style.logo}/>
       <div className={`${style.user} ${isActive('/profile') ? style['menu-active'] : ''}`}>
-        <img src={DefaultUser}/>
+        <img src={this.props.photo ? this.props.photo : DefaultUser}/>
         <div>
-          <h3>User Name</h3>
+          <h3>{this.props.firstName} {this.props.lastName}</h3>
           {link}
         </div>
       </div>
@@ -56,4 +56,8 @@ class Menu extends Component {
   }
 }
 
-export default withRouter(connect(null)(Menu));
+export default withRouter(connect(state => ({
+  firstName: state.profile.firstName,
+  lastName: state.profile.lastName,
+  photo: state.profile.photo
+}))(Menu));
