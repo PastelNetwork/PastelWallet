@@ -14,6 +14,7 @@ export const SET_BALANCE = 'SET_BALANCE';
 
 // user profile {
 export const SET_USER_PROFILE_DATA = 'SET_USER_PROFILE_DATA';
+export const SET_USER_PROFILE_EDIT_DATA = 'SET_USER_PROFILE_EDIT_DATA';
 // }
 
 //image registration {

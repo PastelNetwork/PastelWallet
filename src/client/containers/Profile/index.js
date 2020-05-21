@@ -4,18 +4,12 @@ import { Wrapper, Card, Input } from '../../components/common';
 import { connect } from 'react-redux';
 import { ipcRenderer } from '../../ipc/ipc';
 import DefaultUser from '../../assets/images/default_user.png';
+import { SET_USER_PROFILE_EDIT_DATA } from '../../actionTypes';
 
 class Profile extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-      photo: this.props.photo,
-      firstName: this.props.firstName,
-      lastName: this.props.lastName,
-      phone: this.props.phone,
-      email: this.props.email,
-      errors: []
-    };
+    this.fileInputRef = React.createRef();
   }
 
   componentDidMount () {
@@ -25,7 +19,17 @@ class Profile extends Component {
   }
 
   onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.props.dispatch({ type: SET_USER_PROFILE_EDIT_DATA, field: e.target.name, value: e.target.value });
+  };
+
+  onImgChange = (e) => {
+    if (e.target.files.length) {
+      this.props.dispatch({
+        type: SET_USER_PROFILE_EDIT_DATA,
+        field: 'photo',
+        value: URL.createObjectURL(e.target.files[0])
+      });
+    }
   };
 
   render () {
@@ -33,31 +37,36 @@ class Profile extends Component {
       <div style={{ display: 'flex' }}>
         <Card className={style.avatar}>
           <h3>AVATAR</h3>
-          <img src={this.state.photo ? this.state.photo : DefaultUser} alt=""/>
-          <p style={{ color: 'var(--blue)', marginTop: '9px' }}>Change photo</p>
-          <p style={{ color: 'var(--error)' }} onClick={() => this.setState({photo: null})}>Delete photo</p>
+          <input type="file" accept="image/*" id="idArtFile"
+                 onChange={this.onImgChange} ref={this.fileInputRef}
+                 style={{ visibility: 'hidden', position: 'absolute' }}/>
+
+          <img src={this.props.photo ? this.props.photo : DefaultUser} alt=""/>
+          <p style={{ color: 'var(--blue)', marginTop: '9px' }} onClick={() => this.fileInputRef.current.click()}>
+            Change photo</p>
+          <p style={{ color: 'var(--error)' }} onClick={() => this.setState({ photo: null })}>Delete photo</p>
         </Card>
         <Card className={style.info}>
           <h3>CONTACT INFO</h3>
           <div style={{ display: 'flex' }}>
             <Input name="firstName" label="First Name" style={{ width: '100%' }}
                    containerStyle={{ width: '206px', marginRight: '10px' }}
-                   onChange={this.onChange} value={this.state.firstName}
+                   onChange={this.onChange} value={this.props.firstName}
             />
-            <Input name="lastname" label="Last Name" style={{ width: '100%' }}
+            <Input name="lastName" label="Last Name" style={{ width: '100%' }}
                    containerStyle={{ width: '206px' }}
-                   onChange={this.onChange} value={this.state.lastName}/>
+                   onChange={this.onChange} value={this.props.lastName}/>
           </div>
           <div style={{ marginTop: '10px', display: 'flex' }}>
             <Input name="phone" label="Phone" style={{ width: '100%' }}
                    containerStyle={{ width: '206px', marginRight: '10px' }}
-                   onChange={this.onChange} value={this.state.phone}/>
+                   onChange={this.onChange} value={this.props.phone}/>
             <Input name="email" label="Email" style={{ width: '100%' }}
                    containerStyle={{ width: '206px' }}
-                   onChange={this.onChange} value={this.state.email}/>
+                   onChange={this.onChange} value={this.props.email}/>
           </div>
           <ul className={style.error}>
-            {this.state.errors.map(error => <li>{error}</li>)}
+            {this.props.errors.map(error => <li>{error}</li>)}
           </ul>
         </Card>
       </div>
@@ -66,11 +75,12 @@ class Profile extends Component {
 }
 
 export default connect(state => ({
-  photo: state.profile.photo,
-  firstName: state.profile.firstName,
-  lastName: state.profile.lastName,
-  phone: state.profile.phone,
-  email: state.profile.email,
+  photo: state.profileEdit.photo,
+  firstName: state.profileEdit.firstName,
+  lastName: state.profileEdit.lastName,
+  phone: state.profileEdit.phone,
+  email: state.profileEdit.email,
+  errors: state.profileEdit.errors,
   fetched: state.profile.fetched,
   pastelID: state.pastelid.currentPastelID
 }))(Profile);

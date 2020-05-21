@@ -5,6 +5,7 @@ import artworks from './artworks';
 import blockchain from './blockchain';
 import pastelid from './pastelid';
 import profile from './profile';
+import profileEdit from './profileEdit';
 
 export default combineReducers({
   registration,
@@ -12,5 +13,6 @@ export default combineReducers({
   artworks,
   blockchain,
   pastelid,
-  profile
+  profile,
+  profileEdit
 });
