@@ -20,6 +20,7 @@ class Profile extends Component {
 
   onChange = (e) => {
     this.props.dispatch({ type: SET_USER_PROFILE_EDIT_DATA, field: e.target.name, value: e.target.value });
+    this.props.errors && this.props.dispatch({ type: SET_USER_PROFILE_EDIT_DATA, field: 'errors', value: [] });
   };
 
   onImgChange = (e) => {
@@ -44,7 +45,11 @@ class Profile extends Component {
           <img src={this.props.photo ? this.props.photo : DefaultUser} alt=""/>
           <p style={{ color: 'var(--blue)', marginTop: '9px' }} onClick={() => this.fileInputRef.current.click()}>
             Change photo</p>
-          <p style={{ color: 'var(--error)' }} onClick={() => this.setState({ photo: null })}>Delete photo</p>
+          <p style={{ color: 'var(--error)' }} onClick={() => this.props.dispatch({
+            type: SET_USER_PROFILE_EDIT_DATA,
+            field: 'photo',
+            value: null
+          })}>Delete photo</p>
         </Card>
         <Card className={style.info}>
           <h3>CONTACT INFO</h3>
@@ -66,7 +71,7 @@ class Profile extends Component {
                    onChange={this.onChange} value={this.props.email}/>
           </div>
           <ul className={style.error}>
-            {this.props.errors.map(error => <li>{error}</li>)}
+            {this.props.errors.map((error, idx) => <li key={idx}>{error}</li>)}
           </ul>
         </Card>
       </div>

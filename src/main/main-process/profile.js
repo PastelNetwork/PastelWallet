@@ -22,4 +22,20 @@ const getProfileHandler = (event, data) => {
   // });
 };
 
+const saveProfileHandler = (event, data) => {
+  // TODO: save data to DB
+  const { firstName, lastName, phone, email, photo, pastelid } = data;
+
+  const profileData = { firstName, lastName, phone, email, photo, fetched: true };
+  event.reply('saveProfileResponse', {
+    status: RESPONSE_STATUS_OK,
+    data: profileData
+  });
+  // event.reply('getProfileResponse', {
+  //   status: RESPONSE_STATUS_ERROR,
+  //   msg: 'Error fetching profile'
+  // });
+};
+
 ipcMain.on('getProfile', getProfileHandler);
+ipcMain.on('saveProfile', saveProfileHandler);

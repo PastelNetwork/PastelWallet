@@ -2,6 +2,7 @@ import * as actionTypes from './actionTypes';
 import axios from 'axios';
 import * as settings from './settings';
 import { ipcRenderer } from './ipc/ipc';
+import history from './history';
 
 export const setBalance = (value) => ({
   type: actionTypes.SET_BALANCE,
@@ -102,4 +103,31 @@ export const getInfo = () => {
   return (dispatch, getState) => {
     ipcRenderer.send('getInfoRequest', {});
   };
+};
+
+export const saveProfileData = () => {
+  return (dispatch, getState) => {
+    const { profileEdit: { firstName, lastName, phone, email, photo } } = getState();
+    const { pastelid: { currentPastelID } } = getState();
+    const errors = [];
+    const PHONE_RE = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+    const EMAIL_RE = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (!PHONE_RE.test(phone)) {errors.push('Invalid phone'); }
+    if (!EMAIL_RE.test(email)) { errors.push('Invalid email'); }
+    if (firstName.trim() === '') { errors.push('First name is empty'); }
+    if (lastName.trim() === '') { errors.push('Last name is empty'); }
+
+    if (errors.length === 0) {
+      // send IPC with data
+      ipcRenderer.send('saveProfile', { firstName, lastName, phone, email, photo, pastelid: currentPastelID });
+    } else {
+      // has some errors
+      dispatch({ type: actionTypes.SET_USER_PROFILE_EDIT_DATA, field: 'errors', value: errors });
+    }
+    // TODO:
+    //  if no errors - send IPC with data, process IPC response (save new profile data to
+    //  store.profile, call history.goBack();).
+  };
+
 };

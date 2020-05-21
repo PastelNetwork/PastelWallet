@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { Home, Register, Gallery, Info, Logout } from '../../../components/icons';
 import { SET_CURRENT_PASTEL_ID } from '../../../actionTypes';
 import { connect } from 'react-redux';
+import { saveProfileData } from '../../../actions';
 
 const MenuItem = (props) => {
   const { icon, name, menuActive, ...rest } = props;
@@ -16,6 +17,10 @@ const MenuItem = (props) => {
 };
 
 class Menu extends Component {
+  saveAndBack = () => {
+    // have to process profile form data here
+    this.props.dispatch(saveProfileData());
+  };
   render () {
     const { match, location, history } = this.props;
     if (location.pathname.startsWith('/pastel_id')) {
@@ -25,7 +30,7 @@ class Menu extends Component {
 
     let link = <h6 onClick={() => history.push('/profile')}>Edit</h6>;
     if (isActive('/profile')) {
-      link = <h6 onClick={() => history.goBack()}>Save and back</h6>;
+      link = <h6 onClick={this.saveAndBack}>Save and back</h6>;
     }
     return <div className={style.wrapper}>
       <img src={PastelLogo} alt="" className={style.logo}/>
