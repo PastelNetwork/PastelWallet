@@ -52,11 +52,6 @@ export const setImageRegTicketID = (value) => ({
   value
 });
 
-export const setUserProfile = (value) => ({
-  type: actionTypes.SET_USER_PROFILE,
-  value
-});
-
 // User profile data from server:
 // date_joined_for_human: "Sep 18 2019"
 // email: null
@@ -65,17 +60,17 @@ export const setUserProfile = (value) => ({
 // pastel_id: "PBg8W1Q0tKXaZOxewi0uuXr96IXvg6AcBd23ebEmjJ5f3vRUMr0/dKoCWvqHV58c05uZ6PHtLY3TRpAOq2tV1BqA"
 // phone_number: null
 // picture: null
-export const fetchProfile = () => {
-  return (dispatch, getState) => {
-    const { currentPastelID } = getState();
-    console.log(currentPastelID);
-    return axios.post(settings.USER_PROFILE_URL, { pastel_id: currentPastelID }).then((resp) => {
-      dispatch(setUserProfile(resp.data));
-    }).catch((err) => {
-      console.log('Error getting user profile from cloud');
-    });
-  };
-};
+// export const fetchProfile = () => {
+//   return (dispatch, getState) => {
+//     const { currentPastelID } = getState();
+//     console.log(currentPastelID);
+//     return axios.post(settings.USER_PROFILE_URL, { pastel_id: currentPastelID }).then((resp) => {
+//       dispatch(setUserProfile(resp.data));
+//     }).catch((err) => {
+//       console.log('Error getting user profile from cloud');
+//     });
+//   };
+// };
 
 export const setPasteIDList = (value) => ({
   type: actionTypes.SET_PASTEL_ID_LIST,

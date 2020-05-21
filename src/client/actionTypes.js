@@ -12,7 +12,9 @@ export const SET_ARTWORK_QUANTITY = 'SET_ARTWORK_QUANTITY';
 export const SET_BALANCE = 'SET_BALANCE';
 // }
 
-export const SET_USER_PROFILE = 'SET_USER_PROFILE';
+// user profile {
+export const SET_USER_PROFILE_DATA = 'SET_USER_PROFILE_DATA';
+// }
 
 //image registration {
 export const SET_IMAGE_REGISTER_WORKER_FEE = 'SET_IMAGE_REGISTER_WORKER_FEE';

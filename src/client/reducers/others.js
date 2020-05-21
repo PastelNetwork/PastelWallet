@@ -2,7 +2,6 @@ import * as actionTypes from '../actionTypes';
 import * as constants from '../constants';
 
 const initialState = {
-  userProfile: null,
   cNodeStatus: constants.NODE_STATUS_PENDING,
   pyNodeStatus: constants.NODE_STATUS_PENDING,
   userDisplayMessages: [],
@@ -11,8 +10,6 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_USER_PROFILE:
-      return { ...state, userProfile: action.value };
     case actionTypes.SET_CNODE_STATUS:
       return { ...state, cNodeStatus: action.value };
     case actionTypes.SET_PYNODE_STATUS:

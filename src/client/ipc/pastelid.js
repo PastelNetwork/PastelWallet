@@ -95,6 +95,7 @@ ipcRenderer.on('pastelIdCheckPassphraseResponse', (event, data) => {
       store.dispatch(setCurrentPasteID(data.pastelID));
       store.dispatch(setCurrentPassphrase(data.passphrase));
       history.push('/main');
+      ipcRenderer.send('getProfile', {pastelid: data.pastelID});
       break;
     default:
       break;

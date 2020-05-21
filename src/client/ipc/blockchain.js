@@ -12,7 +12,6 @@ import {ipcRenderer} from './ipc';
 
 ipcRenderer.on('blockchainDataResponse', (event, data) => {
     if (data.status === RESPONSE_STATUS_OK) {
-        console.log(data);
         store.dispatch({type: SET_MASTERNODE_QUANTITY, value: data.mnQuantity});
         store.dispatch({type: SET_ARTWORK_QUANTITY, value: data.artworkAmount});
         store.dispatch({type: SET_BLOCKCHAIN_ADDRESS, value: data.address});

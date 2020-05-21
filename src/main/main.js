@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import * as axios from 'axios';
 import * as log from 'electron-log';
 import * as constants from './constants';
@@ -7,6 +7,7 @@ import callRpcMethod from './main-process/utils';
 import './main-process/pastelid';
 import './main-process/ImageRegistration';
 import './main-process/artworks';
+import './main-process/profile';
 import { LOCAL_PY_URL } from './main-process/settings';
 import { checkAndRunPastelD } from './main-process/StartProcesses';
 import { cleanUp } from './main-process/StartProcesses';

@@ -1,0 +1,15 @@
+import { RESPONSE_STATUS_OK } from '../constants';
+import { store } from '../app';
+import { SET_USER_PROFILE_DATA } from '../actionTypes';
+import { ipcRenderer } from './ipc';
+
+ipcRenderer.on('getProfileResponse', (event, data) => {
+  if (data.status === RESPONSE_STATUS_OK) {
+    console.log(data);
+    Object.keys(data.data).map(field =>
+      store.dispatch({ type: SET_USER_PROFILE_DATA, field, value: data.data[field] })
+    );
+  } else {
+    console.log('Error fetching user profile data');
+  }
+});
