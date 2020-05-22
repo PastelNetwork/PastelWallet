@@ -23,6 +23,6 @@ ipcRenderer.on('saveProfileResponse', (event, data) => {
     );
     history.goBack();
   } else {
-    console.log('Error saving user profile data');
+    console.log(`Error saving user profile data: ${data.msg}`);
   }
 });
