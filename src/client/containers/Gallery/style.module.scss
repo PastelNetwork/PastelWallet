@@ -1,0 +1,27 @@
+.gallery {
+  width: 100%;
+  height: 530px;
+  h3 {
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
+
+.artworks {
+  display: flex;
+  //justify-content: space-between;
+  margin-top: 3px;
+  margin-left: -12.5px;
+  flex-wrap: wrap;
+  height: 408px;
+  width: calc(100% + 40px);
+  padding-right: 15px;
+  overflow: scroll;
+}
+
+.art-column {
+  display: flex;
+  flex-direction: column;
+  width: 173px;
+  margin: 0 12.5px;
+}

@@ -1,115 +1,55 @@
-@import './assets2/scss/common';
-@import './assets2/scss/paddings';
-@import './assets2/scss/image_register';
-@import './assets2/scss/pastel_id';
-//* {
-//  outline: 1px solid red !important;
-//}
-html {
-  min-height: 100%;
+@font-face {
+  font-family: 'Gill Sans';
+  src: url('assets/font/GillSans.ttc');
 }
+
+@font-face {
+  font-family: 'Open Sans Light';
+  src: url('assets/font/OpenSans-Light.ttf');
+}
+
 body {
-  min-height: 100%;
-}
-.flex-row {
-  @extend %flex-row;
-}
-
-.flex-col {
-  @extend %flex-col;
+  font-family: 'Gill Sans', sans-serif;
+  background-color: white;
+  margin: 0;
 }
 
-.flex-centered {
-  @extend %flex-centered;
+* {
+  box-sizing: border-box;
+  font-family: 'Gill Sans', sans-serif;
+  margin: 0;
+  padding: 0;
 }
+:root {
+  // core colors
+  --black: #27251F;
 
-.space-between {
-  justify-content: space-between;
-}
+  --green: #279989;
+  --green-1: #2DB398;
+  --green-2: #259481;
+  --green-balance: #6EA65A;
 
-.wrap {
-  flex-wrap: wrap;
-}
+  --blue: #41B6E6;
+  --blue-1: #41C2E6;
+  --blue-2: #3DB2D9;
+  --pink: #FC9BB3;
+  --light-grey: #D7D2CB;
+  --grey-1: #CDCFCF;
+  --grey-2: #F8F8F8;
+  --grey-3: #B1B7B9;
+  --dark-grey: #363533;
 
-.footer-row {
-  flex-basis: 80%;
-}
+  // other colors
+  --text-grey: #505B61;
+  --beige-bg: #F3F2F0;
 
-.space-around {
-  justify-content: space-around;
-}
+  --success: #6EA65A;
+  --pending: #D9C82D;
+  --error: #F24444;
 
-.display-none {
-  display: none;
-}
-
-.img-preview {
-  width: 150px;
-  height: 150px;
-}
-
-.main-content {
-  padding-top: $header-height;
-}
-
-.full-width {
-  width: 100%;
-}
-
-.copy {
-  &:hover {
-    color: $primary;
-  }
-}
-
-.hidden-text-area {
-  position: absolute;
-  left: -9999px;
-}
-
-.conn-status-wrapper {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 8pt;
-}
-
-.conn-status-cnode.connected, .conn-status-pynode.connected {
-  color: #1e801e;
-}
-
-.conn-status-cnode.pending, .conn-status-pynode.pending {
-  color: #ffc754;
-}
-
-.conn-status-cnode.disconnected, .conn-status-pynode.disconnected {
-  color: #ff2038;
-}
-
-.message-box-wrapper {
-  position: absolute;
-  right: 10px;
-  border: 1px double black;
-  border-radius: 3px;
-  z-index: 1;
-}
-
-.message-box-body {
-  border: 1px double black;
-  border-radius: 3px;
-  margin: 5px;
-  height: 80px;
-  overflow-y: auto;
-  cursor: pointer;
-  transition-property: width;
-  transition-duration: 1s;
-  width: 275px;
-}
-
-.message-box-body.collapsed {
-  width: 10px;
-}
-
-.message-box-item {
-  font-size: 6pt;
+  // sizes
+  --menu-width: 189px;
+  --log-tab-height: 23px;
+  --window-width: 850px;
+  --window-height: 630px;
 }

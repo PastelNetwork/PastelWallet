@@ -31,13 +31,12 @@
     "dev-server": "webpack-dev-server --mode development",
     "start": "webpack-dashboard npm run dev-server",
     "sass:watch": "node-sass -w --source-map true src/artist.scss src/artist.css",
-    "build-main": "babel ./src/main  --ignore ./src/main/build -d ./build/main",
-    "build-client": "webpack --env=prod --mode production",
-    "prepare-build": "rimraf build/* dist/* && npm run build-main && npm run build-client",
-    "electron-build:mac": "npm run prepare-build && cp-cli src/main/app_icon/icon.icns build/icon.icns && build --mac -c.extraMetadata.main=build/main/main.js",
-    "electron-build:win": "npm run prepare-build && cp-cli src/main/app_icon/icon.ico build/icon.ico && build --win -c.extraMetadata.main=build/main/main.js",
-    "electron-build:linux": "npm run prepare-build && cp-cli src/main/app_icon/icon.png build/icon.png && build --linux -c.extraMetadata.main=build/main/main.js",
-    "start-electron": "babel ./src/main  --ignore ./src/main/build -d ./src/main/build && electron --inspect ./src/main/build/main.js"
+    "prepare-build": "rm -rf build/* dist/*; babel ./src/main  --ignore ./src/main/build -d ./build/main; webpack --env=prod --mode production; cp src/main/app_icon/icon.icns build/;",
+    "electron-build:mac": "npm run prepare-build; build --mac -c.extraMetadata.main=build/main/main.js",
+    "electron-build:win": "npm run prepare-build; build --win -c.extraMetadata.main=build/main/main.js",
+    "electron-build:linux": "npm run prepare-build; build --linux -c.extraMetadata.main=build/main/main.js",
+    "start-electron": "babel ./src/main  --ignore ./src/main/build -d ./src/main/build; electron --inspect ./src/main/build/main.js",
+    "start-electron:no-rebuild": "electron --inspect ./src/main/build/main.js"
   },
   "keywords": [],
   "author": "Pastel INC <pastel@pastel.network>",
@@ -49,11 +48,11 @@
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
     "aws-sdk": "^2.662.0",
+    "babel-cli": "^6.26.0",
     "babel-loader": "^8.0.5",
     "bip39": "^3.0.1",
     "bootstrap": "^4.3.1",
     "bulma": "^0.7.5",
-    "cp-cli": "^2.0.0",
     "css-loader": "^2.1.1",
     "electron": "^5.0.0",
     "electron-builder": "^20.39.0",
@@ -72,8 +71,6 @@
     "react-feather": "^1.1.6",
     "react-redux": "^6.0.1",
     "react-router-dom": "^4.3.1",
-    "react-select": "^3.0.4",
-    "react-spinners": "^0.5.12",
     "reactstrap": "^7.1.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
@@ -89,10 +86,10 @@
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
-    "sqlite3": "^4.1.1",
-    "uninstall": "0.0.0",
     "axios": "^0.18.0",
     "electron-log": "^3.0.6",
-    "json-stable-stringify": "^1.0.1"
+    "json-stable-stringify": "^1.0.1",
+    "sqlite3": "^4.1.1",
+    "uninstall": "0.0.0"
   }
 }

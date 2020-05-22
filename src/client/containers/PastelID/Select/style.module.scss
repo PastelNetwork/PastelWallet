@@ -1,0 +1,36 @@
+.text {
+  color: var(--text-grey);
+  font-size: 14px;
+}
+.btn-block {
+  display: flex;
+  justify-content: space-between;
+  line-height: 37px;
+  color: var(--black);
+  margin-top: 8px;
+}
+
+.in-progress-msg {
+  font-size: 14px;
+  font-style: italic;
+  margin-top: 42px;
+  padding-left: 20px;
+  color: var(--grey-3);
+  line-height: 20px;
+}
+
+.error-msg, .msg {
+  font-size: 14px;
+  font-style: italic;
+  line-height: 20px;
+  margin-top: 5px;
+  word-break: break-all;
+}
+.error-msg {
+  color: var(--error);
+}
+.msg {
+  color: var(--text-grey);
+  margin-top: 50px;
+  margin-left: 10px;
+}

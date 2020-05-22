@@ -15,7 +15,6 @@ const PASTEL_ID_COMMAND = 'pastelid';
 const TICKETS_COMMAND = 'tickets';
 
 const getPastelIdsRegistrationInProgress = (fn) => {
-    // fn(['jXaJ6nNQRcgEm5hdJroRJ4qu67DqHbDWJmFmz5Jbh4BhxApiaXMfGorWty27PMrF6Q74ngXRy7UV9gnkyMAPDq']);
   getDatabase().all(SELECT_PASTELID_SQL, [], (e, r) => {
     const pastelIdInProgress = r.map(i => i.pastelid);
     fn(pastelIdInProgress);
@@ -29,6 +28,9 @@ ipcMain.on('pastelIdList', (event, arg) => {
             getPastelIdsRegistrationInProgress(pastelIdInProgress => {
                 const getPastelIdRegStatus = (pastelID) => {
                     if (registeredPastelIDs.includes(pastelID)) {
+                        if (pastelID === 'jXXkRCqifwY8SmwV3Dd5H4LRVKiZLStn1VGeWTqDk4DMHK5EraYKCZwikJaddJbkidRoAy1G3jywtbxc1CFy5p')                          {
+                            return PASTELID_REG_STATUS_IN_PROGRESS;
+                        }
                         return PASTELID_REG_STATUS_REGISTERED;
                     } else if (pastelIdInProgress.includes(pastelID)) {
                         return PASTELID_REG_STATUS_IN_PROGRESS;

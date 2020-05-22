@@ -1,0 +1,105 @@
+.artwork {
+  position: relative;
+  overflow: scroll;
+  height: 468px;
+  width: 596px;
+  padding-right: 25px;
+
+  img {
+    margin-top: 8px;
+    width: 100%;
+    border-radius: 6px;
+  }
+
+  h3 {
+    margin-top: 17px;
+    margin-bottom: 2px;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--black);
+    text-transform: uppercase;
+  }
+}
+
+.backlink {
+  color: var(--blue);
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.txid {
+  font-size: 12px;
+  color: var(--text-grey);
+  margin-top: 12px;
+
+  span {
+    font-weight: 900;
+    color: var(--black)
+  }
+}
+
+.price {
+  color: var(--success);
+  font-size: 16px;
+  line-height: 27px;
+}
+
+.my-sticker, .sale-sticker {
+  height: 23px;
+  position: absolute;
+  font-size: 14px;
+  color: var(--grey-2);
+  text-align: center;
+  vertical-align: middle;
+  border-bottom-right-radius: 6px;
+}
+
+.my-sticker {
+  top: 34px;
+  border-top-left-radius: 6px;
+  width: 57px;
+  z-index: 3;
+  background-color: var(--black);
+
+}
+
+.sale-sticker {
+  top: 34px;
+  border-bottom-left-radius: 6px;
+  width: 63px;
+  z-index: 2;
+  left: 52px;
+  background-color: var(--success);
+}
+
+.data {
+  margin-top: 15px;
+  h5 {
+    font-size: 14px;
+    color: var(--black);
+    font-weight: 900;
+  }
+
+  p {
+    font-size: 12px;
+    margin-top: 5px;
+    color: var(--text-grey);
+    word-break: break-all;
+  }
+  .line {
+    margin-top: 5px;
+    width: 100%;
+    border-bottom: 1px solid var(--grey-1);
+  }
+}
+
+.buy-confirm {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--black);
+  line-height: 20px;
+  width: 120px;
+  margin-top: 20px;
+  margin-right: 31px;
+}

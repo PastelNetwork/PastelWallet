@@ -1,0 +1,108 @@
+.wrapper {
+  position: relative;
+  user-select: none;
+}
+
+
+.select {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  .expandable {
+    position: absolute;
+    width: 100%;
+    border: 1px solid var(--grey-1);
+    transition: all 1s;
+    border-radius: 3px;
+  }
+  .select-trigger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px 0 19px;
+    font-size: 14px;
+    color: var(--grey-3);
+    height: 37px;
+    line-height: 37px;
+    background-color: var(--grey-2);
+    cursor: pointer;
+
+    .expander {
+      position: relative;
+      height: 8.5px;
+      width: 8.5px;
+      transition: transform 1s;
+      transform: rotate(0deg);
+      transform-origin: left center;
+      &.open {
+        transform: rotate(180deg);
+      }
+
+      &::before, &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 0.15rem;
+        height: 100%;
+        transition: all 0.5s;
+        background-color: var(--blue);
+      }
+
+      &::before {
+        left: -3px;
+        transform: rotate(315deg);
+      }
+
+      &::after {
+        left: 3px;
+        transform: rotate(-315deg);
+      }
+    }
+  }
+
+  .options {
+    position: relative;
+    width: 100%;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border-top: 0;
+    background-color: var(--grey-2);
+    transition: all 1s;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  &.open {
+    .options {
+      pointer-events: all;
+      overflow: scroll;
+    }
+    .select-trigger {
+    }
+  }
+}
+
+
+.option {
+  position: relative;
+  display: block;
+  padding: 0 15px 0 19px;
+  font-size: 14px;
+  color: var(--black);
+  line-height: 37px;
+  cursor: pointer;
+  transition: all 0.5s;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #b2b2b2;
+  }
+
+  &.selected {
+    color: #ffffff;
+    background-color: #305c91;
+  }
+}

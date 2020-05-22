@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import * as axios from 'axios';
 import * as log from 'electron-log';
 import * as constants from './constants';
@@ -7,6 +7,7 @@ import callRpcMethod from './main-process/utils';
 import './main-process/pastelid';
 import './main-process/ImageRegistration';
 import './main-process/artworks';
+import './main-process/profile';
 import { LOCAL_PY_URL } from './main-process/settings';
 import { checkAndRunPastelD } from './main-process/StartProcesses';
 import { cleanUp } from './main-process/StartProcesses';
@@ -18,6 +19,7 @@ import { GET_ACCOUNT_ADDRESS_COMMAND } from './constants';
 import { GETINFO_COMMAND } from './constants';
 import { initDatabase } from './main-process/database';
 import * as fs from 'fs';
+import { GET_PEER_INFO_COMMAND } from './constants';
 
 const PING_RESOURCE = `${LOCAL_PY_URL}ping`;
 
@@ -110,19 +112,45 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
   })).catch((err) => {
     win.webContents.send('walletAddress', `Cannot connect to local pasteld white loading blockchain data`);
   });
+});
 
+ipcMain.on('getInfoRequest', (event, arg) => {
+  return callRpcMethod(GETINFO_COMMAND, []).then((response) => {
+    win.webContents.send('getInfoResponse', {
+      status: RESPONSE_STATUS_OK,
+      data: response.data.result
+    });
+  }).catch((err) => {
+    win.webContents.send('getInfoResponse', {
+      status: RESPONSE_STATUS_ERROR,
+      msg: err.response.data.error.message
+    });
+  });
+});
+
+ipcMain.on('getPeerInfoRequest', (event, arg) => {
+  return callRpcMethod(GET_PEER_INFO_COMMAND, []).then((response) => {
+    win.webContents.send('getPeerInfoResponse', {
+      status: RESPONSE_STATUS_OK,
+      data: response.data.result
+    });
+  }).catch((err) => {
+    win.webContents.send('getPeerInfoResponse', {
+      status: RESPONSE_STATUS_ERROR,
+      msg: err.response.data.error.message
+    });
+  });
 });
 
 const updateCnodeStatus = () => {
   callRpcMethod(GETINFO_COMMAND).then((response) => {
-    const data = response.data;
     win.webContents.send('updateCNodeStatus', {
-      status: constants.CNODE_STATUS_CONNECTED
+      status: constants.NODE_STATUS_CONNECTED
     });
 
   }).catch((err) => {
     win.webContents.send('updateCNodeStatus', {
-      status: constants.CNODE_STATUS_DISCONNECTED
+      status: constants.NODE_STATUS_DISCONNECTED
     });
   });
 
@@ -131,14 +159,13 @@ const updateCnodeStatus = () => {
 const updatePynodeStatus = () => {
   axios.post(PING_RESOURCE, {}).then(() => {
     win.webContents.send('updatePynodeStatus', {
-      status: constants.PYNODE_STATUS_CONNECTED
+      status: constants.NODE_STATUS_CONNECTED
     });
     clearInterval(pyStatusTaskID);
   }).catch((err) => {
     win.webContents.send('updatePynodeStatus', {
-      status: constants.PYNODE_STATUS_DISCONNECTED
+      status: constants.NODE_STATUS_DISCONNECTED
     });
-    clearInterval(cNodeStatusTaskID);
   });
 };
 
@@ -151,10 +178,9 @@ function createWindow () {
   log.silly('Starting main proccess....');
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    minWidth: 600,
-    minHeight: 400,
+    width: 850,
+    height: 630,
+    resizable: false,
     webPreferences: { nodeIntegration: true, webSecurity: false },
     icon: '/Users/alex/PycharmProjects/spa/src/client/assets/images/favicon.png'
   });
