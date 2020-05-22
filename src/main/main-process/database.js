@@ -5,6 +5,8 @@ import { getWorkDir } from '../main';
 
 let WALLET_DATABASE;
 
+export const SELECT_PASTELID_SQL = 'select pastelid from pastelid';
+
 export const GET_PROFILE_SQL = 'select firstName, lastName, phone, email, photo from profile where pastelid=?';
 
 // SQLite support UPSERT starting from version 3.24, but hoping that node-sqlite package has the right version is unreliable

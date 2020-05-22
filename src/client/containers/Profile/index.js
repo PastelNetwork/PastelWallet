@@ -25,11 +25,16 @@ class Profile extends Component {
 
   onImgChange = (e) => {
     if (e.target.files.length) {
-      this.props.dispatch({
-        type: SET_USER_PROFILE_EDIT_DATA,
-        field: 'photo',
-        value: URL.createObjectURL(e.target.files[0])
-      });
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        this.props.dispatch({
+          type: SET_USER_PROFILE_EDIT_DATA,
+          field: 'photo',
+          value: reader.result
+        });
+      }, false);
+      reader.readAsDataURL(file);
     }
   };
 
