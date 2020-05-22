@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
 import { getBalance, getInfo } from '../../actions';
-import {Card} from '../../components/common';
+import { Card } from '../../components/common';
 import SendPSL from './SendPSL';
-import {Wrapper} from '../../components/common';
+import { Wrapper } from '../../components/common';
+import { ipcRenderer } from '../../ipc/ipc';
 
 class Main extends Component {
   componentDidMount () {
@@ -13,7 +14,11 @@ class Main extends Component {
     if (!this.props.blockchainInfo) {
       this.props.dispatch(getInfo());
     }
-  }
+    if (!this.props.artworks || !this.props.masternodes) {
+      ipcRenderer.send('blockchainDataRequest', {});
+    }
+
+  };
 
   render () {
     return <Wrapper>

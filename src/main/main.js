@@ -9,7 +9,7 @@ import './main-process/ImageRegistration';
 import './main-process/artworks';
 import './main-process/profile';
 import { LOCAL_PY_URL } from './main-process/settings';
-import { checkAndRunPastelD } from './main-process/StartProcesses';
+import { checkAndRunPastelD, killPyProcess } from './main-process/StartProcesses';
 import { cleanUp } from './main-process/StartProcesses';
 import { GETBALANCE_COMMAND } from './constants';
 import { RESPONSE_STATUS_OK } from './constants';
@@ -142,6 +142,10 @@ ipcMain.on('getPeerInfoRequest', (event, arg) => {
   });
 });
 
+ipcMain.on('logout', () => {
+  killPyProcess();
+});
+
 const updateCnodeStatus = () => {
   callRpcMethod(GETINFO_COMMAND).then((response) => {
     win.webContents.send('updateCNodeStatus', {
@@ -161,7 +165,6 @@ const updatePynodeStatus = () => {
     win.webContents.send('updatePynodeStatus', {
       status: constants.NODE_STATUS_CONNECTED
     });
-    clearInterval(pyStatusTaskID);
   }).catch((err) => {
     win.webContents.send('updatePynodeStatus', {
       status: constants.NODE_STATUS_DISCONNECTED

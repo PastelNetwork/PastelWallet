@@ -125,9 +125,6 @@ export const saveProfileData = () => {
       // has some errors
       dispatch({ type: actionTypes.SET_USER_PROFILE_EDIT_DATA, field: 'errors', value: errors });
     }
-    // TODO:
-    //  if no errors - send IPC with data, process IPC response (save new profile data to
-    //  store.profile, call history.goBack();).
   };
 
 };

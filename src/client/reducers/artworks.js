@@ -25,6 +25,8 @@ export default function(state = initialState, action) {
       return { ...state, data: artworksData };
     case actionTypes.SET_ARTWORKS_DATA_LOADING:
       return { ...state, loading: action.value };
+    case actionTypes.RESET_STORE:
+      return { ...initialState };
     default:
       return state;
   }

@@ -108,14 +108,17 @@ export const checkAndRunPastelD = () => {
     });
 };
 
-
-export const cleanUp = () => {
+export const killPyProcess = () => {
     if (pyProc) {
         pyProc.kill();
     }
+    pyProc = null;
+};
+
+export const cleanUp = () => {
+    killPyProcess();
     if (pastelProc) {
         pastelProc.kill();
     }
     pastelProc = null;
-    pyProc = null;
 };

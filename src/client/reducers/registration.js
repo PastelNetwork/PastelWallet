@@ -40,6 +40,8 @@ export default function (state = initialState, action) {
       return { ...state, base64File: action.value };
     case actionTypes.RESET_REGISTRATION:
       return { ...initialState };
+    case actionTypes.RESET_STORE:
+      return { ...initialState };
     default:
       return state;
   }

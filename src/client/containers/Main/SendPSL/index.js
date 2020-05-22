@@ -45,5 +45,5 @@ class SendPSL extends Component {
 }
 
 export default connect(state => ({
-  pslSendError: state.pslSendError
+  pslSendError: state.others.pslSendError
 }), dispatch => ({ dispatch }))(SendPSL);

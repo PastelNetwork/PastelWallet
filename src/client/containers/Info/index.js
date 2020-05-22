@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, Wrapper } from '../../components/common';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
+import { ipcRenderer } from '../../ipc/ipc';
 
 const mainItems = [
   ['Artworks', x => x.artworks],
@@ -36,6 +37,14 @@ class Info extends Component {
     this.state = {
       peersExpanded: false
     };
+  }
+
+  componentDidMount () {
+    if (!this.props.peerInfo) {
+      ipcRenderer.send('getPeerInfoRequest', {});
+      ipcRenderer.send('blockchainDataRequest', {});
+      ipcRenderer.send('getInfoRequest', {});
+    }
   }
 
   render () {

@@ -4,9 +4,10 @@ import PastelLogo from '../../../assets/logo/Pastel_logo_Secondary_white.png';
 import DefaultUser from '../../../assets/images/default_user.png';
 import { withRouter } from 'react-router-dom';
 import { Home, Register, Gallery, Info, Logout } from '../../../components/icons';
-import { SET_CURRENT_PASTEL_ID } from '../../../actionTypes';
+import { RESET_STORE, SET_CURRENT_PASTEL_ID } from '../../../actionTypes';
 import { connect } from 'react-redux';
 import { saveProfileData } from '../../../actions';
+import { ipcRenderer } from '../../../ipc/ipc';
 
 const MenuItem = (props) => {
   const { icon, name, menuActive, ...rest } = props;
@@ -48,8 +49,9 @@ class Menu extends Component {
                 onClick={() => history.push('/gallery')}/>
       <MenuItem name={'Information'} icon={<Info/>} menuActive={isActive('/info')} onClick={() => history.push('/info')}/>
       <div className={style.logout} onClick={() => {
-        this.props.dispatch({type: SET_CURRENT_PASTEL_ID, value: null});
+        this.props.dispatch({type: RESET_STORE});
         history.push('/pastel_id/select');
+        ipcRenderer.send('logout', {});
       }}>
         <div>
           <Logout/>
