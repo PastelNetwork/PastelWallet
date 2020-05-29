@@ -1,5 +1,6 @@
 import * as path from 'path';
 import { app, BrowserWindow, ipcMain } from 'electron';
+import * as os from 'os';
 import * as axios from 'axios';
 import * as log from 'electron-log';
 import * as constants from './constants';
@@ -205,8 +206,34 @@ function createWindow () {
   });
 }
 
+function createPastelkeysDir() {
+    let pastelPrefix;
+    switch (os.platform()) {
+      case 'win32':
+        pastelPrefix = 'AppData/Roaming/Pastel';
+        break;
+      case 'linux':
+        pastelPrefix = '.pastel';
+        break;
+      case 'darwin':
+        pastelPrefix = 'Library/Application Support/Pastel';
+        break;
+      default:
+        throw new Error(`Platform ${os.platform()} is not supported`);
+    }
+    const pastelKeysPath = path.join(app.getPath('home'), pastelPrefix, 'pastelkeys');
+
+    try {
+      fs.accessSync(pastelKeysPath);
+    } catch (e) {
+      fs.mkdirSync(pastelKeysPath);
+    }
+}
+
+
 app.on('ready', createWindow);
 app.on('ready', updateNodeStatusesProccess);
+app.on('ready', createPastelkeysDir);
 app.on('ready', checkAndRunPastelD);
 app.on('ready', initDatabase);
 app.on('will-quit', cleanUp);
