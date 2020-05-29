@@ -221,7 +221,7 @@ function createPastelkeysDir() {
       default:
         throw new Error(`Platform ${os.platform()} is not supported`);
     }
-    const pastelKeysPath = path.join(app.getPath('home'), pastelPrefix, 'pastelkeys');
+    const pastelKeysPath = path.join(app.getPath('home'), pastelPrefix, 'testnet3', 'pastelkeys');
 
     try {
       fs.accessSync(pastelKeysPath);
