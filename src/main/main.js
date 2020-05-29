@@ -222,7 +222,7 @@ export const getCnodeDir = () => {
     default:
       throw new Error(`Platform ${os.platform()} is not supported`);
   }
-  return path.join(app.getPath('home'), pastelPrefix;
+  return path.join(app.getPath('home'), pastelPrefix);
 };
 
 

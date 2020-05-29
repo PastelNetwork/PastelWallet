@@ -31,6 +31,7 @@ python_interface/keys
 
 keys
 pasteld_binary/pasteld
+pasteld_binary/pasteld.exe
 pasteld_binary/main.cpp
 
 *.db
