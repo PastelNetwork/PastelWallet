@@ -53,10 +53,10 @@ class CustomDropdown extends Component {
             <span>{this.props.value ? this.props.value.label : this.props.placeholder}</span>
             <div className={`${style.expander} ${this.state.opened ? style.open : ''}`}/>
           </div>
-          <div className={style.options}
+          {options && <div className={style.options}
                style={{ maxHeight: `${this.state.opened ? (options.length * 60 < 200 ? options.length * 60 : 200) : 0}px` }}>
             {renderedOptions}
-          </div>
+          </div>}
         </div>
 
       </div>
