@@ -40,14 +40,14 @@ export const getWorkDir = () => {
   //   //dev mode
   //   return process.cwd();
   // } else {
-    //build mode
-    const pastelPath = path.join(app.getPath('home'), '.pastel');
-    try {
-      fs.accessSync(pastelPath);
-    } catch (e) {
-      fs.mkdirSync(pastelPath);
-    }
-    return pastelPath;
+  //build mode
+  const pastelPath = path.join(app.getPath('home'), '.pastel');
+  try {
+    fs.accessSync(pastelPath);
+  } catch (e) {
+    fs.mkdirSync(pastelPath);
+  }
+  return pastelPath;
   // }
 };
 
@@ -206,30 +206,35 @@ function createWindow () {
   });
 }
 
-function createPastelkeysDir() {
-    let pastelPrefix;
-    switch (os.platform()) {
-      case 'win32':
-        pastelPrefix = 'AppData/Roaming/Pastel';
-        break;
-      case 'linux':
-        pastelPrefix = '.pastel';
-        break;
-      case 'darwin':
-        pastelPrefix = 'Library/Application Support/Pastel';
-        break;
-      default:
-        throw new Error(`Platform ${os.platform()} is not supported`);
-    }
-    const pastelKeysPath = path.join(app.getPath('home'), pastelPrefix, 'testnet3', 'pastelkeys');
+export const getCnodeDir = () => {
+  //those one which is ~/.pastel in Linux, which store config and pasteld data
+  let pastelPrefix;
+  switch (os.platform()) {
+    case 'win32':
+      pastelPrefix = 'AppData/Roaming/Pastel';
+      break;
+    case 'linux':
+      pastelPrefix = '.pastel';
+      break;
+    case 'darwin':
+      pastelPrefix = 'Library/Application Support/Pastel';
+      break;
+    default:
+      throw new Error(`Platform ${os.platform()} is not supported`);
+  }
+  return path.join(app.getPath('home'), pastelPrefix;
+};
 
-    try {
-      fs.accessSync(pastelKeysPath);
-    } catch (e) {
-      fs.mkdirSync(pastelKeysPath);
-    }
-}
 
+const createPastelkeysDir = () => {
+  const pastelKeysPath = path.join(getCnodeDir(), 'testnet3', 'pastelkeys');
+
+  try {
+    fs.accessSync(pastelKeysPath);
+  } catch (e) {
+    fs.mkdirSync(pastelKeysPath);
+  }
+};
 
 app.on('ready', createWindow);
 app.on('ready', updateNodeStatusesProccess);
