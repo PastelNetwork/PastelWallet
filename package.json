@@ -31,9 +31,9 @@
     "dev-server": "webpack-dev-server --mode development",
     "start": "webpack-dashboard npm run dev-server",
     "sass:watch": "node-sass -w --source-map true src/artist.scss src/artist.css",
-    "prepare-build": "rm -rf build/* dist/*; babel ./src/main  --ignore ./src/main/build -d ./build/main; webpack --env=prod --mode production; cp src/main/app_icon/icon.icns build/;",
+    "prepare-build": "rm -rf build/* dist/* && babel ./src/main  --ignore ./src/main/build -d ./build/main && webpack --env=prod --mode production && cp src/main/app_icon/icon.icns build/",
     "electron-build:mac": "npm run prepare-build; build --mac -c.extraMetadata.main=build/main/main.js",
-    "electron-build:win": "npm run prepare-build; build --win -c.extraMetadata.main=build/main/main.js",
+    "electron-build:win": "npm run prepare-build && build --win -c.extraMetadata.main=build/main/main.js",
     "electron-build:linux": "npm run prepare-build; build --linux -c.extraMetadata.main=build/main/main.js",
     "start-electron": "babel ./src/main  --ignore ./src/main/build -d ./src/main/build; electron --inspect ./src/main/build/main.js",
     "start-electron:no-rebuild": "electron --inspect ./src/main/build/main.js"
