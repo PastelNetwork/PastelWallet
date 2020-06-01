@@ -3,6 +3,9 @@ import axios from 'axios';
 import * as settings from './settings';
 import { ipcRenderer } from './ipc/ipc';
 import history from './history';
+import * as constants from '../main/constants';
+import { store } from './app';
+import { SET_CNODE_STATUS } from './actionTypes';
 
 export const setBalance = (value) => ({
   type: actionTypes.SET_BALANCE,
@@ -127,4 +130,18 @@ export const saveProfileData = () => {
     }
   };
 
+};
+
+export const updateCnodeStatus = (status) => {
+  return (dispatch, getState) => {
+    const { others: { cNodeStatus } } = getState();
+    if (status === constants.NODE_STATUS_CONNECTED && cNodeStatus !== constants.NODE_STATUS_CONNECTED) {
+      // refresh blockchain data
+      ipcRenderer.send('blockchainDataRequest', {});
+      ipcRenderer.send('getInfoRequest', {});
+      ipcRenderer.send('getPeerInfoRequest', {});
+      ipcRenderer.send('pastelIdList', {});
+    }
+    dispatch({ type: SET_CNODE_STATUS, value: status });
+  };
 };

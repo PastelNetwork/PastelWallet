@@ -14,7 +14,8 @@
     ],
     "extraResources": [
       "src/StoVaCore/dist/wallet_api",
-      "pasteld_binary/pasteld"
+      "pasteld_binary/pasteld",
+      "pasteld_binary/pasteld.exe"
     ],
     "mac": {
       "target": "dmg"

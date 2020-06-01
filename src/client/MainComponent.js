@@ -11,15 +11,7 @@ import Gallery from './containers/Gallery';
 import Info from './containers/Info';
 import Profile from './containers/Profile';
 
-const ipcRenderer = window.require('electron').ipcRenderer;
-
 class App extends Component {
-  componentDidMount () {
-    ipcRenderer.send('blockchainDataRequest', {});
-    ipcRenderer.send('getInfoRequest', {});
-    ipcRenderer.send('getPeerInfoRequest', {});
-  }
-
   render () {
     return <React.Fragment>
       <Menu/>

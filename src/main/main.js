@@ -232,7 +232,10 @@ const createPastelkeysDir = () => {
   try {
     fs.accessSync(pastelKeysPath);
   } catch (e) {
-    fs.mkdirSync(pastelKeysPath);
+    try {
+      fs.mkdirSync(pastelKeysPath);
+    } catch (e) {
+    }
   }
 };
 
