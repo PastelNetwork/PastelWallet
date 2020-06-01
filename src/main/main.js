@@ -199,7 +199,7 @@ function createWindow () {
   } else {
     const indexPath = path.join(__dirname, '../index.html');
     win.loadFile(indexPath);
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
   }
   win.on('closed', () => {
     win = null;
