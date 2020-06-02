@@ -1,10 +1,11 @@
 import * as path from 'path';
+import * as os from 'os';
 import * as log from 'electron-log';
 import { addMessageToBox, getCnodeDir, getWorkDir } from '../main';
 import callRpcMethod from './utils';
 import { GETINFO_COMMAND } from '../constants';
 import * as fs from 'fs';
-import { app } from "electron";
+import { app } from 'electron';
 
 let pyProc = null;
 let pastelProc = null;
@@ -34,9 +35,7 @@ rpcallowip=0.0.0.0/0
 
 const getScriptPath = () => {
   if (process.defaultApp) {
-    // return path.join(process.cwd(), PY_DIST_FOLDER, PY_FOLDER, PY_MODULE + '.py');
-    // TODO: debug - remove
-    return path.join('C:/Users/User/PastelWallet/src/StoVaCore/dist', 'wallet_api.exe');
+    return path.join(process.cwd(), PY_DIST_FOLDER, PY_FOLDER, PY_MODULE + '.py');
   }
   if (process.platform === 'win32') {
     return path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, 'dist', PY_MODULE + '.exe');
@@ -48,23 +47,21 @@ const getScriptPath = () => {
 
 const getPasteldPath = () => {
   if (process.defaultApp) {
-    // return null;
-    // TODO: remove after debugging:
-    return path.join(app.getPath('home'), 'Downloads', 'pasteld.exe');
+    return null;
   }
   let scriptPath;
   switch (process.platform) {
-      case 'win32':
-        scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld' + '.exe');
-        break;
-      case 'linux':
-          scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld');
-          break;
-      case 'darwin':
-          scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld');
-          break;
-      default:
-          throw new Error(`Not supported platform ${process.platform}`);
+    case 'win32':
+      scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld' + '.exe');
+      break;
+    case 'linux':
+      scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld');
+      break;
+    case 'darwin':
+      scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld');
+      break;
+    default:
+      throw new Error(`Not supported platform ${process.platform}`);
   }
 
   log.warn(`Pasteld path: ${scriptPath}`);
@@ -75,15 +72,8 @@ export const createPyProc = (pastelid, passphrase) => {
   let script = getScriptPath();
   let port = pyPort;
   if (process.defaultApp) {
-    // TODO: debug - remove
-    // pyProc = require('child_process').execFile('python', [script, getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
-    // });
-    pyProc = require('child_process').execFile(script, [getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
-        log.error(`[wallet_api] Error: ${error}`);
-        log.info(`[wallet_api] Stdout: ${stdout}`);
-        log.warn(`[wallet_api] Stderr: ${stderr}`);
+    pyProc = require('child_process').execFile('python', [script, getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
     });
-
   } else {
     let appPath;
     switch (process.platform) {
@@ -95,22 +85,22 @@ export const createPyProc = (pastelid, passphrase) => {
         break;
     }
     pyProc = require('child_process').execFile(script, [getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
-        log.error(`[wallet_api] Error: ${error}`);
-        log.info(`[wallet_api] Stdout: ${stdout}`);
-        log.warn(`[wallet_api] Stderr: ${stderr}`);
+      log.error(`[wallet_api] Error: ${error}`);
+      log.info(`[wallet_api] Stdout: ${stdout}`);
+      log.warn(`[wallet_api] Stderr: ${stderr}`);
     });
   }
 
   pyProc.stdout.on('data', (data) => {
     const msg = `wallet_api stdout: ${data}`;
     log.info(msg);
-    // addMessageToBox(msg)
+    addMessageToBox(msg);
   });
 
   pyProc.stderr.on('data', (data) => {
     const msg = `wallet_api stderr: ${data}`;
     log.warn(msg);
-    // addMessageToBox(msg);
+    addMessageToBox(msg);
   });
   if (pyProc != null) {
     const msg = 'wallet_api process is started and listening on port ' + port;
@@ -151,17 +141,6 @@ export const checkAndRunPastelD = () => {
         addMessageToBox(`[pasteld] Stdout: ${stdout}`);
         addMessageToBox(`[pasteld] Stderr: ${stderr}`);
       });
-    } else {
-      // TODO: debug - remove
-      pastelProc = require('child_process').execFile(pastelPath, [], (error, stdout, stderr) => {
-        log.error(`[pasteld] Error: ${error}`);
-        log.info(`[pasteld] Stdout: ${stdout}`);
-        log.warn(`[pasteld] Stderr: ${stderr}`);
-        addMessageToBox(`[pasteld] Error: ${error}`);
-        addMessageToBox(`[pasteld] Stdout: ${stdout}`);
-        addMessageToBox(`[pasteld] Stderr: ${stderr}`);
-      });
-
     }
 
     if (pastelProc != null) {
@@ -174,7 +153,11 @@ export const checkAndRunPastelD = () => {
 
 export const killPyProcess = () => {
   if (pyProc) {
-    pyProc.kill();
+    if (os.platform() === 'win32') {
+      require('child_process').exec('taskkill /pid ' + pyProc.pid + ' /T /F');
+    } else {
+      pyProc.kill();
+    }
   }
   pyProc = null;
 };
