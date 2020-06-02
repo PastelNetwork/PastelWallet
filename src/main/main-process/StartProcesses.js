@@ -104,13 +104,13 @@ export const createPyProc = (pastelid, passphrase) => {
   pyProc.stdout.on('data', (data) => {
     const msg = `wallet_api stdout: ${data}`;
     log.info(msg);
-    // addMessageToBox(msg)
+    addMessageToBox(msg)
   });
 
   pyProc.stderr.on('data', (data) => {
     const msg = `wallet_api stderr: ${data}`;
     log.warn(msg);
-    // addMessageToBox(msg);
+    addMessageToBox(msg);
   });
   if (pyProc != null) {
     const msg = 'wallet_api process is started and listening on port ' + port;
