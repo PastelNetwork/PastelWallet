@@ -34,9 +34,7 @@ rpcallowip=0.0.0.0/0
 
 const getScriptPath = () => {
   if (process.defaultApp) {
-    // return path.join(process.cwd(), PY_DIST_FOLDER, PY_FOLDER, PY_MODULE + '.py');
-    // TODO: debug - remove
-    return path.join('C:/Users/User/PastelWallet/src/StoVaCore/dist', 'wallet_api.exe');
+    return path.join(process.cwd(), PY_DIST_FOLDER, PY_FOLDER, PY_MODULE + '.py');
   }
   if (process.platform === 'win32') {
     return path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, 'dist', PY_MODULE + '.exe');
@@ -48,9 +46,7 @@ const getScriptPath = () => {
 
 const getPasteldPath = () => {
   if (process.defaultApp) {
-    // return null;
-    // TODO: remove after debugging:
-    return path.join(app.getPath('home'), 'Downloads', 'pasteld.exe');
+    return null;
   }
   let scriptPath;
   switch (process.platform) {
@@ -75,15 +71,8 @@ export const createPyProc = (pastelid, passphrase) => {
   let script = getScriptPath();
   let port = pyPort;
   if (process.defaultApp) {
-    // TODO: debug - remove
-    // pyProc = require('child_process').execFile('python', [script, getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
-    // });
-    pyProc = require('child_process').execFile(script, [getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
-        log.error(`[wallet_api] Error: ${error}`);
-        log.info(`[wallet_api] Stdout: ${stdout}`);
-        log.warn(`[wallet_api] Stderr: ${stderr}`);
+    pyProc = require('child_process').execFile('python', [script, getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
     });
-
   } else {
     let appPath;
     switch (process.platform) {
@@ -151,17 +140,6 @@ export const checkAndRunPastelD = () => {
         addMessageToBox(`[pasteld] Stdout: ${stdout}`);
         addMessageToBox(`[pasteld] Stderr: ${stderr}`);
       });
-    } else {
-      // TODO: debug - remove
-      pastelProc = require('child_process').execFile(pastelPath, [], (error, stdout, stderr) => {
-        log.error(`[pasteld] Error: ${error}`);
-        log.info(`[pasteld] Stdout: ${stdout}`);
-        log.warn(`[pasteld] Stderr: ${stderr}`);
-        addMessageToBox(`[pasteld] Error: ${error}`);
-        addMessageToBox(`[pasteld] Stdout: ${stdout}`);
-        addMessageToBox(`[pasteld] Stderr: ${stderr}`);
-      });
-
     }
 
     if (pastelProc != null) {
