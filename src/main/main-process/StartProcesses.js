@@ -1,10 +1,11 @@
 import * as path from 'path';
+import * as os from 'os';
 import * as log from 'electron-log';
 import { addMessageToBox, getCnodeDir, getWorkDir } from '../main';
 import callRpcMethod from './utils';
 import { GETINFO_COMMAND } from '../constants';
 import * as fs from 'fs';
-import { app } from "electron";
+import { app } from 'electron';
 
 let pyProc = null;
 let pastelProc = null;
@@ -50,17 +51,17 @@ const getPasteldPath = () => {
   }
   let scriptPath;
   switch (process.platform) {
-      case 'win32':
-        scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld' + '.exe');
-        break;
-      case 'linux':
-          scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld');
-          break;
-      case 'darwin':
-          scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld');
-          break;
-      default:
-          throw new Error(`Not supported platform ${process.platform}`);
+    case 'win32':
+      scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld' + '.exe');
+      break;
+    case 'linux':
+      scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld');
+      break;
+    case 'darwin':
+      scriptPath = path.join(process.resourcesPath, 'pasteld_binary', 'pasteld');
+      break;
+    default:
+      throw new Error(`Not supported platform ${process.platform}`);
   }
 
   log.warn(`Pasteld path: ${scriptPath}`);
@@ -84,16 +85,16 @@ export const createPyProc = (pastelid, passphrase) => {
         break;
     }
     pyProc = require('child_process').execFile(script, [getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
-        log.error(`[wallet_api] Error: ${error}`);
-        log.info(`[wallet_api] Stdout: ${stdout}`);
-        log.warn(`[wallet_api] Stderr: ${stderr}`);
+      log.error(`[wallet_api] Error: ${error}`);
+      log.info(`[wallet_api] Stdout: ${stdout}`);
+      log.warn(`[wallet_api] Stderr: ${stderr}`);
     });
   }
 
   pyProc.stdout.on('data', (data) => {
     const msg = `wallet_api stdout: ${data}`;
     log.info(msg);
-    addMessageToBox(msg)
+    addMessageToBox(msg);
   });
 
   pyProc.stderr.on('data', (data) => {
@@ -152,7 +153,11 @@ export const checkAndRunPastelD = () => {
 
 export const killPyProcess = () => {
   if (pyProc) {
-    pyProc.kill();
+    if (os.platform() === 'win32') {
+      require('child_process').exec('taskkill /pid ' + pyProc.pid + ' /T /F');
+    } else {
+      pyProc.kill();
+    }
   }
   pyProc = null;
 };
