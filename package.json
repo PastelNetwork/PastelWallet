@@ -15,6 +15,8 @@
     "extraResources": [
       "src/StoVaCore/dist/wallet_api",
       "src/StoVaCore/dist/wallet_api.exe",
+      "src/StoVaCore/dist/ani_import",
+      "src/StoVaCore/dist/ani_import.exe",
       "pasteld_binary/pasteld",
       "pasteld_binary/pasteld.exe"
     ],

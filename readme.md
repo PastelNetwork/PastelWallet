@@ -27,6 +27,7 @@ As currently `PastelD` binary is not available for Mac - it can be run with Dock
 ## Build on Mac OS
  - First - build `wallet_api` (from the StoVaCore dir)
  - `pyinstaller --add-data "misc":"misc"  -F wallet_api.py`
+ - `pyinstaller -F ani_import.py`
  - Next - build the wallet (`wallet_api` executable will be included).
  - `npm run electron-build:mac`
  
@@ -38,6 +39,7 @@ As currently `PastelD` binary is not available for Mac - it can be run with Dock
  - Install Python deps (`pip install -r requirements.win.txt`) from the StoVaCore repo
  - Build `wallet_api` (on Windows syntax is a little bit different)
  - `pyinstaller --add-data "misc;misc" -F wallet_api.py`
+ - Build `ani_import` : `pyinstaller -F ani_import.py`
  - `npm electron-rebuild`. If it fails because of missing MS build tools - install it:
  - `npm install --global --production windows-build-tools`
  - Build wallet: `npm run electron-build:win`

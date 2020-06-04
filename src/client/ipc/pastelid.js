@@ -108,7 +108,12 @@ ipcRenderer.on('aniImportResponse', (event, data) => {
       store.dispatch({type: actionTypes.SET_ANI_KEY_ERROR, value: data.err});
       break;
     case constants.RESPONSE_STATUS_OK:
-      store.dispatch({type: actionTypes.SET_ANI_KEY_MSG, value: 'ANI key succesfully imported'});
+      if (data.data.error) {
+        store.dispatch({type: actionTypes.SET_ANI_KEY_ERROR, value: data.data.err});
+      } else {
+        store.dispatch({type: actionTypes.SET_ANI_KEY_MSG, value: `Key is imported: ${data.data.result}`});
+      }
+
       console.log(data);
       break;
     default:

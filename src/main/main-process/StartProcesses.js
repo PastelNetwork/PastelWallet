@@ -33,14 +33,14 @@ rpcpassword=rt
 rpcallowip=0.0.0.0/0
 `;
 
-const getScriptPath = () => {
+export const getScriptPath = (pyModule) => {
   if (process.defaultApp) {
-    return path.join(process.cwd(), PY_DIST_FOLDER, PY_FOLDER, PY_MODULE + '.py');
+    return path.join(process.cwd(), PY_DIST_FOLDER, PY_FOLDER, pyModule + '.py');
   }
   if (process.platform === 'win32') {
-    return path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, 'dist', PY_MODULE + '.exe');
+    return path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, 'dist', pyModule + '.exe');
   }
-  const scriptPath = path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, 'dist', PY_MODULE);
+  const scriptPath = path.join(process.resourcesPath, PY_DIST_FOLDER, PY_FOLDER, 'dist', pyModule);
   log.warn(`Script path: ${scriptPath}`);
   return scriptPath;
 };
@@ -69,21 +69,12 @@ const getPasteldPath = () => {
 };
 
 export const createPyProc = (pastelid, passphrase) => {
-  let script = getScriptPath();
+  let script = getScriptPath('wallet_api');
   let port = pyPort;
   if (process.defaultApp) {
     pyProc = require('child_process').execFile('python', [script, getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
     });
   } else {
-    let appPath;
-    switch (process.platform) {
-      case 'linux':
-        appPath = path.join(process.resourcesPath, '..');
-        break;
-      default:
-        appPath = path.join(process.resourcesPath, '..', '..');
-        break;
-    }
     pyProc = require('child_process').execFile(script, [getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
       log.error(`[wallet_api] Error: ${error}`);
       log.info(`[wallet_api] Stdout: ${stdout}`);
