@@ -140,7 +140,9 @@ class PastelIDSelect extends Component {
           or
           <Button style={{ width: '43%' }} onClick={() => {history.push('/pastel_id/import'); this.resetErrors()}}>Import existing</Button>
         </div>
-
+        <div className={style['ani-link']} onClick={() => {history.push('/pastel_id/ani_import'); this.resetErrors()}}>
+          Import ANI key
+        </div>
     </Wrapper>;
   }
 }

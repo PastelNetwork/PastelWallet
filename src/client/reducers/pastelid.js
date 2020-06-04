@@ -10,7 +10,9 @@ const initialState = {
   // currentPassphrase: 'taksa',
   pastelIDMsg: null,
   selectedPastelId: null,
-  passphrase: ''
+  passphrase: '',
+  aniKeyError: null,
+  aniKeyMsg: null
 };
 
 export default function (state = initialState, action) {
@@ -29,6 +31,10 @@ export default function (state = initialState, action) {
       return { ...state, passphrase: action.value };
     case actionTypes.SET_CURRENT_PASSPHRASE:
       return { ...state, currentPassphrase: action.value };
+    case actionTypes.SET_ANI_KEY_ERROR:
+      return { ...state, aniKeyError: action.value };
+    case actionTypes.SET_ANI_KEY_MSG:
+      return { ...state, aniKeyMsg: action.value };
     case actionTypes.RESET_STORE:
       return { ...initialState };
     default:

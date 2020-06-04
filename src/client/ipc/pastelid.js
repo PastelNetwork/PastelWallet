@@ -101,3 +101,18 @@ ipcRenderer.on('pastelIdCheckPassphraseResponse', (event, data) => {
       break;
   }
 });
+
+ipcRenderer.on('aniImportResponse', (event, data) => {
+  switch (data.status) {
+    case constants.RESPONSE_STATUS_ERROR:
+      store.dispatch({type: actionTypes.SET_ANI_KEY_ERROR, value: data.err});
+      break;
+    case constants.RESPONSE_STATUS_OK:
+      store.dispatch({type: actionTypes.SET_ANI_KEY_MSG, value: 'ANI key succesfully imported'});
+      console.log(data);
+      break;
+    default:
+      break;
+  }
+
+});

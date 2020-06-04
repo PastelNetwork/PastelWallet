@@ -212,3 +212,18 @@ ipcMain.on('signMessage', (event, arg) => {
         });
     });
 });
+
+ipcMain.on('aniImport', (event, arg) => {
+    const key = arg.key;
+    // TODO: run python process with `key` argument, collect its stdout and reply to sender
+    // event.sender.send('aniImportResponse', {
+    //     status: constants.RESPONSE_STATUS_OK,
+    //     data: 'ANI key is imported'
+    // });
+
+    event.sender.send('aniImportResponse', {
+        status: constants.RESPONSE_STATUS_ERROR,
+        err: 'Failed to import ANI key'
+    });
+});
+
