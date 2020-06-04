@@ -32,7 +32,9 @@ As currently `PastelD` binary is not available for Mac - it can be run with Dock
  - `npm run electron-build:mac`
  
 ## Build on Linux
- - Run `linux_build.sh` or manually execute every single line from this script.
+ - Put pastel binary named `pasteld` into `pasteld_binary` directory.
+ - Repeat actions for Mac OS build.
+ - `npm run electron-build:linux`
  
 ## Build on Windows
  - Install Python and Node

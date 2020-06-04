@@ -124,7 +124,7 @@ export const checkAndRunPastelD = () => {
     const pastelPath = getPasteldPath();
     log.warn(`PastelD path detected: ${pastelPath}`);
     if (!process.defaultApp) {
-      pastelProc = require('child_process').execFile(pastelPath, [], (error, stdout, stderr) => {
+      pastelProc = require('child_process').execFile(pastelPath, ['-reindex'], (error, stdout, stderr) => {
         log.error(`[pasteld] Error: ${error}`);
         log.info(`[pasteld] Stdout: ${stdout}`);
         log.warn(`[pasteld] Stderr: ${stderr}`);
