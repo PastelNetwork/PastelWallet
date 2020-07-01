@@ -10,6 +10,7 @@ const IMAGE_REGISTRATION_STEP_2_RESOURCE = `${LOCAL_PY_URL}image_registration_st
 const IMAGE_REGISTRATION_STEP_3_RESOURCE = `${LOCAL_PY_URL}image_registration_step_3`;
 const IMAGE_REGISTRATION_CANCEL_RESOURCE = `${LOCAL_PY_URL}image_registration_cancel`;
 
+const DELAY_BEFORE_CREATE_ACT_TICKET = 2;  // blocks to wait when regticket was written before write act ticket
 
 // image registration form step 1
 ipcMain.on('imageRegFormSubmit', (event, arg) => {
@@ -136,7 +137,7 @@ const imageRegistrationStep3Handler = (event, data) => {
                 const blocks = response.data.result.blocks;
                 const intervalId = setInterval(() => {
                     callRpcMethod('getinfo').then(r => {
-                       if (r.data.result.blocks - blocks >= 1) {
+                       if (r.data.result.blocks - blocks >= DELAY_BEFORE_CREATE_ACT_TICKET) {
                            clearInterval(intervalId);
                            createActivationTicket(event, ['register', 'act', ...actTicketParams]);
                        }
