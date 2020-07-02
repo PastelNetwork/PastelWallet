@@ -13,7 +13,8 @@ class Create extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      passphrase: ''
+      passphrase: '',
+      disabled: false
     };
   }
   resetErrors = () => {
@@ -25,12 +26,14 @@ class Create extends Component {
   };
 
   createAndRegister = () => {
+    this.setState({disabled: true});
     ipcRenderer.send('pastelIdCreateAndRegister', {
       passphrase: this.state.passphrase,
       blockchainAddress: this.props.blockchainAddress
     });
   };
   createNoRegisterClick = () => {
+    this.setState({disabled: true});
     ipcRenderer.send('pastelIdCreate', { passphrase: this.state.passphrase });
   };
   onPassphraseChange = (e) => {
@@ -55,10 +58,10 @@ class Create extends Component {
              value={this.state.passphrase} onChange={this.onPassphraseChange}
       />
       {error}
-      <Button style={{ width: '100%', marginTop: '15px' }} disabled={this.state.passphrase === ''} onClick={this.createAndRegister}>Create and
+      <Button style={{ width: '100%', marginTop: '15px' }} disabled={this.state.passphrase === '' || this.state.disabled} onClick={this.createAndRegister}>Create and
         register</Button>
       <Button btnType={BTN_TYPE_LIGHT_BLUE} style={{ width: '100%', marginTop: '7px' }}
-              disabled={this.state.passphrase === ''} onClick={this.createNoRegisterClick}>Create without registration</Button>
+              disabled={this.state.passphrase === '' || this.state.disabled} onClick={this.createNoRegisterClick}>Create without registration</Button>
     </Wrapper>;
   }
 }
