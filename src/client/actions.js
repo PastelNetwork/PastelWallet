@@ -1,11 +1,12 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 import * as settings from './settings';
-import { ipcRenderer } from './ipc/ipc';
+import {ipcRenderer} from './ipc/ipc';
 import history from './history';
 import * as constants from '../main/constants';
-import { store } from './app';
-import { SET_CNODE_STATUS } from './actionTypes';
+import {store} from './app';
+import {SET_CNODE_STATUS} from './actionTypes';
+import {PASTELID_REG_STATUS_IN_PROGRESS} from "../main/constants";
 
 export const setBalance = (value) => ({
   type: actionTypes.SET_BALANCE,
@@ -76,10 +77,28 @@ export const setImageRegTicketID = (value) => ({
 //   };
 // };
 
-export const setPasteIDList = (value) => ({
-  type: actionTypes.SET_PASTEL_ID_LIST,
-  value
-});
+export const setPasteIDList = (value) => {
+  return (dispatch, getState) => {
+    const {pastelid: {refreshTaskID}} = getState();
+    if (value.some(x => x.regStatus === PASTELID_REG_STATUS_IN_PROGRESS)) {
+      if (!refreshTaskID) {
+        //create task to refresh pastelID list
+        const taskID = setInterval(() => ipcRenderer.send('pastelIdList', {}), 5000);
+        dispatch({type: actionTypes.SET_REFRESH_TASK_ID, value: taskID});
+      }
+    } else {
+      if (refreshTaskID) {
+        // remove task
+        clearInterval(refreshTaskID);
+        dispatch({type: actionTypes.SET_REFRESH_TASK_ID, value: null});
+      }
+    }
+    dispatch({
+      type: actionTypes.SET_PASTEL_ID_LIST,
+      value
+    });
+  }
+};
 
 export const setPasteIDError = (value) => ({
   type: actionTypes.SET_PASTEL_ID_ERROR,
@@ -110,23 +129,31 @@ export const getInfo = () => {
 
 export const saveProfileData = () => {
   return (dispatch, getState) => {
-    const { profileEdit: { firstName, lastName, phone, email, photo } } = getState();
-    const { pastelid: { currentPastelID } } = getState();
+    const {profileEdit: {firstName, lastName, phone, email, photo}} = getState();
+    const {pastelid: {currentPastelID}} = getState();
     const errors = [];
     const PHONE_RE = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
     const EMAIL_RE = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (!PHONE_RE.test(phone)) {errors.push('Invalid phone'); }
-    if (!EMAIL_RE.test(email)) { errors.push('Invalid email'); }
-    if (firstName.trim() === '') { errors.push('First name is empty'); }
-    if (lastName.trim() === '') { errors.push('Last name is empty'); }
+    if (!PHONE_RE.test(phone)) {
+      errors.push('Invalid phone');
+    }
+    if (!EMAIL_RE.test(email)) {
+      errors.push('Invalid email');
+    }
+    if (firstName.trim() === '') {
+      errors.push('First name is empty');
+    }
+    if (lastName.trim() === '') {
+      errors.push('Last name is empty');
+    }
 
     if (errors.length === 0) {
       // send IPC with data
-      ipcRenderer.send('saveProfile', { firstName, lastName, phone, email, photo, pastelid: currentPastelID });
+      ipcRenderer.send('saveProfile', {firstName, lastName, phone, email, photo, pastelid: currentPastelID});
     } else {
       // has some errors
-      dispatch({ type: actionTypes.SET_USER_PROFILE_EDIT_DATA, field: 'errors', value: errors });
+      dispatch({type: actionTypes.SET_USER_PROFILE_EDIT_DATA, field: 'errors', value: errors});
     }
   };
 
@@ -134,7 +161,7 @@ export const saveProfileData = () => {
 
 export const updateCnodeStatus = (status) => {
   return (dispatch, getState) => {
-    const { others: { cNodeStatus } } = getState();
+    const {others: {cNodeStatus}} = getState();
     if (status === constants.NODE_STATUS_CONNECTED && cNodeStatus !== constants.NODE_STATUS_CONNECTED) {
       // refresh blockchain data
       ipcRenderer.send('blockchainDataRequest', {});
@@ -142,6 +169,6 @@ export const updateCnodeStatus = (status) => {
       ipcRenderer.send('getPeerInfoRequest', {});
       ipcRenderer.send('pastelIdList', {});
     }
-    dispatch({ type: SET_CNODE_STATUS, value: status });
+    dispatch({type: SET_CNODE_STATUS, value: status});
   };
 };
