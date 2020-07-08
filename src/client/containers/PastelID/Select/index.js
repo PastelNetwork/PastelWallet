@@ -94,7 +94,7 @@ class PastelIDSelect extends Component {
     let inProgress;
     let error = this.props.error ?
       <div className={style['error-msg']}
-           style={!this.props.selectedPastelId && {marginTop: '52px'}}>{this.props.error.message}</div> : null;
+           style={this.props.selectedPastelId ? {} :{marginTop: '52px'}}>{this.props.error.message}</div> : null;
     let msg = this.props.msg ?
       <div className={style.msg}>{this.props.msg}</div> : null;
     if (!this.props.selectedPastelId) {

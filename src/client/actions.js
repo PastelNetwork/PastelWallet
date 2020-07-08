@@ -110,10 +110,16 @@ export const setPasteIDList = (value) => {
   }
 };
 
-export const setPasteIDError = (value) => ({
-  type: actionTypes.SET_PASTEL_ID_ERROR,
-  value
-});
+export const setPasteIDError = (value) => {
+  let msg = {...value};
+  if (value && value.message.includes('No unspent transaction found')) {
+    msg = {...value, message: 'Insufficient balance'};
+  }
+  return {
+    type: actionTypes.SET_PASTEL_ID_ERROR,
+    value: msg
+  }
+};
 
 export const setCurrentPasteID = (value) => ({
   type: actionTypes.SET_CURRENT_PASTEL_ID,
