@@ -165,6 +165,7 @@ export const updateCnodeStatus = (status) => {
     if (status === constants.NODE_STATUS_CONNECTED && cNodeStatus !== constants.NODE_STATUS_CONNECTED) {
       // refresh blockchain data
       ipcRenderer.send('blockchainDataRequest', {});
+      ipcRenderer.send('getBalanceRequest', {});
       ipcRenderer.send('getInfoRequest', {});
       ipcRenderer.send('getPeerInfoRequest', {});
       ipcRenderer.send('pastelIdList', {});
