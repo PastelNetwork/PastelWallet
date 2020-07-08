@@ -79,7 +79,7 @@ export const setImageRegTicketID = (value) => ({
 
 export const setPasteIDList = (value) => {
   return (dispatch, getState) => {
-    const {pastelid: {refreshTaskID}} = getState();
+    const {pastelid: {refreshTaskID, selectedPastelId}} = getState();
     if (value.some(x => x.regStatus === PASTELID_REG_STATUS_IN_PROGRESS)) {
       if (!refreshTaskID) {
         //create task to refresh pastelID list
@@ -97,6 +97,16 @@ export const setPasteIDList = (value) => {
       type: actionTypes.SET_PASTEL_ID_LIST,
       value
     });
+    if (selectedPastelId) {
+      const selectedUpdated = value.find(x => x.PastelID === selectedPastelId.value);
+      // if regStatus of selected pastelID is updated - reset it in the store.
+      if (selectedUpdated.regStatus !== selectedPastelId.regStatus) {
+        dispatch({
+          type: actionTypes.SET_SELECTED_PASTEL_ID,
+          value: null
+        });
+      }
+    }
   }
 };
 
