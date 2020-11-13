@@ -5,12 +5,12 @@
 As currently `PastelD` binary is not available for Mac - it can be run with Docker image.
  - Install Docker https://docs.docker.com/docker-for-mac/install/
  - Open Terminal
- - Run `docker run -d -p 19932:19932 -p 19933:19933 alexdobrushskiy/pasteld:0.1`
+ - Run `docker run -d -p 19932:19932 -p 19933:19933 alexdobrushskiy/pasteld:1.3`
 
 ### Install wallet
- - In Terminal: `wget https://dobrushskiy.name/static/pastel-wallet-1.0.0.dmg`
+ - Download and install the [wallet app](https://dobrushskiy.name/static/pastel_build/Pastel-1.0.1.dmg)
  - Install downloaded `*.dmg`
- - Run `pastel-wallet` app
+ - Run `Pastel` app
 
 ## How to run locally
  
