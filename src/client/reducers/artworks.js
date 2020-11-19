@@ -1,7 +1,7 @@
 import * as actionTypes from '../actionTypes';
 
 const getSampleSaleData = () => {
-  if (Math.random() <= 0.33) {
+  if (Math.random() <= 0.00001) {
     return {
       forSale: true,
       price: Math.floor(Math.random()*10000)

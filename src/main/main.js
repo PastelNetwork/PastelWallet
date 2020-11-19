@@ -9,6 +9,7 @@ import './main-process/pastelid';
 import './main-process/ImageRegistration';
 import './main-process/artworks';
 import './main-process/profile';
+import './main-process/trading';
 import { LOCAL_PY_URL } from './main-process/settings';
 import { checkAndRunPastelD, killPyProcess } from './main-process/StartProcesses';
 import { cleanUp } from './main-process/StartProcesses';

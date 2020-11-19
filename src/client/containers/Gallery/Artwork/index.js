@@ -4,6 +4,7 @@ import { Button, Input } from '../../../components/common';
 import { connect } from 'react-redux';
 import { BTN_TYPE_GREEN, BTN_TYPE_LIGHT_GREEN } from '../../../components/common/constants';
 import history from '../../../history';
+import { ipcRenderer } from '../../../ipc/ipc';
 
 class Artwork extends Component {
   constructor (props) {
@@ -23,8 +24,12 @@ class Artwork extends Component {
     console.log('Not implemented');
   };
   onConfirmSellClick = () => {
-    //ipcRenderer.send('sellArtwork', {hash: this.props.data.imageHash});
-    console.log('Not implemented');
+    ipcRenderer.send('sellArtworkRequest',
+      {
+        txid: this.props.data.actTicketTxid,
+        price: this.state.price
+      });
+    console.log(`Sent sellArtwork txid: ${this.props.data.actTicketTxid} price: ${this.state.price}`);
   };
 
   render () {
@@ -92,5 +97,8 @@ class Artwork extends Component {
 }
 
 export default connect(state => (
-  { pastelID: state.pastelid.currentPastelID }
+  {
+    pastelID: state.pastelid.currentPastelID,
+    passphrase: state.pastelid.currentPassphrase
+  }
 ))(Artwork);

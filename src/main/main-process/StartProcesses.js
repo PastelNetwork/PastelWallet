@@ -72,6 +72,7 @@ export const createPyProc = (pastelid, passphrase) => {
   let script = getScriptPath('wallet_api');
   let port = pyPort;
   if (process.defaultApp) {
+    log.error(`${script} ${getWorkDir()} ${pastelid} ${passphrase}`);
     pyProc = require('child_process').execFile('python', [script, getWorkDir(), pastelid, passphrase], (error, stdout, stderr) => {
     });
   } else {
