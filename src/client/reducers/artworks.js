@@ -15,7 +15,8 @@ const getSampleSaleData = () => {
 };
 const initialState = {
   data: null,
-  loading: false
+  loading: false,
+  artwork_sell_loading: []
 };
 
 export default function(state = initialState, action) {
@@ -27,6 +28,10 @@ export default function(state = initialState, action) {
       return { ...state, loading: action.value };
     case actionTypes.RESET_STORE:
       return { ...initialState };
+    case actionTypes.ADD_ARTWORK_TO_SELL_LOADING:
+      return { ...state,  artwork_sell_loading: [...state.artwork_sell_loading, action.artwork_hash]};
+    case actionTypes.REMOVE_ARTWORK_FROM_SELL_LOADING:
+      return { ...state,  artwork_sell_loading: []};
     default:
       return state;
   }

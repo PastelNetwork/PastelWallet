@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { BTN_TYPE_GREEN, BTN_TYPE_LIGHT_GREEN } from '../../../components/common/constants';
 import history from '../../../history';
 import { ipcRenderer } from '../../../ipc/ipc';
+import {ADD_ARTWORK_TO_SELL_LOADING} from "../../../actionTypes";
 
 class Artwork extends Component {
   constructor (props) {
@@ -24,10 +25,12 @@ class Artwork extends Component {
     console.log('Not implemented');
   };
   onConfirmSellClick = () => {
+    this.props.dispatch({type: ADD_ARTWORK_TO_SELL_LOADING, artwork_hash: this.props.data.imageHash});
     ipcRenderer.send('sellArtworkRequest',
       {
         txid: this.props.data.actTicketTxid,
-        price: this.state.price
+        price: this.state.price,
+        image_hash: this.props.data.imageHash
       });
     console.log(`Sent sellArtwork txid: ${this.props.data.actTicketTxid} price: ${this.state.price}`);
   };
@@ -35,6 +38,7 @@ class Artwork extends Component {
   render () {
     const { artistPastelId, name, numOfCopies, thumbnailPath, imageHash } = this.props.data;
     const { forSale, price } = this.props.data.saleData;
+    const isSellLoading = this.props.artwork_sell_loading.indexOf(imageHash) !== -1;
 
     let bottomBlock = <React.Fragment>
       <Button style={{ width: '145px', marginLeft: '16px', marginTop: '7px' }}
@@ -76,6 +80,7 @@ class Artwork extends Component {
                 onClick={this.onConfirmSellClick}>Ok</Button>
         <Button btnType={BTN_TYPE_LIGHT_GREEN} style={{ width: '145px', marginLeft: '16px', marginTop: '3px' }}
                 onClick={() => this.setState({ sellMode: false })}>Decline</Button>
+        {isSellLoading ? <h1>Loading</h1> : null}
       </React.Fragment>;
     }
     return <div className={style.artwork} style={this.state.buyMode || this.state.sellMode ? { height: '381px' } : {}}>
@@ -99,6 +104,7 @@ class Artwork extends Component {
 export default connect(state => (
   {
     pastelID: state.pastelid.currentPastelID,
-    passphrase: state.pastelid.currentPassphrase
+    passphrase: state.pastelid.currentPassphrase,
+    artwork_sell_loading: state.artworks.artwork_sell_loading
   }
 ))(Artwork);
