@@ -15,11 +15,11 @@ const sellArtworkRequestHandler = (event, data) => {
             txid: response.data.txid,
             image_hash: response.data.image_hash
         });
-    }).catch(() => {
+    }).catch((e) => {
         event.reply('sellArtworkResponse', {
             status: RESPONSE_STATUS_ERROR,
-            image_hash: response.data.image_hash,
-            error: response.data.error
+            image_hash: image_hash,
+            error: e.response.data
         });
     })
 };
