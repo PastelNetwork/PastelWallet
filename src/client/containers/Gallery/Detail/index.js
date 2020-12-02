@@ -52,7 +52,7 @@ class Detail extends Component {
     const imageHash = this.props.match.params.image_hash;
     const data = this.props.artworksData ? this.props.artworksData.filter(a => a.imageHash === imageHash)[0] : {};
     const { forSale, price } = data.saleData ? data.saleData : {};
-    const { name, orderBlockTxid, thumbnailPath, artistPastelId } = data;
+    const { name, orderBlockTxid, thumbnailPath, artistPastelId, actTicketTxid } = data;
     const isMy = artistPastelId === this.props.pastelId;
     let dialog = null;
     let button = isMy ?
@@ -91,7 +91,7 @@ class Detail extends Component {
         <div className={style.artwork}>
           {isMy ? <div className={style['my-sticker']}>my</div> : null}
           {forSale ? <div className={style['sale-sticker']}>for sale</div> : null}
-          <p className={style.txid}><span>TXID</span> {orderBlockTxid}</p>
+          <p className={style.txid}><span>TXID</span> {actTicketTxid}</p>
           <img src={`file://${thumbnailPath}`} alt=""/>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>

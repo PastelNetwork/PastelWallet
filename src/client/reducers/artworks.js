@@ -1,18 +1,18 @@
 import * as actionTypes from '../actionTypes';
 
-const getSampleSaleData = () => {
-  if (Math.random() <= 0.00001) {
-    return {
-      forSale: true,
-      price: Math.floor(Math.random()*10000)
-    };
-  } else {
-    return {
-      forSale: false,
-      price: -1
-    };
-  }
-};
+// const getSampleSaleData = () => {
+//   if (Math.random() <= 0.00001) {
+//     return {
+//       forSale: true,
+//       price: Math.floor(Math.random()*10000)
+//     };
+//   } else {
+//     return {
+//       forSale: false,
+//       price: -1
+//     };
+//   }
+// };
 const initialState = {
   data: null,
   loading: false,
@@ -23,8 +23,7 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_ARTWORKS_DATA:
-      const artworksData = action.value.map(x => ({...x, saleData: getSampleSaleData()}));
-      return { ...state, data: artworksData };
+      return { ...state, data: action.value };
     case actionTypes.SET_ARTWORKS_DATA_LOADING:
       return { ...state, loading: action.value };
     case actionTypes.RESET_STORE:
