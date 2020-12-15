@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { app, BrowserWindow, ipcMain } from 'electron';
+import {app, BrowserWindow, ipcMain} from 'electron';
 import * as os from 'os';
 import * as axios from 'axios';
 import * as log from 'electron-log';
@@ -10,18 +10,18 @@ import './main-process/ImageRegistration';
 import './main-process/artworks';
 import './main-process/profile';
 import './main-process/trading';
-import { LOCAL_PY_URL } from './main-process/settings';
-import { checkAndRunPastelD, killPyProcess } from './main-process/StartProcesses';
-import { cleanUp } from './main-process/StartProcesses';
-import { GETBALANCE_COMMAND } from './constants';
-import { RESPONSE_STATUS_OK } from './constants';
-import { RESPONSE_STATUS_ERROR } from './constants';
-import { SEND_TO_ADDRESS_COMMAND } from './constants';
-import { GET_ACCOUNT_ADDRESS_COMMAND } from './constants';
-import { GETINFO_COMMAND } from './constants';
-import { initDatabase } from './main-process/database';
+import {LOCAL_PY_URL} from './main-process/settings';
+import {checkAndRunPastelD, killPyProcess} from './main-process/StartProcesses';
+import {cleanUp} from './main-process/StartProcesses';
+import {GETBALANCE_COMMAND} from './constants';
+import {RESPONSE_STATUS_OK} from './constants';
+import {RESPONSE_STATUS_ERROR} from './constants';
+import {SEND_TO_ADDRESS_COMMAND} from './constants';
+import {GET_ACCOUNT_ADDRESS_COMMAND} from './constants';
+import {GETINFO_COMMAND} from './constants';
+import {initDatabase} from './main-process/database';
 import * as fs from 'fs';
-import { GET_PEER_INFO_COMMAND } from './constants';
+import {GET_PEER_INFO_COMMAND} from './constants';
 
 const PING_RESOURCE = `${LOCAL_PY_URL}ping`;
 
@@ -104,15 +104,18 @@ ipcMain.on('blockchainDataRequest', (event, arg) => {
     const actTicketResponse = responses[2];
     const bcAddress = addressResponse.data.result;
     const mnQuantity = Object.keys(mnListResponse.data.result).length;
-    const artworkAmount = actTicketResponse.data.result.filter(x => x.length === 64).length;
-    win.webContents.send('blockchainDataResponse', {
+    const artworkAmount = actTicketResponse.data.result ? actTicketResponse.data.result.filter(x => x.length === 64).length : 0;
+    event.reply('blockchainDataResponse', {
       status: RESPONSE_STATUS_OK,
       address: bcAddress,
       mnQuantity: mnQuantity,
       artworkAmount: artworkAmount
     });
   })).catch((err) => {
-    win.webContents.send('walletAddress', `Cannot connect to local pasteld white loading blockchain data`);
+    event.reply('blockchainDataResponse', {
+      status: RESPONSE_STATUS_ERROR,
+      error: err.stack ? err.stack : String(err)
+    });
   });
 });
 
@@ -179,14 +182,14 @@ const updateNodeStatusesProccess = () => {
   pyStatusTaskID = setInterval(updatePynodeStatus, 3000);
 };
 
-function createWindow () {
+function createWindow() {
   log.silly('Starting main proccess....');
   // Create the browser window.
   win = new BrowserWindow({
     width: 850,
     height: 630,
     resizable: false,
-    webPreferences: { nodeIntegration: true, webSecurity: false },
+    webPreferences: {nodeIntegration: true, webSecurity: false},
     icon: '/Users/alex/PycharmProjects/spa/src/client/assets/images/favicon.png'
   });
 

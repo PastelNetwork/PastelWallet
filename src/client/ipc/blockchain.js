@@ -17,6 +17,9 @@ ipcRenderer.on('blockchainDataResponse', (event, data) => {
     store.dispatch({ type: SET_ARTWORK_QUANTITY, value: data.artworkAmount });
     store.dispatch({ type: SET_BLOCKCHAIN_ADDRESS, value: data.address });
   } else {
+    if (data.error) {
+      console.log(`Error while fetching blockchain data: ${data.error}`);
+    }
     // if error - try until service will start
     setTimeout(() => {
       ipcRenderer.send('blockchainDataRequest', {});
