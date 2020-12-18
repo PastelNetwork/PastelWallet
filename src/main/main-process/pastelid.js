@@ -1,13 +1,13 @@
-import { ipcMain } from 'electron';
+import {ipcMain} from 'electron';
 import stringify from 'json-stable-stringify';
-import { createPyProc, getScriptPath } from './StartProcesses';
+import {createPyProc, getScriptPath} from './StartProcesses';
 import {
   PASTELID_REG_STATUS_IN_PROGRESS,
   PASTELID_REG_STATUS_NON_REGISTERED,
   PASTELID_REG_STATUS_REGISTERED
 } from '../constants';
-import { getDatabase, SELECT_PASTELID_SQL } from './database';
-import { getWorkDir } from '../main';
+import {getDatabase, SELECT_PASTELID_SQL} from './database';
+import {getWorkDir} from '../main';
 import * as log from 'electron-log';
 
 const callRpcMethod = require('./utils');
@@ -30,9 +30,6 @@ ipcMain.on('pastelIdList', (event, arg) => {
       getPastelIdsRegistrationInProgress(pastelIdInProgress => {
         const getPastelIdRegStatus = (pastelID) => {
           if (registeredPastelIDs.includes(pastelID)) {
-            if (pastelID === 'jXXkRCqifwY8SmwV3Dd5H4LRVKiZLStn1VGeWTqDk4DMHK5EraYKCZwikJaddJbkidRoAy1G3jywtbxc1CFy5p') {
-              return PASTELID_REG_STATUS_IN_PROGRESS;
-            }
             return PASTELID_REG_STATUS_REGISTERED;
           } else if (pastelIdInProgress.includes(pastelID)) {
             return PASTELID_REG_STATUS_IN_PROGRESS;
@@ -40,7 +37,8 @@ ipcMain.on('pastelIdList', (event, arg) => {
             return PASTELID_REG_STATUS_NON_REGISTERED;
           }
         };
-        const registeredPastelIDs = response.data.result;
+        const registeredPastelIDs = response.data.result.filter(t => t.ticket.id_type === 'personal')
+          .map(t => t.ticket.pastelID);
         const data = pastelIdList.map(key => ({
           PastelID: key.PastelID,
           regStatus: getPastelIdRegStatus(key.PastelID)
@@ -189,7 +187,7 @@ ipcMain.on('pastelIdCheckPassphrase', (event, arg) => {
 });
 
 ipcMain.on('signMessage', (event, arg) => {
-  const { data, pastelID, passphrase, dataType } = arg;
+  const {data, pastelID, passphrase, dataType} = arg;
   let picture_data = null;
   if (data.picture_data) {
     picture_data = data.picture_data;
