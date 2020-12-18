@@ -1,7 +1,7 @@
 Running Pastel wallet on Mac OS:
 --------------------------------
 
- - Download and install the [wallet app](https://dobrushskiy.name/static/pastel_build/Pastel-1.0.1.dmg)
+ - Download and install the [wallet app](https://dobrushskiy.name/static/pastel_build/Pastel-1.0.2.dmg)
  - Install Docker for Mac [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
  - After installation is complete - open Terminal and run `docker run -d -p 19932:19932 -p 19933:19933 alexdobrushskiy/pasteld:1.4`. This will download and run `pasteld` image. It's about 2GB in size - so please be patient. 
  - Then, run installed Pastel wallet. 
