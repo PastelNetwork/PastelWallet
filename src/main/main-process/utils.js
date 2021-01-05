@@ -1,5 +1,7 @@
 const axios = require('axios');
 
+const TESTNET = true;
+
 const callRpcMethod = (method, params) => {
     // return Promise
     let data = {
@@ -10,7 +12,7 @@ const callRpcMethod = (method, params) => {
     if (params) {
         data.params = params;
     }
-    return axios.post('http://localhost:19932', data, {
+    return axios.post(`http://localhost:${TESTNET? '19932' : '9932'}`, data, {
         headers: {
             'Content-Type': 'text/plain'
         },

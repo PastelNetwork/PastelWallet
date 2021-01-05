@@ -23,6 +23,10 @@ As currently `PastelD` binary is not available for Mac - it can be run with Dock
  - `npm run start-electron`
  - electron main proccess will start python proccess (`src/StoVaCore/wallet_api.py`) on 5000 port.
 
+## Switch between testnet and mainnet
+ - Change `TESTNET` parameter in `StoVaCore/config.py`. 
+ - Change `TESTNET` parameter in `PastelWallet/src/main/main-process/utils.js`
+
 
 ## Build on Mac OS
  - First - build `wallet_api` (from the StoVaCore dir)
