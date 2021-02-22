@@ -24,4 +24,10 @@ const sellArtworkRequestHandler = (event, data) => {
     })
 };
 
+const buyArtworkHandler = (event, data) => {
+    console.log(data);
+    event.sender.send("buyArtworkResponse", "data");
+};
+
 ipcMain.on('sellArtworkRequest', sellArtworkRequestHandler);
+ipcMain.on('buyArtworkRequest', buyArtworkHandler);

@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {BTN_TYPE_GREEN, BTN_TYPE_LIGHT_GREEN} from '../../../components/common/constants';
 import history from '../../../history';
 import {ipcRenderer} from '../../../ipc/ipc';
-import {ADD_ARTWORK_TO_SELL_LOADING, SET_SELL_TICKET_ERROR} from "../../../actionTypes";
+import {ADD_ARTWORK_TO_SELL_LOADING, SET_SELL_TICKET_ERROR, SET_SELL_TICKET_SUCCESS} from "../../../actionTypes";
 
 class Artwork extends Component {
   constructor(props) {
@@ -21,7 +21,8 @@ class Artwork extends Component {
     this.setState({buyMode: true});
   };
   onConfirmBuyClick = () => {
-    //ipcRenderer.send('buyArtwork', {hash: this.props.data.imageHash});
+    // ipcRenderer.send('buyArtworkRequest', {hash: this.props.data.imageHash});
+    // ipcRenderer.once('buyArtworkResponse', (data, arg)=>{console.log(arg)})
     console.log('Not implemented');
   };
   onConfirmSellClick = () => {
@@ -37,6 +38,11 @@ class Artwork extends Component {
   onErrorOkClick = () => {
     this.props.dispatch({type: SET_SELL_TICKET_ERROR, error: undefined});
     this.setState({sellMode: false});
+  };
+  onSuccessOkClick = () => {
+    this.props.dispatch({type: SET_SELL_TICKET_ERROR, error: undefined});
+    this.setState({sellMode: false});
+    ipcRenderer.send('artworksDataRequest', {})
   };
   render() {
     const {artistPastelId, name, numOfCopies, thumbnailPath, imageHash} = this.props.data;
@@ -92,7 +98,7 @@ class Artwork extends Component {
           <p><i>{this.props.sell_message}</i>
           </p>
           <Button btnType={BTN_TYPE_GREEN} style={{width: '145px', marginLeft: '16px', marginTop: '7px'}}
-                  onClick={this.onErrorOkClick}>Ok</Button>
+                  onClick={this.onSuccessOkClick}>Ok</Button>
 
         </React.Fragment>
       } else {
