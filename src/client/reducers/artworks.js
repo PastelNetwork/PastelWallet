@@ -32,9 +32,9 @@ export default function(state = initialState, action) {
       return { ...state,  artwork_sell_loading: [...state.artwork_sell_loading, action.artwork_hash]};
     case actionTypes.REMOVE_ARTWORK_FROM_SELL_LOADING:
       return { ...state,  artwork_sell_loading: []};
-    case actionTypes.SET_SELL_TICKET_ERROR:
+    case actionTypes.SET_TICKET_ERROR:
       return { ...state,  sell_error: action.error};
-    case actionTypes.SET_SELL_TICKET_MSG:
+    case actionTypes.SET_TICKET_MSG:
       return { ...state,  sell_message: action.message};
     default:
       return state;

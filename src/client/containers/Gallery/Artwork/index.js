@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {BTN_TYPE_GREEN, BTN_TYPE_LIGHT_GREEN} from '../../../components/common/constants';
 import history from '../../../history';
 import {ipcRenderer} from '../../../ipc/ipc';
-import {ADD_ARTWORK_TO_SELL_LOADING, SET_SELL_TICKET_ERROR, SET_SELL_TICKET_SUCCESS} from "../../../actionTypes";
+import {ADD_ARTWORK_TO_SELL_LOADING, REMOVE_ARTWORK_FROM_SELL_LOADING, SET_TICKET_ERROR, } from "../../../actionTypes";
 
 class Artwork extends Component {
   constructor(props) {
@@ -21,9 +21,12 @@ class Artwork extends Component {
     this.setState({buyMode: true});
   };
   onConfirmBuyClick = () => {
-    // ipcRenderer.send('buyArtworkRequest', {hash: this.props.data.imageHash});
+    this.props.dispatch({type: ADD_ARTWORK_TO_SELL_LOADING, artwork_hash: this.props.data.imageHash});
+    ipcRenderer.send('buyArtworkRequest', {
+        sell_txid: this.props.data.saleData.sell_txid,
+        price: this.props.data.saleData.price,
+    });
     // ipcRenderer.once('buyArtworkResponse', (data, arg)=>{console.log(arg)})
-    console.log('Not implemented');
   };
   onConfirmSellClick = () => {
     this.props.dispatch({type: ADD_ARTWORK_TO_SELL_LOADING, artwork_hash: this.props.data.imageHash});
@@ -36,14 +39,18 @@ class Artwork extends Component {
     console.log(`Sent sellArtwork txid: ${this.props.data.actTicketTxid} price: ${this.state.price}`);
   };
   onErrorOkClick = () => {
-    this.props.dispatch({type: SET_SELL_TICKET_ERROR, error: undefined});
+    this.props.dispatch({type: SET_TICKET_ERROR, error: undefined});
     this.setState({sellMode: false});
   };
   onSuccessOkClick = () => {
-    this.props.dispatch({type: SET_SELL_TICKET_ERROR, error: undefined});
+    this.props.dispatch({type: SET_TICKET_ERROR, error: undefined});
     this.setState({sellMode: false});
     ipcRenderer.send('artworksDataRequest', {})
   };
+  onOkClick = () =>{
+    this.props.dispatch({type: REMOVE_ARTWORK_FROM_SELL_LOADING, artwork_hash: this.props.data.imageHash});
+    this.setState({buyMode: false});
+  }
   render() {
     const {artistPastelId, name, numOfCopies, thumbnailPath, imageHash} = this.props.data;
     const {forSale, price} = this.props.data.saleData;
@@ -69,15 +76,35 @@ class Artwork extends Component {
     </React.Fragment>;
 
     if (this.state.buyMode) {
-      bottomBlock = <React.Fragment>
+      if (isSellLoading) {
+        if (this.props.sell_error) {
+          bottomBlock = <React.Fragment>
+            <p className={style.error}><i>{JSON.stringify(this.props.sell_error)}</i>
+            </p>
+            <Button btnType={BTN_TYPE_GREEN} style={{width: '145px', marginLeft: '16px', marginTop: '7px'}}
+                    onClick={this.onOkClick}>Ok</Button>
+
+          </React.Fragment>
+        } else if (this.props.sell_message) {
+          bottomBlock = <React.Fragment>
+            <p><i>{this.props.sell_message}</i>
+            </p>
+            <Button btnType={BTN_TYPE_GREEN} style={{width: '145px', marginLeft: '16px', marginTop: '7px'}}
+                    onClick={this.onOkClick}>Ok</Button>
+          </React.Fragment>
+        }
+      } else {
+                bottomBlock = <React.Fragment>
         <p style={{marginTop: '9px', fontSize: '14px', color: 'var(--black)'}}><i>Do you really want to buy this
-          artwork?</i></p>
+              artwork?</i></p>
         <Button btnType={BTN_TYPE_GREEN} style={{width: '145px', marginLeft: '16px', marginTop: '7px'}}
-                onClick={this.onConfirmBuyClick}>Yes</Button>
+                    onClick={this.onConfirmBuyClick}>Yes</Button>
         <Button btnType={BTN_TYPE_LIGHT_GREEN} style={{width: '145px', marginLeft: '16px', marginTop: '3px'}}
-                onClick={() => this.setState({buyMode: false})}>No</Button>
+                    onClick={() => this.setState({buyMode: false})}>No</Button>
       </React.Fragment>;
+        }
     }
+
     if (this.state.sellMode) {
       if (isSellLoading) {
         bottomBlock = <React.Fragment>

@@ -5,6 +5,7 @@ import axios from "axios";
 import {LOCAL_PY_URL} from "./settings";
 
 const SELL_TICKET_CREATE_RESOURCE = `${LOCAL_PY_URL}create_sell_ticket`;
+const BUY_TICKET_CREATE_RESOURCE = `${LOCAL_PY_URL}create_buy_ticket`;
 
 const sellArtworkRequestHandler = (event, data) => {
   const image_hash = data.image_hash;
@@ -25,8 +26,17 @@ const sellArtworkRequestHandler = (event, data) => {
 };
 
 const buyArtworkHandler = (event, data) => {
-    console.log(data);
-    event.sender.send("buyArtworkResponse", "data");
+    axios.post(BUY_TICKET_CREATE_RESOURCE, data).then((response) => {
+        event.reply('buyArtworkResponse', {
+            status: RESPONSE_STATUS_OK,
+            txid: response.data.txid,
+        });
+    }).catch((e) => {
+        event.reply('buyArtworkResponse', {
+            status: RESPONSE_STATUS_ERROR,
+            error: e.response.data
+        });
+    })
 };
 
 ipcMain.on('sellArtworkRequest', sellArtworkRequestHandler);
