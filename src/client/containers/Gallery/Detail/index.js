@@ -9,7 +9,7 @@ import {
     ADD_ARTWORK_TO_SELL_LOADING,
     SET_ARTWORKS_ERRORS,
     SET_ARTWORKS_MESSAGES,
-    SET_TICKET_ERROR
+    SET_TICKET_ERROR, SET_TICKET_MSG
 } from "../../../actionTypes";
 import {ipcRenderer} from "../../../ipc/ipc";
 
@@ -65,25 +65,25 @@ class Detail extends Component {
         }
     });
   };
-  // onConfirmSellClick = (data) => {
-  //   this.props.dispatch({type: ADD_ARTWORK_TO_SELL_LOADING, artwork_hash: this.props.match.params.image_hash});
-  //   ipcRenderer.send('sellArtworkRequest',
-  //     {
-  //       txid: data.actTicketTxid,
-  //       price: data.saleData.price,
-  //       image_hash: this.props.match.params.image_hash
-  //     });
-  //   console.log(`Sent sellArtwork txid: ${this.props.data.actTicketTxid} price: ${this.state.price}`);
-  // };
-  // onErrorOkClick = () => {
-  //   this.props.dispatch({type: SET_TICKET_ERROR, error: undefined});
-  //   this.setState({sellMode: false});
-  // };
-  // onSuccessOkClick = () => {
-  //   this.props.dispatch({type: SET_TICKET_ERROR, error: undefined});
-  //   this.setState({sellMode: false});
-  //   ipcRenderer.send('artworksDataRequest', {})
-  // };
+  onConfirmSellClick = (data) => {
+    this.props.dispatch({type: ADD_ARTWORK_TO_SELL_LOADING, artwork_hash: this.props.match.params.image_hash});
+    ipcRenderer.send('sellArtworkRequest',
+      {
+        txid: data.actTicketTxid,
+        price: this.state.price,
+        image_hash: this.props.match.params.image_hash
+      });
+    console.log(`Sent sellArtwork txid: ${data.actTicketTxid} price: ${data.saleData.price}`);
+  };
+  onErrorOkClick = () => {
+    this.props.dispatch({type: SET_TICKET_ERROR, error: undefined});
+    this.setState({sellMode: false});
+  };
+  onSuccessOkClick = () => {
+    this.props.dispatch({type: SET_TICKET_ERROR, error: undefined});
+    this.setState({sellMode: false});
+    ipcRenderer.send('artworksDataRequest', {})
+  };
   onOkClick = (data) =>{
     this.props.dispatch({type: SET_ARTWORKS_ERRORS, key:data.actTicketTxid, value: undefined});
     this.props.dispatch({type: SET_ARTWORKS_MESSAGES, key:data.actTicketTxid, value: undefined});
@@ -131,17 +131,29 @@ class Detail extends Component {
         artwork</Button>;
 
     if (this.state.sellMode) {
-      button = null;
-      dialog = <React.Fragment>
-        <Input type="number" name={'price'} label={'Set price'}
-               containerStyle={{ width: '270px' }}
-               style={{width: '270px', lineHeight: '20px'}}
-               value={this.state.price} onChange={(e) => this.setState({ price: e.target.value })}
-        />
-        <Button btnType={BTN_TYPE_GREEN} style={{ width: '130px', height: '37px', marginTop: '5px', marginRight: '10px' }} onClick={() => console.log('Not implemented')}>Sell</Button>
-        <Button btnType={BTN_TYPE_LIGHT_GREEN} style={{ width: '130px', height: '37px', marginTop: '5px' }}
-        onClick={()=> this.setState({sellMode: false})}>Decline</Button>
-      </React.Fragment>;
+      if(isLoading){
+              button = null;
+              dialog = loading
+      }else if (this.props.sell_error) {
+              button = null;
+              dialog = getMessage(this.props.sell_error, this.onErrorOkClick)
+      }else if (this.props.sell_message) {
+              button = null;
+              dialog = getMessage(this.props.sell_message, this.onSuccessOkClick)
+      }
+      else{
+              button = null;
+              dialog = <React.Fragment>
+                <Input type="number" name={'price'} label={'Set price'}
+                       containerStyle={{ width: '270px' }}
+                       style={{width: '270px', lineHeight: '20px'}}
+                       value={this.state.price} onChange={(e) => this.setState({ price: e.target.value })}
+                />
+                <Button btnType={BTN_TYPE_GREEN} style={{ width: '130px', height: '37px', marginTop: '5px', marginRight: '10px' }} onClick={() => this.onConfirmSellClick(data)}>Sell</Button>
+                <Button btnType={BTN_TYPE_LIGHT_GREEN} style={{ width: '130px', height: '37px', marginTop: '5px' }}
+                onClick={()=> this.setState({sellMode: false})}>Decline</Button>
+              </React.Fragment>;
+      }
     }
 
     if (this.state.buyMode) {
@@ -206,6 +218,7 @@ class Detail extends Component {
 
 export default connect(
   state => ({
+    pastelID: state.pastelid.currentPastelID,
     artworksData: state.artworks.data,
     pastelId: state.pastelid.currentPastelID,
     buyErrors: state.artworks.buyErrors,
