@@ -26,15 +26,17 @@ const sellArtworkRequestHandler = (event, data) => {
 };
 
 const buyArtworkHandler = (event, data) => {
-    axios.post(BUY_TICKET_CREATE_RESOURCE, data).then((response) => {
+    axios.post(BUY_TICKET_CREATE_RESOURCE, data.data).then((response) => {
         event.reply('buyArtworkResponse', {
             status: RESPONSE_STATUS_OK,
             txid: response.data.txid,
+            act_txid: data.act_txid
         });
     }).catch((e) => {
         event.reply('buyArtworkResponse', {
             status: RESPONSE_STATUS_ERROR,
-            error: e.response.data
+            error: e.response.data,
+            act_txid: data.act_txid
         });
     })
 };
