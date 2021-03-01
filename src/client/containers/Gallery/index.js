@@ -29,7 +29,13 @@ class ArtworkList extends Component {
         return true;
       }
       return item.artistPastelId === this.props.pastelID;
-    }).map((item, idx) => columns[idx % 3].push(<Artwork data={item} key={idx} saleData={item.saleData}/>)
+    }).map((item, idx) => columns[idx % 3].push(<Artwork
+        data={item}
+        key={idx}
+        saleData={item.saleData}
+        buyError={this.props.buyErrors[item.actTicketTxid]}
+        buyMessage={this.props.buyMessages[item.actTicketTxid]}
+        />)
     );
 
     return <Wrapper>
@@ -48,6 +54,8 @@ class ArtworkList extends Component {
 
 const stateToProps = state => ({
   data: state.artworks.data,
+  buyErrors: state.artworks.buyErrors,
+  buyMessages: state.artworks.buyMessages,
   loading: state.artworks.loading,
   pastelID: state.pastelid.currentPastelID
 });

@@ -17,13 +17,19 @@ const initialState = {
   data: null,
   loading: false,
   artwork_sell_loading: [],
-  sell_error: undefined
+  sell_error: undefined,
+  buyErrors: {},
+  buyMessages: {}
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_ARTWORKS_DATA:
       return { ...state, data: action.value };
+    case actionTypes.SET_ARTWORKS_ERRORS:
+      return { ...state, buyErrors: {...state.buyErrors, [action.key]: action.value}};
+    case actionTypes.SET_ARTWORKS_MESSAGES:
+      return { ...state, buyMessages: {...state.buyMessages, [action.key]: action.value}};
     case actionTypes.SET_ARTWORKS_DATA_LOADING:
       return { ...state, loading: action.value };
     case actionTypes.RESET_STORE:
