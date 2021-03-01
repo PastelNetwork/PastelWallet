@@ -22,10 +22,6 @@ class Artwork extends Component {
       price: 0
     };
   }
-
-  onBuyClick = () => {
-    this.setState({buyMode: true});
-  };
   onConfirmBuyClick = () => {
     this.props.dispatch({type: ADD_ARTWORK_TO_SELL_LOADING, artwork_hash: this.props.data.imageHash});
     ipcRenderer.send('buyArtworkRequest', {
@@ -64,7 +60,31 @@ class Artwork extends Component {
     const {artistPastelId, name, numOfCopies, thumbnailPath, imageHash} = this.props.data;
     const {forSale, price} = this.props.data.saleData;
     const isLoading = this.props.artwork_sell_loading.indexOf(imageHash) !== -1;
-
+    let loading = <React.Fragment>
+                  <p style={{marginTop: '9px',
+                             fontSize: '14px',
+                             color: 'var(--black)'}}><i>Ticket is being created..</i>
+                  </p>
+                  <Spinner style={{marginRight: '15px',
+                                   float: 'right'}}/>
+                </React.Fragment>;
+    let getMessage = (message, event) => {
+        return(<React.Fragment>
+            <p style={{
+              wordBreak: 'break-all',
+              overflowY: 'scroll',
+              scrollBehavior: 'smooth',
+              marginRight: '10px'}}><i>{message}</i>
+            </p>
+            <Button btnType={BTN_TYPE_GREEN}
+                    style={{
+                      width: '145px',
+                      marginLeft: '16px',
+                      marginTop: '7px'}}
+                    onClick={event}
+            >Ok</Button>
+          </React.Fragment>)
+    }
     let bottomBlock = <React.Fragment>
       <Button style={{
                 width: '145px',
@@ -89,7 +109,7 @@ class Artwork extends Component {
             >{price} PSL</span>
           <Button btnType={BTN_TYPE_GREEN}
                   style={{width: '72px'}}
-                  onClick={this.onBuyClick}>Buy</Button>
+                  onClick={() => this.setState({buyMode: true})}>Buy</Button>
         </div> : null}
       {artistPastelId === this.props.pastelID ?
         <Button btnType={BTN_TYPE_GREEN}
@@ -102,48 +122,14 @@ class Artwork extends Component {
       }
     </React.Fragment>;
 
+    // Buy mode
     if (this.state.buyMode) {
         if (isLoading) {
-        bottomBlock = <React.Fragment>
-          <p style={{marginTop: '9px',
-                     fontSize: '14px',
-                     color: 'var(--black)'}}><i>Buy ticket is being created..</i>
-          </p>
-          <Spinner style={{marginRight: '15px',
-                           float: 'right'}}/>
-        </React.Fragment>;
-      } else if (this.props.buyError) {
-          bottomBlock = <React.Fragment>
-            <p style={{
-              wordBreak: 'break-all',
-              overflowY: 'scroll',
-              scrollBehavior: 'smooth',
-              marginRight: '10px'}}><i>{this.props.buyError}</i>
-            </p>
-            <Button btnType={BTN_TYPE_GREEN}
-                    style={{
-                      width: '145px',
-                      marginLeft: '16px',
-                      marginTop: '7px'}}
-                    onClick={this.onOkClick}
-            >Ok</Button>
-          </React.Fragment>
+        bottomBlock = loading
+        } else if (this.props.buyError) {
+          bottomBlock = getMessage(this.props.buyError, this.onOkClick)
         } else if (this.props.buyMessage) {
-          bottomBlock = <React.Fragment>
-            <p style={{
-              wordBreak: 'break-all',
-              overflowY: 'scroll',
-              scrollBehavior: 'smooth',
-              marginRight: '10px'}}><i>{this.props.buyMessage}</i>
-            </p>
-            <Button btnType={BTN_TYPE_GREEN}
-                    style={{
-                      width: '145px',
-                      marginLeft: '16px',
-                      marginTop: '7px'}}
-                    onClick={this.onOkClick}
-            >Ok</Button>
-          </React.Fragment>
+          bottomBlock = getMessage(this.props.buyMessage, this.onOkClick)
         }else {
                 bottomBlock = <React.Fragment>
         <p style={{
@@ -169,39 +155,14 @@ class Artwork extends Component {
         }
     }
 
+    // Sell mode
     if (this.state.sellMode) {
       if (isLoading) {
-        bottomBlock = <React.Fragment>
-          <p style={{marginTop: '9px',
-                     fontSize: '14px',
-                     color: 'var(--black)'}}><i>Sell ticket is being created..</i>
-          </p>
-          <Spinner style={{marginRight: '15px',
-                           float: 'right'}}/>
-        </React.Fragment>;
+        bottomBlock = loading
       } else if (this.props.sell_error) {
-        bottomBlock = <React.Fragment>
-          <p className={style.error}><i>{JSON.stringify(this.props.sell_error)}</i>
-          </p>
-          <Button btnType={BTN_TYPE_GREEN}
-                  style={{width: '145px',
-                          marginLeft: '16px',
-                          marginTop: '7px'}}
-                  onClick={this.onErrorOkClick}>Ok</Button>
-
-        </React.Fragment>
+        bottomBlock = getMessage(JSON.stringify(this.props.sell_error), this.onErrorOkClick)
       } else if (this.props.sell_message) {
-        bottomBlock = <React.Fragment>
-          <p><i>{this.props.sell_message}</i>
-          </p>
-          <Button btnType={BTN_TYPE_GREEN}
-                  style={{
-                    width: '145px',
-                    marginLeft: '16px',
-                    marginTop: '7px'}}
-                  onClick={this.onSuccessOkClick}>Ok</Button>
-
-        </React.Fragment>
+        bottomBlock = getMessage(this.props.sell_message, this.onSuccessOkClick)
       } else {
         bottomBlock = <React.Fragment>
           <Input type="number" name={'price'} label={'Set price'}
