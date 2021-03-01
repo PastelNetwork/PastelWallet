@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import { Wrapper, Card, Button, Input } from '../../../components/common';
+import {Wrapper, Card, Button, Input, Spinner} from '../../../components/common';
 import * as style from './style.module.scss';
 import { connect } from 'react-redux';
 import history from '../../../history';
 import { BTN_TYPE_GREEN, BTN_TYPE_LIGHT_GREEN } from '../../../components/common/constants';
 import { getSampleSaleData } from '../index';
+import {
+    ADD_ARTWORK_TO_SELL_LOADING,
+    SET_ARTWORKS_ERRORS,
+    SET_ARTWORKS_MESSAGES,
+    SET_TICKET_ERROR
+} from "../../../actionTypes";
+import {ipcRenderer} from "../../../ipc/ipc";
 
 // {
 //     'artistPastelId': artwork.artist_pastelid,
@@ -48,13 +55,73 @@ class Detail extends Component {
     };
   }
 
+  onConfirmBuyClick = (data) => {
+    this.props.dispatch({type: ADD_ARTWORK_TO_SELL_LOADING, artwork_hash: this.props.match.params.image_hash});
+    ipcRenderer.send('buyArtworkRequest', {
+        act_txid: data.actTicketTxid,
+        data:{
+            sell_txid: data.saleData.sell_txid,
+            price: data.saleData.price,
+        }
+    });
+  };
+  // onConfirmSellClick = (data) => {
+  //   this.props.dispatch({type: ADD_ARTWORK_TO_SELL_LOADING, artwork_hash: this.props.match.params.image_hash});
+  //   ipcRenderer.send('sellArtworkRequest',
+  //     {
+  //       txid: data.actTicketTxid,
+  //       price: data.saleData.price,
+  //       image_hash: this.props.match.params.image_hash
+  //     });
+  //   console.log(`Sent sellArtwork txid: ${this.props.data.actTicketTxid} price: ${this.state.price}`);
+  // };
+  // onErrorOkClick = () => {
+  //   this.props.dispatch({type: SET_TICKET_ERROR, error: undefined});
+  //   this.setState({sellMode: false});
+  // };
+  // onSuccessOkClick = () => {
+  //   this.props.dispatch({type: SET_TICKET_ERROR, error: undefined});
+  //   this.setState({sellMode: false});
+  //   ipcRenderer.send('artworksDataRequest', {})
+  // };
+  onOkClick = (data) =>{
+    this.props.dispatch({type: SET_ARTWORKS_ERRORS, key:data.actTicketTxid, value: undefined});
+    this.props.dispatch({type: SET_ARTWORKS_MESSAGES, key:data.actTicketTxid, value: undefined});
+    this.setState({buyMode: false});
+  }
   render () {
     const imageHash = this.props.match.params.image_hash;
     const data = this.props.artworksData ? this.props.artworksData.filter(a => a.imageHash === imageHash)[0] : {};
     const { forSale, price } = data.saleData ? data.saleData : {};
     const { name, orderBlockTxid, thumbnailPath, artistPastelId, actTicketTxid } = data;
     const isMy = artistPastelId === this.props.pastelId;
+    const isLoading = this.props.artwork_sell_loading.indexOf(imageHash) !== -1;
     let dialog = null;
+    let loading = <React.Fragment>
+                  <p style={{marginTop: '9px',
+                             fontSize: '14px',
+                             color: 'var(--black)'}}><i>Ticket is being created..</i>
+                  </p>
+                  <Spinner style={{marginRight: '15px',
+                                   float: 'right'}}/>
+                </React.Fragment>;
+    let getMessage = (message, event) => {
+        return(<React.Fragment>
+            <p style={{
+              wordBreak: 'break-all',
+              overflowY: 'scroll',
+              scrollBehavior: 'smooth',
+              marginRight: '10px'}}><i>{message}</i>
+            </p>
+            <Button btnType={BTN_TYPE_GREEN}
+                    style={{
+                      width: '145px',
+                      marginLeft: '16px',
+                      marginTop: '7px'}}
+                    onClick={()=>event(data)}
+            >Ok</Button>
+          </React.Fragment>)
+    }
     let button = isMy ?
       <Button btnType={BTN_TYPE_GREEN} style={{ width: '145px', height: '37px', marginTop: '20px' }}
               disabled={forSale} onClick={() => this.setState({ sellMode: true })}>Sell
@@ -62,6 +129,7 @@ class Detail extends Component {
       <Button btnType={BTN_TYPE_GREEN} style={{ width: '145px', height: '37px', marginTop: '20px' }}
               disabled={!forSale} onClick={() => this.setState({ buyMode: true })}>Buy
         artwork</Button>;
+
     if (this.state.sellMode) {
       button = null;
       dialog = <React.Fragment>
@@ -75,14 +143,27 @@ class Detail extends Component {
         onClick={()=> this.setState({sellMode: false})}>Decline</Button>
       </React.Fragment>;
     }
-    if (this.state.buyMode) {
-      button = <div style={{display: 'flex'}}>
-        <p className={style['buy-confirm']}>Do you really want to buy this artwork?</p>
-        <Button btnType={BTN_TYPE_GREEN} style={{ width: '60px', height: '37px', marginTop: '20px', marginRight: '10px' }} onClick={() => console.log('Not implemented')}>Yes</Button>
-        <Button btnType={BTN_TYPE_LIGHT_GREEN} style={{ width: '60px', height: '37px', marginTop: '20px' }}
-        onClick={()=> this.setState({buyMode: false})}>No</Button>
 
-      </div>
+    if (this.state.buyMode) {
+      if(isLoading){
+              button = null;
+              dialog = loading
+      }else if (this.props.buyErrors[data.actTicketTxid]) {
+              button = null;
+              dialog = getMessage(this.props.buyErrors[data.actTicketTxid], ()=>this.onOkClick(data))
+      }else if (this.props.buyMessages[data.actTicketTxid]) {
+              button = null;
+              dialog = getMessage(this.props.buyMessages[data.actTicketTxid], ()=>this.onOkClick(data))
+      }
+      else{
+              button = null;
+              dialog = <div style={{display: 'flex'}}>
+                <p className={style['buy-confirm']}>Do you really want to buy this artwork?</p>
+                <Button btnType={BTN_TYPE_GREEN} style={{ width: '60px', height: '37px', marginTop: '20px', marginRight: '10px' }} onClick={()=>this.onConfirmBuyClick(data)}>Yes</Button>
+                <Button btnType={BTN_TYPE_LIGHT_GREEN} style={{ width: '60px', height: '37px', marginTop: '20px' }}
+                onClick={()=> this.setState({buyMode: false})}>No</Button>
+              </div>
+      }
     }
     return <Wrapper>
       <Card>
@@ -126,6 +207,11 @@ class Detail extends Component {
 export default connect(
   state => ({
     artworksData: state.artworks.data,
-    pastelId: state.pastelid.currentPastelID
+    pastelId: state.pastelid.currentPastelID,
+    buyErrors: state.artworks.buyErrors,
+    buyMessages: state.artworks.buyMessages,
+    sell_error: state.artworks.sell_error,
+    sell_message: state.artworks.sell_message,
+    artwork_sell_loading: state.artworks.artwork_sell_loading
   }))
 (Detail);
