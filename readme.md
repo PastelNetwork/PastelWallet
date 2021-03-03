@@ -24,7 +24,7 @@ As currently `PastelD` binary is not available for Mac - it can be run with Dock
  - electron main proccess will start python proccess (`src/StoVaCore/wallet_api.py`) on 5000 port.
 
 ## Switch between testnet and mainnet
- - Change `TESTNET` parameter in `StoVaCore/config.py`. 
+ - Change `TESTNET` parameter in `StoVaCore/pynode.ini`. 
  - Change `TESTNET` parameter in `PastelWallet/src/main/main-process/utils.js`
 
 
@@ -46,7 +46,7 @@ As currently `PastelD` binary is not available for Mac - it can be run with Dock
  - Build `wallet_api` (on Windows syntax is a little bit different)
  - `pyinstaller --add-data "misc;misc" -F wallet_api.py`
  - Build `ani_import` : `pyinstaller -F ani_import.py`
- - `npm electron-rebuild`. If it fails because of missing MS build tools - install it:
+ - `npx electron-rebuild`. If it fails because of missing MS build tools - install it:
  - `npm install --global --production windows-build-tools`
  - Build wallet: `npm run electron-build:win`
   

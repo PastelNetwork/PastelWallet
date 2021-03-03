@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const TESTNET = true;
+const TESTNET = false;
 
 const callRpcMethod = (method, params) => {
     // return Promise
