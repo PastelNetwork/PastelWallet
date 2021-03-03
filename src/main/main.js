@@ -248,6 +248,6 @@ const createPastelkeysDir = () => {
 app.on('ready', createWindow);
 app.on('ready', updateNodeStatusesProccess);
 app.on('ready', createPastelkeysDir);
-app.on('ready', checkAndRunPastelD);
+// app.on('ready', checkAndRunPastelD);
 app.on('ready', initDatabase);
 app.on('will-quit', cleanUp);
