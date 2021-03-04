@@ -37,8 +37,9 @@ ipcMain.on('pastelIdList', (event, arg) => {
             return PASTELID_REG_STATUS_NON_REGISTERED;
           }
         };
-        const registeredPastelIDs = response.data.result.filter(t => t.ticket.id_type === 'personal')
-          .map(t => t.ticket.pastelID);
+
+        const registeredPastelIDs = response.data.result ? response.data.result.filter(t => t.ticket.id_type === 'personal')
+          .map(t => t.ticket.pastelID) : [];
         const data = pastelIdList.map(key => ({
           PastelID: key.PastelID,
           regStatus: getPastelIdRegStatus(key.PastelID)
